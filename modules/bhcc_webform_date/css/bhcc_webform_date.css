@@ -1,0 +1,76 @@
+/**
+ * @file
+ * Webform example composite styles.
+ */
+
+.bhcc-webform-date--wrapper .fieldset-wrapper {
+  margin-bottom: 20px;
+}
+
+.bhcc-webform-date--wrapper .fieldset-wrapper > .form-item {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.bhcc-webform-date--wrapper .fieldset-wrapper > .form-item .date--day,
+.bhcc-webform-date--wrapper .fieldset-wrapper > .form-item .date--month {
+  width: 70px;
+}
+
+.bhcc-webform-date--wrapper .fieldset-wrapper > .form-item .date--year {
+  width: 80px;
+}
+
+.bhcc-webform-date--wrapper label {
+  border: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+}
+
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper {
+  margin-bottom: 20px;
+}
+
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper > div:first-of-type,
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper > div:nth-of-type(2),
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper > div:nth-of-type(3) {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper > div:first-of-type,
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper > div:nth-of-type(2) {
+  width: 70px;
+}
+
+.bhcc-webform-date-of-birth--wrapper .fieldset-wrapper > div:nth-of-type(3) {
+  width: 80px;
+}
+
+.bhcc-webform-date-of-birth--wrapper label {
+  border: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+}
+
+/* Hide arrows on number input - Chrome, Safari, Edge, Opera */
+.bhcc-webform-date--wrapper input::-webkit-outer-spin-button,
+.bhcc-webform-date--wrapper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide arrows on number input - Firefox */
+.bhcc-webform-date--wrapper input[type=number] {
+  -moz-appearance: textfield;
+}

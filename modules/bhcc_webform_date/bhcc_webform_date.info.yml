@@ -1,0 +1,8 @@
+name: 'LocalGov Forms: BHCC Webform Date'
+type: module
+description: 'A custom Date component'
+package: LocalGov Drupal
+core_version_requirement: ^8 || ^9
+dependencies:
+  - 'webform:webform'
+  - 'localgov_forms:localgov_forms'
