@@ -1,0 +1,11 @@
+{
+  "name": "localgovdrupal/localgov_forms",
+  "description": "LocalGov Drupal distribution: Webform additions.",
+  "type": "drupal-module",
+  "homepage": "https://github.com/localgovdrupal/localgov_forms",
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "require": {
+    "drupal/webform": "^6.0"
+  }
+}
