@@ -1,0 +1,32 @@
+localgov_forms_uk_address:
+  version: VERSION
+  css:
+    theme:
+      css/localgov_forms_uk_address.css: {}
+  dependencies:
+    - webform/webform.composite
+
+localgov_forms.form_errors:
+  version: VERSION
+  js:
+    js/form_errors.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+
+localgov_forms.address_select:
+  version: VERSION
+  js:
+    js/address_select.js: {}
+  dependencies:
+    - localgov_forms/localgov_forms.address_change
+    - core/drupal
+    - core/jquery
+
+localgov_forms.address_change:
+  version: VERSION
+  js:
+    js/address_change.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

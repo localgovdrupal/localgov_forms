@@ -1,0 +1,7 @@
+localgov_forms.bhcc_address_picker_form:
+  path: '/bhcc_central_hub/form/address_picker'
+  defaults:
+    _form: '\Drupal\bhcc_central_hub\Form\AddressPickerForm'
+    _title: 'AddressPickerForm'
+  requirements:
+    _access: 'TRUE'
