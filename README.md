@@ -4,4 +4,4 @@ Provides additional configuration, styling and components for the Drupal Webform
 
 ## Additional components
 
-* BHCC Webform Date - A date input field based on the [GDS Date Input pattern](https://design-system.service.gov.uk/components/date-input/)
+* LocalGov Forms Date - A date input field based on the [GDS Date Input pattern](https://design-system.service.gov.uk/components/date-input/)
