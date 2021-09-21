@@ -18,35 +18,4 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class LocalgovFormsDOB extends LocalgovFormsDate{
 
-
-
-  /**
-   * {@inheritdoc}
-   */
-/*   protected function defineDefaultProperties()
-  {
-
-    return [
-      //'#date_date_min' => '1900',
-      //'#date_date_max' => 'today',
-      'date_date_min' => '1900',
-      'date_date_max' => 'today',
-    ] + parent::defineDefaultProperties();
-
-  } */
-
-  /**
-   * {@inheritdoc}
-   */
-/*   public function validateConfigurationForm(array &$form, FormStateInterface $form_state)
-  {
-    parent::validateConfigurationForm($form, $form_state);
-    $values = $form_state->getValues();
-    $values['#date_date_min'] = '1900';
-    $values['#date_date_max'] = 'today';
-    $values['date_date_min'] = '1900';
-    $values['date_date_max'] = 'today';
-    $form_state->setValues($values);
-  } */
-
 }
