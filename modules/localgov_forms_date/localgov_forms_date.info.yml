@@ -1,4 +1,4 @@
-name: 'LocalGov Forms: BHCC Webform Date'
+name: 'LocalGov Forms: Date'
 type: module
 description: 'A custom Date component'
 package: LocalGov Drupal
