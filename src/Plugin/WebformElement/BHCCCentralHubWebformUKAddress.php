@@ -2,9 +2,8 @@
 
 namespace Drupal\localgov_forms\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\WebformSubmissionInterface;
-use Drupal\localgov_forms\Plugin\WebformElement\BHCCWebformUKAddress;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a 'bhcc_central_hub_webform_uk_address' element.
@@ -30,13 +29,6 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
-    parent::prepare($element, $webform_submission);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
     $submission_data = $webform_submission->getData();
     $webform = $webform_submission->getWebform();
@@ -51,6 +43,39 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
       }
     }
     $webform_submission->setData($submission_data);
+  }
+
+  /**
+   * Declares our geocoder_plugins property.
+   *
+   * {@inheritdoc}
+   */
+  public function defineDefaultProperties() {
+
+    return [
+      'geocoder_plugins' => '',
+    ] + parent::defineDefaultProperties();
+  }
+
+  /**
+   * Webform element config form.
+   *
+   * Adds a settings for selecting Geocoder plugins for address lookup.
+   *
+   * {@inheritdoc}
+   */
+  public function form(array $form, FormStateInterface $form_state) {
+
+    $parent_form = parent::form($form, $form_state);
+
+    $parent_form['element']['geocoder_plugins'] = [
+      '#type'    => 'checkboxes',
+      '#title'   => $this->t('Geocoder plugins'),
+      '#options' => \Drupal::service('localgov_forms.geocoder_selection')->listInstalledPluginNames(),
+      '#description' => $this->t('These plugins are used for address lookup.  They are added from Configuration > System > Geocoder > Providers.'),
+    ];
+
+    return $parent_form;
   }
 
   /**
@@ -72,7 +97,6 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
       ($value['address_2'] ? ' ' . $value['address_2'] : '') .
       ($value['town_city'] ? ' ' . $value['town_city'] : '') .
       ($value['postcode'] ? ' ' . $value['postcode'] : '');
-      ($value['uprn'] ? ' ' . $value['uprn'] : '');
     return $lines;
   }
 
