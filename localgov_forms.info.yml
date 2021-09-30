@@ -6,6 +6,7 @@ package: LocalGov Drupal
 
 dependencies:
   - drupal:inline_form_errors
+  - drupal:geocoder
   - webform:webform
   - webform:webform_ui
   - localgov_forms:bhcc_central_hub
