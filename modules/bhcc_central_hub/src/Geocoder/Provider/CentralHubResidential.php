@@ -49,6 +49,7 @@ class CentralHubResidential extends AbstractProvider implements Provider {
         'providedBy'       => $this->getName(),
         'streetNumber'     => $geocode['house'] ?? NULL,
         'streetName'       => $geocode['street'] ?? NULL,
+        'flat'             => $geocode['flat'] ?? NULL,
         'locality'         => $geocode['town'] ?? NULL,
         'postalCode'       => $geocode['postcode'] ?? NULL,
         'country'          => 'United Kingdom',

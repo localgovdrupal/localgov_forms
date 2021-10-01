@@ -32,6 +32,14 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
   protected $displayName = '';
 
   /**
+   * Flat number.
+   *
+   * @var string
+   */
+  protected $flat = '';
+
+
+  /**
    * As it says on the tin.
    */
   public function getUprn() :string {
@@ -48,6 +56,14 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
   }
 
   /**
+   * Returns the flat number if any.
+   */
+  public function getFlat() :string {
+
+    return $this->flat;
+  }
+
+  /**
    * Creates an Address from an array.
    *
    * @return static
@@ -58,6 +74,7 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
 
     $self->uprn        = $data['uprn'] ?? '';
     $self->displayName = $data['display'] ?? '';
+    $self->flat        = $data['flat'] ?? '';
 
     return $self;
   }
@@ -73,6 +90,7 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
 
     $array['uprn']    = $this->getUprn();
     $array['display'] = $this->getDisplayName();
+    $array['flat']    = $this->getFlat();
 
     return $array;
   }

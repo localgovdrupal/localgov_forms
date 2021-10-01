@@ -23,4 +23,9 @@ interface LocalgovAddressInterface extends Location {
    */
   public function getDisplayName() :string;
 
+  /**
+   * Returns the flat number if any.
+   */
+  public function getFlat() :string;
+
 }

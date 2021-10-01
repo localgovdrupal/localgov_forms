@@ -58,6 +58,7 @@ class AddressLookup {
     $unique_id     = '';
     $display_name  = '';
     $uprn          = '';
+    $flat          = '';
     $street_number = $addr->getStreetNumber();
     $street_name   = $addr->getStreetName();
     $locality      = $addr->getLocality();
@@ -72,6 +73,7 @@ class AddressLookup {
       $uprn         = $addr->getUprn();
       $unique_id    = $uprn;
       $display_name = $addr->getDisplayName();
+      $flat         = $addr->getFlat();
     }
     else {
       $unique_id = sprintf("(%s,%s)", $latitude, $longitude);
@@ -83,19 +85,18 @@ class AddressLookup {
     }
 
     return [
-      'name'     => $unique_id,
-      'uprn'     => $uprn,
-      'display'  => $display_name,
-      'street'   => sprintf("%s %s", $street_number, $street_name),
-      'flat'     => '',
-      'house'    => '',
-      'uprn'     => '',
-      'town'     => $locality,
-      'postcode' => $postcode,
-      'src'      => $addr->getProvidedBy(),
-      'lat'      => $latitude,
-      'lng'      => $longitude,
-      'country'  => $country_name,
+      'name'         => $unique_id,
+      'uprn'         => $uprn,
+      'display'      => $display_name,
+      'street'       => $street_name,
+      'flat'         => $flat,
+      'house'        => $street_number,
+      'town'         => $locality,
+      'postcode'     => $postcode,
+      'src'          => $addr->getProvidedBy(),
+      'lat'          => $latitude,
+      'lng'          => $longitude,
+      'country'      => $country_name,
       'country_code' => $country_code,
     ];
   }
