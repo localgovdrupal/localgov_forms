@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\localgov_forms;
 
 use Geocoder\Location;
+use Drupal\localgov_forms\Geocoder\Model\LocalgovAddressInterface;
 
 /**
  * Address lookup service.
@@ -22,6 +23,10 @@ class AddressLookup {
     $geocoder_plugins = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
 
     $addr_list = $this->geocoder->geocode($search_str, $geocoder_plugins);
+    if (is_null($addr_list) || $addr_list === FALSE) {
+      return [];
+    }
+
     $formatted_addr_list = array_map('self::reformat', iterator_to_array($addr_list));
 
     return $formatted_addr_list;
@@ -44,21 +49,54 @@ class AddressLookup {
    * Prepares address array.
    *
    * This array is suitable for the Address lookup widget.
+   *
+   * UPRN is used as the unique id for each address record.  For addresses
+   * without the UPRN property, we use "(lat,lon)" as the unique id.
    */
   public static function reformat(Location $addr) :array {
 
+    $unique_id     = '';
+    $display_name  = '';
+    $uprn          = '';
+    $street_number = $addr->getStreetNumber();
+    $street_name   = $addr->getStreetName();
+    $locality      = $addr->getLocality();
+    $postcode      = $addr->getPostalCode();
+    $country_name  = $addr->getCountry()->getName();
+    $country_code  = $addr->getCountry()->getCode();
+    $latitude      = $addr->getCoordinates()->getLatitude();
+    $longitude     = $addr->getCoordinates()->getLongitude();
+
+    $is_lgd_address = $addr instanceof LocalgovAddressInterface;
+    if ($is_lgd_address) {
+      $uprn         = $addr->getUprn();
+      $unique_id    = $uprn;
+      $display_name = $addr->getDisplayName();
+    }
+    else {
+      $unique_id = sprintf("(%s,%s)", $latitude, $longitude);
+
+      $display_name_parts = [
+        $street_number, $street_name, $locality, $postcode, $country_name,
+      ];
+      $display_name = implode(', ', array_filter($display_name_parts));
+    }
+
     return [
-      'street'   => sprintf("%s %s", $addr->getStreetNumber(), $addr->getStreetName()),
+      'name'     => $unique_id,
+      'uprn'     => $uprn,
+      'display'  => $display_name,
+      'street'   => sprintf("%s %s", $street_number, $street_name),
       'flat'     => '',
       'house'    => '',
       'uprn'     => '',
-      'town'     => $addr->getLocality(),
-      'postcode' => $addr->getPostalCode(),
+      'town'     => $locality,
+      'postcode' => $postcode,
       'src'      => $addr->getProvidedBy(),
-      'lat'      => $addr->getCoordinates()->getLatitude(),
-      'lng'      => $addr->getCoordinates()->getLongitude(),
-      'country'  => $addr->getCountry()->getName(),
-      'country_code' => $addr->getCountry()->getCode(),
+      'lat'      => $latitude,
+      'lng'      => $longitude,
+      'country'  => $country_name,
+      'country_code' => $country_code,
     ];
   }
 

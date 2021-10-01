@@ -12,6 +12,7 @@ use Geocoder\Query\ReverseQuery;
 use Geocoder\Provider\AbstractProvider;
 use Geocoder\Provider\Provider;
 use Drupal\bhcc_central_hub\AddressLookupService;
+use Drupal\localgov_forms\Geocoder\Model\LocalgovAddress;
 
 /**
  * Provides a geocoder handler for Central Hub Commercial.
@@ -44,17 +45,19 @@ class CentralHubCommercial extends AbstractProvider implements Provider {
 
     // Format the results.
     foreach($geocode_results as $geocode) {
-      $results[] = Address::createFromArray([
-          'providedBy' => $this->getName(),
-          'streetNumber' => $geocode['house'] ?? NULL,
-          'streetName'   => $geocode['street'] ?? NULL,
-          'locality' => $geocode['town'] ?? NULL,
-          'postalCode'   => $geocode['postcode'] ?? NULL,
-          'country' => 'United Kingdom',
-          'countryCode' => 'GB',
-          'formattedAddress' => $geocode['display'] ?? NULL,
-          'latitude' => $geocode['lat'] ?? NULL,
-          'longitude' => $geocode['lng'] ?? NULL,
+      $results[] = LocalgovAddress::createFromArray([
+        'providedBy'       => $this->getName(),
+        'streetNumber'     => $geocode['house'] ?? NULL,
+        'streetName'       => $geocode['street'] ?? NULL,
+        'locality'         => $geocode['town'] ?? NULL,
+        'postalCode'       => $geocode['postcode'] ?? NULL,
+        'country'          => 'United Kingdom',
+        'countryCode'      => 'GB',
+        'display'          => $geocode['display'] ?? '',
+        'formattedAddress' => $geocode['display'] ?? NULL,
+        'latitude'         => $geocode['lat'] ?? NULL,
+        'longitude'        => $geocode['lng'] ?? NULL,
+        'uprn'             => $geocode['uprn'] ?? '',
       ]);
     }
 
