@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @WebformElement(
  *   id = "bhcc_central_hub_webform_uk_address",
- *   label = @Translation("Address lookup"),
+ *   label = @Translation("Localgov address lookup"),
  *   description = @Translation("Provides a webform element example."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
