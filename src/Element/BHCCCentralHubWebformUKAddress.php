@@ -48,6 +48,7 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
       '#address_type' => $element['#address_type'] ?? 'residential',
       '#address_search_description' => $element['#address_search_description'] ?? NULL,
       '#address_select_title' => $element['#address_select_title'] ?? NULL,
+      '#geocoder_plugins' => $element['#geocoder_plugins'] ?? [],
     ];
 
     $elements['address_entry'] = [

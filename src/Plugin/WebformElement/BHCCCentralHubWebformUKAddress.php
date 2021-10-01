@@ -46,18 +46,6 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
   }
 
   /**
-   * Declares our geocoder_plugins property.
-   *
-   * {@inheritdoc}
-   */
-  public function defineDefaultProperties() {
-
-    return [
-      'geocoder_plugins' => '',
-    ] + parent::defineDefaultProperties();
-  }
-
-  /**
    * Webform element config form.
    *
    * Adds a settings for selecting Geocoder plugins for address lookup.
@@ -68,10 +56,13 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
 
     $parent_form = parent::form($form, $form_state);
 
+    // @see AddressLookupElement::getInfo()
+    // @see WebformCompositeBase::defineDefaultProperties()
     $parent_form['element']['geocoder_plugins'] = [
-      '#type'    => 'checkboxes',
-      '#title'   => $this->t('Geocoder plugins'),
-      '#options' => \Drupal::service('localgov_forms.geocoder_selection')->listInstalledPluginNames(),
+      '#type'     => 'checkboxes',
+      '#title'    => $this->t('Geocoder plugins'),
+      '#options'  => \Drupal::service('localgov_forms.geocoder_selection')->listInstalledPluginNames(),
+      '#required' => TRUE,
       '#description' => $this->t('These plugins are used for address lookup.  They are added from Configuration > System > Geocoder > Providers.'),
     ];
 

@@ -50,6 +50,9 @@ class AddressLookupElement extends FormElement {
       '#process' => [
         [$class, 'processAddressLookupElement'],
       ],
+      '#address_search_description' => '',
+      '#address_select_title' => '',
+      '#geocoder_plugins' => [],
     ];
   }
 
@@ -201,6 +204,7 @@ class AddressLookupElement extends FormElement {
 
   /**
    * Replace the address select box
+   *
    * @param  array $form
    *   Form array.
    * @param Drupal\Core\Form\FormStateInterface $form_state
@@ -281,7 +285,8 @@ class AddressLookupElement extends FormElement {
     // Else make a new request.
     // This is to avoid multiple api lookup calls.
     if ($address_search !== self::$searchString || $address_type !== self::$addressType) {
-      self::$addressResults = AddressLookupService::addressLookup($address_search, $address_type);
+      $selected_plugin_ids = $address_element['#geocoder_plugins'];
+      self::$addressResults = \Drupal::service('localgov_forms.address_lookup')->search([$address_search], $selected_plugin_ids);
     }
     $address_list = self::$addressResults;
 
