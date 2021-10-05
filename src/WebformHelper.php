@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Utility class with helpers for webform.
  */
-class BHCCWebformHelper {
+class WebformHelper {
 
   /**
    * Determine if an element is visible by checking visiblity of parents.

@@ -21,7 +21,7 @@ function localgov_forms_theme() {
 /**
  * Prepares variables for BHCC Webform templates.
  *
- * Default template: bhcc_webform_uk_address.html.twig.
+ * Default template: localgov-forms-uk-address.html.twig.
  *
  * @param array $variables
  *   An associative array containing:

@@ -4,36 +4,35 @@ namespace Drupal\localgov_forms\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\webform\Element\WebformCompositeBase;
-use Drupal\localgov_forms\Element\BHCCWebformUKAddress;
+use Drupal\localgov_forms\Element\WebformUKAddress;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\webform\Utility\WebformElementHelper;
-use Drupal\localgov_forms\BHCCWebformHelper;
+use Drupal\localgov_forms\WebformHelper;
 use Drupal\Core\Render\Element;
 
 /**
- * Provides a 'bhcc_central_hub_webform_uk_address'.
+ * Provides a 'localgov_webform_uk_address' form element.
  *
  * Webform composites contain a group of sub-elements.
- *
  *
  * IMPORTANT:
  * Webform composite can not contain multiple value elements (i.e. checkboxes)
  * or composites (i.e. webform_address)
  *
- * @FormElement("bhcc_central_hub_webform_uk_address")
+ * @FormElement("localgov_webform_uk_address")
  *
  * @see \Drupal\webform\Element\WebformCompositeBase
  * @see \Drupal\webform_example_composite\Element\WebformExampleComposite
  */
-class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
+class LocalgovWebformUKAddress extends WebformUKAddress {
 
   /**
    * {@inheritdoc}
    */
   public function getInfo() {
     $class = get_class($this);
-    return parent::getInfo() + ['#theme' => 'bhcc_central_hub_webform_uk_address'];
+    return parent::getInfo() + ['#theme' => 'localgov_webform_uk_address'];
   }
 
   /**
@@ -41,10 +40,10 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
    */
   public static function getCompositeElements(array $element) {
     // Generate a unique ID that can be used by #states.
-    $html_id = Html::getUniqueId('bhcc_central_hub_webform_uk_address');
+    $html_id = Html::getUniqueId('localgov_webform_uk_address');
 
     $elements['address_lookup'] = [
-      '#type' => 'bhcc_central_hub_address_lookup',
+      '#type' => 'localgov_forms_address_lookup',
       '#address_type' => $element['#address_type'] ?? 'residential',
       '#address_search_description' => $element['#address_search_description'] ?? NULL,
       '#address_select_title' => $element['#address_select_title'] ?? NULL,
@@ -119,7 +118,7 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
     // If the element or any of its parent containers are hidden by conditions,
     // Bypass validation and clear any required element errors generated
     // for this element.
-    if (!BHCCWebformHelper::isElementVisibleThroughParent($element, $form_state, $complete_form)) {
+    if (!WebformHelper::isElementVisibleThroughParent($element, $form_state, $complete_form)) {
       $form_errors = $form_state->getErrors();
       $form_state->clearErrors();
       foreach($form_errors as $error_key => $error_value) {

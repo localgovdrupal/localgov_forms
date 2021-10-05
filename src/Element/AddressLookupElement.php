@@ -6,12 +6,11 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Crypt;
-use Drupal\bhcc_central_hub\AddressLookupService;
 
 /**
  * Provides a central hub address lookup element.
  *
- * @FormElement("bhcc_central_hub_address_lookup")
+ * @FormElement("localgov_forms_address_lookup")
  */
 class AddressLookupElement extends FormElement {
 
@@ -45,14 +44,14 @@ class AddressLookupElement extends FormElement {
   public function getInfo() {
     $class = get_class($this);
     return [
-      '#input' => TRUE,
-      '#tree' => TRUE,
-      '#process' => [
+      '#input'                      => TRUE,
+      '#tree'                       => TRUE,
+      '#process'                    => [
         [$class, 'processAddressLookupElement'],
       ],
       '#address_search_description' => '',
-      '#address_select_title' => '',
-      '#geocoder_plugins' => [],
+      '#address_select_title'       => '',
+      '#geocoder_plugins'           => [],
     ];
   }
 
@@ -61,7 +60,7 @@ class AddressLookupElement extends FormElement {
    */
   public static function processAddressLookupElement(&$element, FormStateInterface $form_state, &$form) {
     // Generate a unique ID that can be used by #states.
-    $html_id = Html::getUniqueId('bhcc_central_hub_address_lookup');
+    $html_id = Html::getUniqueId('localgov_forms_address_lookup');
     $dom_id = Crypt::randomBytesBase64();
     $name = $element['#name'];
     $element_id = $element['#id'];
@@ -77,7 +76,6 @@ class AddressLookupElement extends FormElement {
         'class' => ['js-address-search-container'],
       ],
       '#tree' => TRUE,
-      //'#id' => $html_id,
     ];
 
     $element['address_search']['address_searchstring'] = [

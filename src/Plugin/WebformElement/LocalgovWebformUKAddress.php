@@ -6,12 +6,12 @@ use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides a 'bhcc_central_hub_webform_uk_address' element.
+ * Provides a 'localgov_webform_uk_address' Webform element.
  *
  * @WebformElement(
- *   id = "bhcc_central_hub_webform_uk_address",
+ *   id = "localgov_webform_uk_address",
  *   label = @Translation("Localgov address lookup"),
- *   description = @Translation("Provides a webform element example."),
+ *   description = @Translation("Provides a UK address lookup element."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
  *   composite = TRUE,
@@ -24,7 +24,20 @@ use Drupal\Core\Form\FormStateInterface;
  * @see \Drupal\webform\Plugin\WebformElementInterface
  * @see \Drupal\webform\Annotation\WebformElement
  */
-class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
+class LocalgovWebformUKAddress extends WebformUKAddress {
+
+  /**
+   * Declares our geocoder_plugins property.
+   *
+   * {@inheritdoc}
+   */
+  protected function defineDefaultProperties() {
+
+    $parent_properties = parent::defineDefaultProperties();
+    $parent_properties['geocoder_plugins'] = [];
+
+    return $parent_properties;
+  }
 
   /**
    * {@inheritdoc}
@@ -34,7 +47,7 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
     $webform = $webform_submission->getWebform();
     foreach ($submission_data as $key => $value) {
       $webform_element = $webform->getElement($key);
-      if ($webform_element['#type'] == 'bhcc_central_hub_webform_uk_address') {
+      if ($webform_element['#type'] == 'localgov_webform_uk_address') {
         unset($submission_data[$key]['address_lookup']);
         $extra_elements = ['lat', 'lng', 'ward'];
         foreach ($extra_elements as $extra_element) {
@@ -56,8 +69,6 @@ class BHCCCentralHubWebformUKAddress extends BHCCWebformUKAddress {
 
     $parent_form = parent::form($form, $form_state);
 
-    // @see AddressLookupElement::getInfo()
-    // @see WebformCompositeBase::defineDefaultProperties()
     $parent_form['element']['geocoder_plugins'] = [
       '#type'     => 'checkboxes',
       '#title'    => $this->t('Geocoder plugins'),

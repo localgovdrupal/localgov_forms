@@ -6,12 +6,12 @@ use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
- * Provides a 'bhcc_webform_uk_address' element.
+ * Provides a 'webform_uk_address' Webform element.
  * 
  * @WebformElement(
- *   id = "bhcc_webform_uk_address",
+ *   id = "webform_uk_address",
  *   label = @Translation("UK Address"),
- *   description = @Translation("Provides a webform element example."),
+ *   description = @Translation("Provides a UK address lookup webform element."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
  *   composite = TRUE,
@@ -24,7 +24,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * @see \Drupal\webform\Plugin\WebformElementInterface
  * @see \Drupal\webform\Annotation\WebformElement
  */
-class BHCCWebformUKAddress extends WebformCompositeBase {
+class WebformUKAddress extends WebformCompositeBase {
 
   /**
    * {@inheritdoc}

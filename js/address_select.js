@@ -146,8 +146,8 @@
     if (typeof drupalSettings.centralHub === 'undefined') {
       return;
     }
-    var centralHubElement = $(this).closest('.js-webform-type-bhcc-central-hub-webform-uk-address');
-    var central_hub_webform_address_container = $(this).closest('.js-webform-type-bhcc-central-hub-webform-uk-address');
+    var centralHubElement = $(this).closest('.js-webform-type-localgov-webform-uk-address');
+    var central_hub_webform_address_container = $(this).closest('.js-webform-type-localgov-webform-uk-address');
     var central_hub_webfrom_address_entry = central_hub_webform_address_container.find('.js-address-entry-container');
 
     if (drupalSettings.centralHub.selectedAddress) {
@@ -184,7 +184,7 @@
    * Clears any central hub values such as UPRN from the address handler.
    */
   var bhcc_central_hub_webform_manual_address_change_handler = function() {
-    var central_hub_webform_address_container = $(this).closest('.js-webform-type-bhcc-central-hub-webform-uk-address');
+    var central_hub_webform_address_container = $(this).closest('.js-webform-type-localgov-webform-uk-address');
     var central_hub_webfrom_address_entry = $(this).closest('.js-address-entry-container');
 
     // Clear UPRN.
@@ -201,7 +201,7 @@
   // Attach after an ajax refresh
   Drupal.behaviors.bhcc_central_hub_webform = {
     attach: function(context, settings) {
-      $('.js-webform-type-bhcc-central-hub-webform-uk-address', context).once('centralhub-address-webform').each(function() {
+      $('.js-webform-type-localgov-webform-uk-address', context).once('localgov-address-webform').each(function() {
         var centralHubElement = $(this);
         addManualEntryButton(centralHubElement);
         // Hide the manual address element, if it has no values.

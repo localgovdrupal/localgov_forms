@@ -6,27 +6,26 @@ use Drupal\Component\Utility\Html;
 use Drupal\webform\Element\WebformCompositeBase;
 
 /**
- * Provides a 'bhcc_webform_uk_address'.
+ * Provides a 'webform_uk_address' form element.
  *
  * Webform composites contain a group of sub-elements.
- *
  *
  * IMPORTANT:
  * Webform composite can not contain multiple value elements (i.e. checkboxes)
  * or composites (i.e. webform_address)
  *
- * @FormElement("bhcc_webform_uk_address")
+ * @FormElement("webform_uk_address")
  *
  * @see \Drupal\webform\Element\WebformCompositeBase
  * @see \Drupal\webform_example_composite\Element\WebformExampleComposite
  */
-class BHCCWebformUKAddress extends WebformCompositeBase {
+class WebformUKAddress extends WebformCompositeBase {
 
   /**
    * {@inheritdoc}
    */
   public function getInfo() {
-    return parent::getInfo() + ['#theme' => 'bhcc_webform_uk_address'];
+    return parent::getInfo() + ['#theme' => 'localgov_forms_uk_address'];
   }
 
   /**
@@ -34,7 +33,7 @@ class BHCCWebformUKAddress extends WebformCompositeBase {
    */
   public static function getCompositeElements(array $element) {
     // Generate a unique ID that can be used by #states.
-    $html_id = Html::getUniqueId('bhcc_webform_uk_address');
+    $html_id = Html::getUniqueId('webform_uk_address');
 
     $elements = [];
     $elements['address_1'] = [
