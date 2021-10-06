@@ -66,7 +66,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
       '#title' => 'UPRN',
       '#default_value' => '',
       '#attributes' => [
-        'class' => ['js-bhcc-webform-uk-address--uprn'],
+        'class' => ['js-localgov-forms-webform-uk-address--uprn'],
       ],
     ];
 
@@ -85,7 +85,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
         '#type' => 'hidden',
         '#default_value' => '',
         '#attributes' => [
-          'class' => ['js-bhcc-webform-uk-address--' . $extra_element],
+          'class' => ['js-localgov-forms-webform-uk-address--' . $extra_element],
         ],
       ];
     }

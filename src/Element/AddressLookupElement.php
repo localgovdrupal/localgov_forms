@@ -270,7 +270,7 @@ class AddressLookupElement extends FormElement {
       $address_element['address_select']['address_select_list']['#suffix'] = '</div>';
       $address_element['address_select']['error'] = [
         '#type' => 'markup',
-        '#markup' => '<p class="bhcc-alert bhcc-alert-info js-address-error">Please enter a postcode to search.</p>',
+        '#markup' => '<p class="localgov-forms-alert localgov-forms-alert-info js-address-error">Please enter a postcode to search.</p>',
       ];
       return $address_element['address_select']['error'];
     }
@@ -294,7 +294,7 @@ class AddressLookupElement extends FormElement {
       $address_element['address_select']['address_select_list']['#suffix'] = '</div>';
       $address_element['address_select']['error'] = [
         '#type' => 'markup',
-        '#markup' => '<p class="bhcc-alert bhcc-alert-failure js-address-error">No addresses found</p>',
+        '#markup' => '<p class="localgov-forms-alert localgov-forms-alert-failure js-address-error">No addresses found</p>',
       ];
       return $address_element['address_select']['error'];
 
@@ -323,7 +323,7 @@ class AddressLookupElement extends FormElement {
     unset($address_element['address_select']['error']);
 
     self::$searchString = $address_search;
-    self::$addressType = $address_type;
+    self::$addressType  = $address_type;
 
     return $address_element['address_select']['address_select_list'];
   }

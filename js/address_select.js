@@ -141,7 +141,7 @@
    * Central hub select change handler.
    * Populates the address fields when selecting an address.
    */
-  var bhcc_central_hub_webform_change_handler = function() {
+  var localgov_forms_webform_change_handler = function() {
     // Guard check, don't run if centralhub not yet defined.
     if (typeof drupalSettings.centralHub === 'undefined') {
       return;
@@ -154,19 +154,19 @@
       var addressSelected = drupalSettings.centralHub.selectedAddress;
       // Change to use namespaced class for setting address.
       // @See DRUP-1184.
-      central_hub_webfrom_address_entry.find('input.js-bhcc-webform-uk-address--address-1').val($.trim(addressSelected.flat + ' ' + addressSelected.house));
-      central_hub_webfrom_address_entry.find('input.js-bhcc-webform-uk-address--address-2').val(addressSelected.street);
-      central_hub_webfrom_address_entry.find('input.js-bhcc-webform-uk-address--town-city').val(addressSelected.town);
-      central_hub_webfrom_address_entry.find('input.js-bhcc-webform-uk-address--postcode').val(addressSelected.postcode);
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--address-1').val($.trim(addressSelected.flat + ' ' + addressSelected.house));
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--address-2').val(addressSelected.street);
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--town-city').val(addressSelected.town);
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--postcode').val(addressSelected.postcode);
 
       // add UPRN
-      central_hub_webfrom_address_entry.find('input.js-bhcc-webform-uk-address--uprn').val(parseInt(addressSelected.uprn));
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--uprn').val(parseInt(addressSelected.uprn));
 
       // Add any extra fields from centrahub for Twig access.
       // @See DRUP-1287.
       var extra_elements = ['lat', 'lng', 'ward'];
       $.each(extra_elements, function(index, value) {
-        central_hub_webform_address_container.find('input.js-bhcc-webform-uk-address--' + value).val(addressSelected[value]);
+        central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val(addressSelected[value]);
       });
 
       // hideManualAddress(centralHubElement, 'soft');
@@ -183,23 +183,23 @@
    * Central hub manual address change handler.
    * Clears any central hub values such as UPRN from the address handler.
    */
-  var bhcc_central_hub_webform_manual_address_change_handler = function() {
+  var localgov_forms_webform_manual_address_change_handler = function() {
     var central_hub_webform_address_container = $(this).closest('.js-webform-type-localgov-webform-uk-address');
     var central_hub_webfrom_address_entry = $(this).closest('.js-address-entry-container');
 
     // Clear UPRN.
-    central_hub_webfrom_address_entry.find('input.js-bhcc-webform-uk-address--uprn').val('');
+    central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--uprn').val('');
 
     // Clear any extra fields from centrahub for Twig access.
     // @See DRUP-1287.
     var extra_elements = ['lat', 'lng', 'ward'];
     $.each(extra_elements, function(index, value) {
-      central_hub_webform_address_container.find('input.js-bhcc-webform-uk-address--' + value).val('');
+      central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val('');
     });
   };
 
   // Attach after an ajax refresh
-  Drupal.behaviors.bhcc_central_hub_webform = {
+  Drupal.behaviors.localgov_forms_webform = {
     attach: function(context, settings) {
       $('.js-webform-type-localgov-webform-uk-address', context).once('localgov-address-webform').each(function() {
         var centralHubElement = $(this);
@@ -219,17 +219,17 @@
 
       // Manual address change handler first.
       $(document).once('.js-address-entry-container input', context).ajaxSuccess(function (event, data) {
-        $('.js-address-entry-container input').on('change', bhcc_central_hub_webform_manual_address_change_handler);
+        $('.js-address-entry-container input').on('change', localgov_forms_webform_manual_address_change_handler);
       });
 
       // Select box change handler.
       $(document).once('.js-address-select-container', context).ajaxSuccess(function (event, data) {
-        $('.js-address-select').on('change', bhcc_central_hub_webform_change_handler);
+        $('.js-address-select').on('change', localgov_forms_webform_change_handler);
       });
     },
     detach: function(context, settings, trigger) {
-      $('.js-address-entry-container input').off('change', bhcc_central_hub_webform_manual_address_change_handler);
-      $('.js-address-select').off('change', bhcc_central_hub_webform_change_handler);
+      $('.js-address-entry-container input').off('change', localgov_forms_webform_manual_address_change_handler);
+      $('.js-address-select').off('change', localgov_forms_webform_change_handler);
     }
   }
 

@@ -26,7 +26,6 @@
 
     // Append the reset button.
     addressLookupElement.find('.js-address-actions').append(resetButton);
-
   }
 
   /**
@@ -71,7 +70,7 @@
 
 
   // Attach after an ajax refresh
-  Drupal.behaviors.bhcc_central_hub = {
+  Drupal.behaviors.localgov_forms = {
     attach: function(context, settings) {
 
       // Behaviors to only attach once.

@@ -44,8 +44,8 @@ class WebformUKAddress extends WebformCompositeBase {
         // Add a namespaced class for setting the address fields
         // from addresslookup - see DRUP-1184.
         'class' => [
-          'bhcc-webform-uk-address--address-1',
-          'js-bhcc-webform-uk-address--address-1',
+          'localgov-forms-webform-uk-address--address-1',
+          'js-localgov-forms-webform-uk-address--address-1',
         ],
       ],
     ];
@@ -57,8 +57,8 @@ class WebformUKAddress extends WebformCompositeBase {
         // Add a namespaced class for setting the address fields
         // from addresslookup - see DRUP-1184.
         'class' => [
-          'bhcc-webform-uk-address--address-2',
-          'js-bhcc-webform-uk-address--address-2'
+          'localgov-forms-webform-uk-address--address-2',
+          'js-localgov-forms-webform-uk-address--address-2'
         ],
       ],
     ];
@@ -70,8 +70,8 @@ class WebformUKAddress extends WebformCompositeBase {
         // Add a namespaced class for setting the address fields
         // from addresslookup - see DRUP-1184.
         'class' => [
-          'bhcc-webform-uk-address--town-city',
-          'js-bhcc-webform-uk-address--town-city',
+          'localgov-forms-webform-uk-address--town-city',
+          'js-localgov-forms-webform-uk-address--town-city',
         ],
       ],
     ];
@@ -83,8 +83,8 @@ class WebformUKAddress extends WebformCompositeBase {
         // Add a namespaced class for setting the address fields
         // from addresslookup - see DRUP-1184.
         'class' => [
-          'bhcc-webform-uk-address--postcode',
-          'js-bhcc-webform-uk-address--postcode',
+          'localgov-forms-webform-uk-address--postcode',
+          'js-localgov-forms-webform-uk-address--postcode',
         ],
       ],
     ];

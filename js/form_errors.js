@@ -23,7 +23,7 @@
   // Attach after an ajax refresh
   Drupal.behaviors.localgov_forms_errors = {
     attach: function(context, settings) {
-      $('.bhcc-alert-content ul > li > a', context).each(function() {
+      $('.localgov-forms-alert-content ul > li > a', context).each(function() {
 
         // Get fragment link
         var fragment = $(this).attr('href');
