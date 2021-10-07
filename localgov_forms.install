@@ -10,7 +10,7 @@
  */
 function localgov_forms_install() {
 
-  // Override Webforms default configuration
+  // Override Webforms default configuration.
   $config = \Drupal::configFactory()->getEditable('localgov_forms.webform.settings');
   $settings = \Drupal::configFactory()->getEditable('webform.settings');
   $settings->setData($config->get())->save();

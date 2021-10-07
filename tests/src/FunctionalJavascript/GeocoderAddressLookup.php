@@ -9,10 +9,9 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 /**
  * Sets up and tests a Geocoder-based address lookup plugin.
  *
- * @todo
- * Currently uses the bhcc_central_hub_commercial Geocoder plugin for address
- * lookup.  This should be a replaced with a dummy Geocoder plugin to avoid
- * reliance on an external API.
+ * @todo Currently uses the bhcc_central_hub_commercial Geocoder plugin for
+ * address lookup.  This should be a replaced with a dummy Geocoder plugin to
+ * avoid reliance on an external API.
  */
 class GeocoderAddressLookup extends WebDriverTestBase {
 

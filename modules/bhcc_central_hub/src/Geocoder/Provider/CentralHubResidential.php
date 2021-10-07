@@ -33,7 +33,7 @@ class CentralHubResidential extends AbstractProvider implements Provider {
     $address = $query->getText();
 
     // Get a geocode from Central Hub.
-    // @TODO work out how to do this with dependency injection.
+    // @todo Work out how to do this with dependency injection.
     $geocode_results = AddressLookupService::addressLookup($address, 'residential', 10);
 
     // If no result, return and empty collection.

@@ -109,7 +109,7 @@ class AddressLookupService implements AddressLookupServiceInterface {
   protected function cleanSearchIfPostcode(string $search_string) {
     preg_match('/^([Bb][Nn][0-4]{1,2}) ?([0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2})$/', $search_string, $matches);
     if (!empty($matches[0]) && !empty($matches[1]) && !empty($matches[2])) {
-      // @todo: could use preg_replace?
+      // @todo Could use preg_replace?
       $search_string = str_replace($matches[0], strtoupper($matches[1] . ' ' . $matches[2]), $search_string);
     }
     return $search_string;

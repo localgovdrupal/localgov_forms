@@ -103,7 +103,7 @@ class AddressLookupServiceTest extends UnitTestCase {
     // Needs special mock as __call not supported (used by Guzzle).
     $this->httpClient = $this->getMockBuilder(Client::class)
       ->disableOriginalConstructor()
-      ->setMethods(['post'])
+      ->addMethods(['post'])
       ->getMock();
 
     $this->configFactory = $this->getMockBuilder(ConfigFactory::class)
