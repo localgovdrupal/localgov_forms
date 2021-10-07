@@ -4,4 +4,4 @@ services:
     arguments: ['bhcc_central_hub']
   bhcc_central_hub.address_lookup:
     class: Drupal\bhcc_central_hub\AddressLookupService
-    arguments: ['@http_client']
+    arguments: ['@http_client', '@config.factory']

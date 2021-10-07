@@ -3,9 +3,7 @@
 namespace Drupal\bhcc_central_hub\Geocoder\Provider;
 
 use Geocoder\Collection;
-use Geocoder\Exception\InvalidServerResponse;
 use Geocoder\Exception\UnsupportedOperation;
-use Geocoder\Model\Address;
 use Geocoder\Model\AddressCollection;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
@@ -44,7 +42,7 @@ class CentralHubCommercial extends AbstractProvider implements Provider {
     }
 
     // Format the results.
-    foreach($geocode_results as $geocode) {
+    foreach ($geocode_results as $geocode) {
       $results[] = LocalgovAddress::createFromArray([
         'providedBy'       => $this->getName(),
         'streetNumber'     => $geocode['house'] ?? NULL,

@@ -38,7 +38,6 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
    */
   protected $flat = '';
 
-
   /**
    * As it says on the tin.
    */

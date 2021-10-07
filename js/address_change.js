@@ -20,7 +20,7 @@
     });
 
     // Reset the form.
-    resetButton.click(function() {
+    resetButton.click(function () {
       resetAddressLookUpForm(addressLookupElement, $(this), 'hard');
     });
 
@@ -57,24 +57,23 @@
   function populateCentrahubSelectedAddress(selectList) {
     // As the select gets replaced by Drupal, this lets us know its ready.
     selectList.addClass('js-populated');
-    selectList.change(function() {
+    selectList.change(function () {
       var addressSelectId = $(this).data('address-id');
       if (drupalSettings['centralHub'][addressSelectId]['addressList']) {
         var addressList = drupalSettings['centralHub'][addressSelectId]['addressList'];
         var addressSelectedName = $(this).val();
-        var addressSelected = addressList.find(function(element) { return element.name == addressSelectedName; } );
+        var addressSelected = addressList.find(function (element) { return element.name == addressSelectedName; } );
         drupalSettings.centralHub.selectedAddress = addressSelected;
       }
     });
   }
 
-
   // Attach after an ajax refresh
   Drupal.behaviors.localgov_forms = {
-    attach: function(context, settings) {
+    attach: function (context, settings) {
 
       // Behaviors to only attach once.
-      $('.js-centralhub-address-lookup', context).once('central-hub-behaviours').each(function() {
+      $('.js-centralhub-address-lookup', context).once('central-hub-behaviours').each(function () {
         // Get form elements.
         var addressLookupElement = $(this);
         var searchElement = addressLookupElement.find('.js-address-searchstring');
@@ -85,7 +84,7 @@
 
         // Change the search button to normal button.
         searchButton.attr('type', 'button');
-        searchButton.click(function(event) {
+        searchButton.click(function (event) {
           event.preventDefault();
           searchButton.addClass('js-searching');
         });
@@ -98,13 +97,13 @@
 
         searchElement.unbind('change');
         // Mark search element when changed.
-        searchElement.change(function() {
+        searchElement.change(function () {
           $(this).addClass('js-changed');
-        }).keyup(function(event) {
+        }).keyup(function (event) {
           // Detect keypress is backspace or actual text key.
           // See : https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes.
           var keyCode = event.keyCode;
-          if (keyCode == 8 || keyCode == 32 || (keyCode >= 48 && keyCode <= 90) || (keyCode >= 96 && keyCode <= 111) || (keyCode >=186 && keyCode <= 222)) {
+          if (keyCode == 8 || keyCode == 32 || (keyCode >= 48 && keyCode <= 90) || (keyCode >= 96 && keyCode <= 111) || (keyCode >= 186 && keyCode <= 222)) {
             resetAddressLookUpForm(addressLookupElement, resetButton, 'soft');
           }
           if (keyCode == 13) {
@@ -113,9 +112,9 @@
             searchButton.trigger('click');
           }
           // Stop the main form submitting on enter.
-        }).focus(function() {
+        }).focus(function () {
           searchButton.attr('type', 'submit');
-        }).blur(function() {
+        }).blur(function () {
           searchButton.attr('type', 'button');
         });
 
@@ -141,7 +140,7 @@
 
       // Behaviours to add each time.
       // Requires the address select box to be populated.
-      $('.js-centralhub-address-lookup', context).each(function() {
+      $('.js-centralhub-address-lookup', context).each(function () {
         // Get form elements.
         var addressLookupElement = $(this);
         var searchElement = addressLookupElement.find('.js-address-searchstring');

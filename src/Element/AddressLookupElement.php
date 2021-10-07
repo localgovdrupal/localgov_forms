@@ -5,7 +5,6 @@ namespace Drupal\localgov_forms\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Crypt;
 
 /**
  * Provides a central hub address lookup element.
@@ -16,24 +15,28 @@ class AddressLookupElement extends FormElement {
 
   /**
    * Static search string.
-   * @var string.
+   *
+   * @var string
    */
   public static $searchString;
 
   /**
    * Static address type.
-   * @var string.
+   *
+   * @var string
    */
   public static $addressType;
 
   /**
    * Static address results.
-   * @var Array
+   *
+   * @var array
    */
   public static $addressResults;
 
   /**
    * Static select element array.
+   *
    * @var array
    */
   public static $selectElement;
@@ -61,9 +64,7 @@ class AddressLookupElement extends FormElement {
   public static function processAddressLookupElement(&$element, FormStateInterface $form_state, &$form) {
     // Generate a unique ID that can be used by #states.
     $html_id = Html::getUniqueId('localgov_forms_address_lookup');
-    $dom_id = Crypt::randomBytesBase64();
     $name = $element['#name'];
-    $element_id = $element['#id'];
     $elem_parents = $element['#parents'];
     $elem_array_parents = $element['#array_parents'];
 
@@ -93,23 +94,32 @@ class AddressLookupElement extends FormElement {
     $element['address_search']['address_actions'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['form-element-actions', 'address-actions', 'js-address-actions'],
+        'class' => [
+          'form-element-actions', 'address-actions', 'js-address-actions',
+        ],
       ],
       '#tree' => TRUE,
     ];
 
     $element['address_search']['address_actions']['address_searchbutton'] = [
       '#name' => $name . '[address_search][address_actions][address_searchbutton]',
-      '#parents' => array_merge($elem_parents, ['address_search', 'address_actions', 'address_searchbutton']),
-      '#array_parents' => array_merge($elem_array_parents, ['address_search', 'address_actions', 'address_searchbutton']),
+      '#parents' => array_merge($elem_parents, [
+        'address_search', 'address_actions', 'address_searchbutton',
+      ]),
+      '#array_parents' => array_merge($elem_array_parents, [
+        'address_search', 'address_actions', 'address_searchbutton',
+      ]),
       '#type' => 'button',
       '#value' => t('Search'),
       '#limit_validation_errors' => [],
       '#ajax' => [
-        'callback' => ['Drupal\localgov_forms\Element\AddressLookupElement', 'loadAddresses'],
+        'callback' => [
+          'Drupal\localgov_forms\Element\AddressLookupElement', 'loadAddresses',
+        ],
         'disable-refocus' => TRUE,
         'event' => 'click',
-        'wrapper' => $html_id . '--edit-address-options', // This element is updated with this AJAX callback.
+        // This element is updated with this AJAX callback.
+        'wrapper' => $html_id . '--edit-address-options',
         'progress' => [
           'type' => 'throbber',
           'message' => t('Loading addresses...'),
@@ -125,7 +135,9 @@ class AddressLookupElement extends FormElement {
       '#type' => 'container',
       '#attributes' => [
         'id' => $html_id . '--edit-address-options',
-        'class' => ['address-select-container', 'js-address-select-container', 'margin-top--20'],
+        'class' => [
+          'address-select-container', 'js-address-select-container', 'margin-top--20',
+        ],
         'aria-live' => 'polite',
       ],
       '#tree' => TRUE,
@@ -155,26 +167,28 @@ class AddressLookupElement extends FormElement {
 
       // Extract the parent form container.
       $parent_container = $form;
-      foreach ($array_parents as $parentkey => $keyval) {
+      foreach ($array_parents as $keyval) {
         $parent_container = $parent_container[$keyval];
       }
 
       // Extract the parent values form container.
       $parent_container_values = $form_values;
-      foreach ($parents as $parentkey => $keyval) {
+      foreach ($parents as $keyval) {
         $parent_container_values = $parent_container_values[$keyval];
       }
       if (!empty($parent_container_values['address_search']['address_searchstring'])) {
         $address_search = $parent_container_values['address_search']['address_searchstring'];
-      } elseif (!empty($parent_container['address_search']['address_searchstring']['#value'])) {
+      }
+      elseif (!empty($parent_container['address_search']['address_searchstring']['#value'])) {
         $address_search = $parent_container['address_search']['address_searchstring']['#value'];
-      } elseif (!empty($parent_container['address_search']['address_searchstring']['#default_value'])) {
+      }
+      elseif (!empty($parent_container['address_search']['address_searchstring']['#default_value'])) {
         $address_search = $parent_container['address_search']['address_searchstring']['#default_value'];
       }
 
       // Set the values of the select element.
-      // This is required here as otherwise a form error of invalid value will be
-      // shown when submitting the form.
+      // This is required here as otherwise a form error of invalid value will
+      // be shown when submitting the form.
       if (!empty($address_search)) {
         $element['address_select']['address_select_list'] = self::addressSelectLookup($address_search, $parent_container);
 
@@ -201,16 +215,17 @@ class AddressLookupElement extends FormElement {
   }
 
   /**
-   * Replace the address select box
+   * Replace the address select box.
    *
-   * @param  array $form
+   * @param array $form
    *   Form array.
    * @param Drupal\Core\Form\FormStateInterface $form_state
    *   Form state object.
+   *
    * @return array
    *   Form array element to replace the select element.
    */
-  public static function loadAddresses($form, &$form_state) {
+  public static function loadAddresses(array $form, FormStateInterface &$form_state) {
 
     // Rebuild the form.
     $form_state->setRebuild();
@@ -225,20 +240,18 @@ class AddressLookupElement extends FormElement {
 
     // Extract the parent form container.
     $parent_container = $form;
-    foreach ($array_parents as $parentkey => $keyval) {
+    foreach ($array_parents as $keyval) {
       $parent_container = $parent_container[$keyval];
     }
-    $parent_container_id = $parent_container['#id'];
 
     // Extract the parent values form container.
     $parent_container_values = $form_values;
-    foreach ($parents as $parentkey => $keyval) {
+    foreach ($parents as $keyval) {
       $parent_container_values = $parent_container_values[$keyval];
     }
 
     // Run the address lookup and get the new select list.
     $address_search = $parent_container_values['address_search']['address_searchstring'];
-    $address_type = $parent_container['address_select']['address_select_list']['#address_type'];
     // @todo find out why we have to call this twice and avoid
     self::$selectElement = self::addressSelectLookup($address_search, $parent_container);
 
@@ -255,11 +268,13 @@ class AddressLookupElement extends FormElement {
   }
 
   /**
-   * Address select lookup with new values
-   * @param  string $address_search
+   * Address select lookup with new values.
+   *
+   * @param string $address_search
    *   Search string.
-   * @param  array  $address_element
+   * @param array $address_element
    *   The address element in the form.
+   *
    * @return array
    *   Replacement select list, or some markup for an error message.
    */
@@ -298,13 +313,14 @@ class AddressLookupElement extends FormElement {
       ];
       return $address_element['address_select']['error'];
 
-    } else {
+    }
+    else {
       if (!empty($address_element['address_select']['address_select_list']['#empty_option'])) {
         $empty_option = $address_element['address_select']['address_select_list']['#empty_option'];
         $empty_value = $address_element['address_select']['address_select_list']['#empty_value'];
         $address_element['address_select']['address_select_list']['#options'][$empty_value] = $empty_option;
       }
-      foreach($address_list as $address) {
+      foreach ($address_list as $address) {
         $address_element['address_select']['address_select_list']['#options'][$address['name']] = $address['display'];
       }
       $address_element['address_select']['address_select_list']['#disabled'] = FALSE;

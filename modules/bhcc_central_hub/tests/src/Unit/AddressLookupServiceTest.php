@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\bhcc_central_hub\AddressLookupService;
 use Drupal\Tests\UnitTestCase;
+use Drupal\Core\Config\ConfigFactory;
 
 /**
  * Unit tests for the AddressLookupService class.
@@ -18,44 +19,60 @@ class AddressLookupServiceTest extends UnitTestCase {
 
   /**
    * This is what we are testing.
+   *
    * @var Drupal\bhcc_central_hub\AddressLookupService
    */
-  protected $test_target;
+  protected $testTarget;
 
   /**
    * Store default mock api results.
-   * @var Array
+   *
+   * @var array
    */
-  protected $default_lookup_results;
+  protected $defaultLookupResults;
 
   /**
    * Search parameters protected property.
+   *
    * @var ReflectionProperty
    */
-  protected $search_parameters_property;
+  protected $searchParametersProperty;
 
   /**
    * Status code protected property.
+   *
    * @var ReflectionProperty
    */
-  protected $status_code_property;
+  protected $statusCodeProperty;
 
   /**
    * Results protected property.
+   *
    * @var ReflectionProperty
    */
-  protected $results_property;
+  protected $resultsProperty;
 
   /**
    * Http client.
+   *
    * @var GuzzleHttp\ClientInterface
    */
-  protected $http_client;
+  protected $httpClient;
 
-  public function setUp() {
+  /**
+   * Config factory.
+   *
+   * @var Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() :void {
 
     // Default API results.
-    $this->default_lookup_results = [
+    $this->defaultLookupResults = [
       'addresslist' => [
         [
           'display'      => '123 Fake Street  Brighton BN1 1AA',
@@ -78,27 +95,43 @@ class AddressLookupServiceTest extends UnitTestCase {
           'blpu_class'   => 'RD06',
           'zoneid'       => 'Z',
           'carfree'      => '0',
-          'historic'     => 'false'
+          'historic'     => 'false',
         ],
       ],
     ];
 
     // Needs special mock as __call not supported (used by Guzzle).
-    $this->http_client = $this->getMockBuilder(Client::class)
+    $this->httpClient = $this->getMockBuilder(Client::class)
       ->disableOriginalConstructor()
       ->setMethods(['post'])
       ->getMock();
 
-    $this->test_target = new AddressLookupService($this->http_client);
+    $this->configFactory = $this->getMockBuilder(ConfigFactory::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+    $this->configFactory->expects($this->any())
+      ->method('get')
+      ->willReturn(new class {
+
+        /**
+         * Mocks Drupal\Core\Config\ConfigFactoryInterface::get().
+         */
+        public function get() {
+          return 'https://centralhub-accp.mendixcloud.com/rest/addresssearch/v1/lookup';
+        }
+
+      });
+
+    $this->testTarget = new AddressLookupService($this->httpClient, $this->configFactory);
 
     // Add protected parameters for testing as as a reflected property.
     $reflect = new \ReflectionClass(AddressLookupService::class);
     $properties = [
-      'search_parameters_property' => 'searchParameters',
-      'status_code_property' => 'statusCode',
-      'results_property' => 'results'
+      'searchParametersProperty' => 'searchParameters',
+      'statusCodeProperty' => 'statusCode',
+      'resultsProperty' => 'results',
     ];
-    foreach($properties as $test_key => $property) {
+    foreach ($properties as $test_key => $property) {
       $this->{$test_key} = $reflect->getProperty($property);
       $this->{$test_key}->setAccessible(TRUE);
     }
@@ -106,20 +139,25 @@ class AddressLookupServiceTest extends UnitTestCase {
 
   /**
    * Mock a basic (null) object.
-   * @param  Class $objectClass
+   *
+   * @param string $objectClass
    *   A class / interface to mock.
+   *
    * @return Object
    *   Mock object.
    */
-  protected function basicMockObject($objectClass) {
+  protected function basicMockObject(string $objectClass) {
     return $this->getMockBuilder($objectClass)
       ->disableOriginalConstructor()
       ->getMock();
   }
 
+  /**
+   * API call wrapper.
+   */
   protected function addMockApiCall($parameters, $staus_code, $body) {
 
-    // Set up the mock http client to simulate api responses
+    // Set up the mock http client to simulate api responses.
     $response = $this->basicMockObject(ResponseInterface::class);
     $response->expects($this->once())
       ->method('getStatusCode')
@@ -133,34 +171,33 @@ class AddressLookupServiceTest extends UnitTestCase {
       'json' => $parameters,
     ];
 
-    $this->http_client->expects($this->once())
+    $this->httpClient->expects($this->once())
       ->method('post')
       ->with($mock_url, $mock_request_options)
       ->willReturn($response);
-
   }
 
   /**
-   * Tests for initSearch
+   * Tests for initSearch.
    *
    * We initilize the search and expect the AddressLookupService object back,
    * with the $searchParameters empty.
    */
   public function testInitSearch() {
 
-    $returned = $this->test_target->initSearch();
+    $returned = $this->testTarget->initSearch();
 
     // Assert this is an instance of AddressLookupService.
     $this->assertInstanceOf(AddressLookupService::class, $returned);
 
     // Assert the property $result->queryParameters is an empty array.
-    $result = $this->search_parameters_property->getValue($this->test_target);
+    $result = $this->searchParametersProperty->getValue($this->testTarget);
     $this->assertTrue(is_array($result));
     $this->assertEmpty($result);
   }
 
   /**
-   * Tests for setSearchParameters
+   * Tests for setSearchParameters.
    *
    * We provide some options for the search paremters
    * and expect the AddressLookupService object back,
@@ -169,29 +206,29 @@ class AddressLookupServiceTest extends UnitTestCase {
   public function testSetSearchParameters() {
 
     // Set the value using reflection so only testing set Search Paremeter.
-    $this->search_parameters_property->setValue($this->test_target, []);
+    $this->searchParametersProperty->setValue($this->testTarget, []);
 
     $parameters_to_set = [
       'searchstring' => 'BN1 1AA',
       'offset' => 1,
       'limit' => 10,
-      'addresstype' => 'residential'
+      'addresstype' => 'residential',
     ];
 
     $expected = $parameters_to_set;
 
-    $returned = $this->test_target->setSearchParameters($parameters_to_set);
+    $returned = $this->testTarget->setSearchParameters($parameters_to_set);
 
     // Assert this is an instance of AddressLookupService.
     $this->assertInstanceOf(AddressLookupService::class, $returned);
 
     // Assert search paremeters have been set to the expected value.
-    $result = $this->search_parameters_property->getValue($this->test_target);
+    $result = $this->searchParametersProperty->getValue($this->testTarget);
     $this->assertEquals($expected, $result);
   }
 
   /**
-   * Tests for setSearchParameters with nonsense
+   * Tests for setSearchParameters with nonsense.
    *
    * We provide some options for the search paremters
    * and expect the AddressLookupService object back,
@@ -200,7 +237,7 @@ class AddressLookupServiceTest extends UnitTestCase {
   public function testSetSearchParametersWithNonsense() {
 
     // Set the value using reflection so only testing set Search Paremeter.
-    $this->search_parameters_property->setValue($this->test_target, []);
+    $this->searchParametersProperty->setValue($this->testTarget, []);
 
     $parameters_to_set = [
       'garbage' => 'qwertyuiop',
@@ -210,18 +247,18 @@ class AddressLookupServiceTest extends UnitTestCase {
 
     $expected = [];
 
-    $returned = $this->test_target->setSearchParameters($parameters_to_set);
+    $returned = $this->testTarget->setSearchParameters($parameters_to_set);
 
     // Assert this is an instance of AddressLookupService.
     $this->assertInstanceOf(AddressLookupService::class, $returned);
 
     // Assert search paremeters have been set to the expected value.
-    $result = $this->search_parameters_property->getValue($this->test_target);
+    $result = $this->searchParametersProperty->getValue($this->testTarget);
     $this->assertEquals($expected, $result);
   }
 
   /**
-   * Tests for cleanSearchIfPostcode
+   * Tests for cleanSearchIfPostcode.
    *
    * We provide some test postcodes, and expect them to come back formatted.
    */
@@ -245,8 +282,8 @@ class AddressLookupServiceTest extends UnitTestCase {
     $method = new \ReflectionMethod(AddressLookupService::class, 'cleanSearchIfPostcode');
     $method->setAccessible(TRUE);
 
-    foreach($test_postcodes as $test) {
-      $result[] = $method->invoke($this->test_target, $test);
+    foreach ($test_postcodes as $test) {
+      $result[] = $method->invoke($this->testTarget, $test);
     }
 
     // Assert the postcode comes out correctly formatted.
@@ -254,7 +291,7 @@ class AddressLookupServiceTest extends UnitTestCase {
   }
 
   /**
-   * Tests for setSearchParameters
+   * Tests for setSearchParameters.
    *
    * We provide a search parameter with a dirty postcode
    * and expect $searchParameters populated with the formatted postcode.
@@ -262,7 +299,7 @@ class AddressLookupServiceTest extends UnitTestCase {
   public function testSetSearchParametersWithDirtyPostcode() {
 
     // Set the value using reflection so only testing set Search Paremeter.
-    $this->search_parameters_property->setValue($this->test_target, []);
+    $this->searchParametersProperty->setValue($this->testTarget, []);
 
     $parametersToSet = [
       'searchstring' => 'bn11aa',
@@ -272,15 +309,15 @@ class AddressLookupServiceTest extends UnitTestCase {
       'searchstring' => 'BN1 1AA',
     ];
 
-    $this->test_target->setSearchParameters($parametersToSet);
+    $this->testTarget->setSearchParameters($parametersToSet);
 
     // Assert search paremeters have been set to the expected value.
-    $result = $this->search_parameters_property->getValue($this->test_target);
+    $result = $this->searchParametersProperty->getValue($this->testTarget);
     $this->assertEquals($expected, $result);
   }
 
   /**
-   * Tests for getSearchParameters
+   * Tests for getSearchParameters.
    *
    * We call getSearchParameters
    * and expect to get the defined parameters back.
@@ -291,15 +328,15 @@ class AddressLookupServiceTest extends UnitTestCase {
       'searchstring' => 'BN1 1AA',
       'offset' => 1,
       'limit' => 10,
-      'addresstype' => 'residential'
+      'addresstype' => 'residential',
     ];
 
     // Set the value using reflection so only testing get Search Paremeter.
-    $this->search_parameters_property->setValue($this->test_target, $parameters);
+    $this->searchParametersProperty->setValue($this->testTarget, $parameters);
 
     $expected = $parameters;
 
-    $result = $this->test_target->getSearchParameters();
+    $result = $this->testTarget->getSearchParameters();
 
     $this->assertEquals($expected, $result);
   }
@@ -315,36 +352,35 @@ class AddressLookupServiceTest extends UnitTestCase {
 
     $parameters = [
       'searchstring' => 'BN1 1AA',
-      'addresstype' => 'residential'
+      'addresstype' => 'residential',
     ];
 
     $expected_status_code = 200;
 
-    $expected = $this->default_lookup_results;
+    $expected = $this->defaultLookupResults;
 
     // Set the value using reflection so only testing get Search Paremeter.
-    $this->search_parameters_property->setValue($this->test_target, $parameters);
+    $this->searchParametersProperty->setValue($this->testTarget, $parameters);
 
-    // Set up the mock http client to simulate api responses
-    $this->addMockApiCall($parameters, 200, $this->default_lookup_results);
+    // Set up the mock http client to simulate api responses.
+    $this->addMockApiCall($parameters, 200, $this->defaultLookupResults);
 
-    $returned = $this->test_target->doLookup();
+    $returned = $this->testTarget->doLookup();
 
     // Assert this is an instance of AddressLookupService.
     $this->assertInstanceOf(AddressLookupService::class, $returned);
 
     // Assert status code has been set to the expected value.
-    $status_code = $this->status_code_property->getValue($this->test_target);
+    $status_code = $this->statusCodeProperty->getValue($this->testTarget);
     $this->assertEquals($expected_status_code, $status_code);
 
     // Assert the results have the default search results.
-    $result = $this->results_property->getValue($this->test_target);
+    $result = $this->resultsProperty->getValue($this->testTarget);
     $this->assertEquals($expected, $result);
-
   }
 
   /**
-   * Tests for getStatusCode
+   * Tests for getStatusCode.
    *
    * We call getStatusCode
    * and expect to get the defined status code back.
@@ -354,17 +390,17 @@ class AddressLookupServiceTest extends UnitTestCase {
     $status_code = 200;
 
     // Set the value using reflection so only testing get method.
-    $this->status_code_property->setValue($this->test_target, $status_code);
+    $this->statusCodeProperty->setValue($this->testTarget, $status_code);
 
     $expected = $status_code;
 
-    $result = $this->test_target->getStatusCode();
+    $result = $this->testTarget->getStatusCode();
 
     $this->assertEquals($expected, $result);
   }
 
   /**
-   * Tests for getResults
+   * Tests for getResults.
    *
    * We call getResults
    * and expect to get the defined results back.
@@ -372,11 +408,11 @@ class AddressLookupServiceTest extends UnitTestCase {
   public function testGetResults() {
 
     // Set the value using reflection so only testing get method.
-    $this->results_property->setValue($this->test_target, $this->default_lookup_results);
+    $this->resultsProperty->setValue($this->testTarget, $this->defaultLookupResults);
 
-    $expected = $this->default_lookup_results;
+    $expected = $this->defaultLookupResults;
 
-    $result = $this->test_target->getResults();
+    $result = $this->testTarget->getResults();
 
     $this->assertEquals($expected, $result);
   }
@@ -391,20 +427,20 @@ class AddressLookupServiceTest extends UnitTestCase {
     // Mock the api call.
     $parameters = [
       'searchstring' => 'BN1 1AA',
-      'addresstype' => 'residential'
+      'addresstype' => 'residential',
     ];
-    $this->addMockApiCall($parameters, 200, $this->default_lookup_results);
+    $this->addMockApiCall($parameters, 200, $this->defaultLookupResults);
 
     // Create a new container object.
     $container = new ContainerBuilder();
 
     // Add a new instance of the AddressLookupService to the container.
-    $container->set('bhcc_central_hub.address_lookup', new AddressLookupService($this->http_client));
+    $container->set('bhcc_central_hub.address_lookup', new AddressLookupService($this->httpClient, $this->configFactory));
 
     // Let our static method use the mock container.
     \Drupal::setContainer($container);
 
-    $expected = $this->default_lookup_results['addresslist'];
+    $expected = $this->defaultLookupResults['addresslist'];
 
     $result = AddressLookupService::addressLookup('BN1 1AA', 'residential');
 

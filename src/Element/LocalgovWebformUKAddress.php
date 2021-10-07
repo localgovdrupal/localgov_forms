@@ -2,9 +2,6 @@
 
 namespace Drupal\localgov_forms\Element;
 
-use Drupal\Component\Utility\Html;
-use Drupal\webform\Element\WebformCompositeBase;
-use Drupal\localgov_forms\Element\WebformUKAddress;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -31,7 +28,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $class = get_class($this);
+
     return parent::getInfo() + ['#theme' => 'localgov_webform_uk_address'];
   }
 
@@ -39,8 +36,6 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
    * {@inheritdoc}
    */
   public static function getCompositeElements(array $element) {
-    // Generate a unique ID that can be used by #states.
-    $html_id = Html::getUniqueId('localgov_webform_uk_address');
 
     $elements['address_lookup'] = [
       '#type' => 'localgov_forms_address_lookup',
@@ -90,7 +85,6 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
       ];
     }
 
-    // Attach JS library
     $elements['#attached']['library'][] = 'localgov_forms/localgov_forms.address_select';
 
     return $elements;
@@ -121,7 +115,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
     if (!WebformHelper::isElementVisibleThroughParent($element, $form_state, $complete_form)) {
       $form_errors = $form_state->getErrors();
       $form_state->clearErrors();
-      foreach($form_errors as $error_key => $error_value) {
+      foreach ($form_errors as $error_key => $error_value) {
         if (strpos($error_key, $element_key . ']') !== 0) {
           $form_state->setErrorByName($error_key, $error_value);
         }
@@ -133,12 +127,9 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
     $search_string = $value['address_lookup']['address_search']['address_searchstring'];
     $selected = $value['address_lookup']['address_select']['address_select_list'];
 
-    // Set UPRN (use 0 if not ready yet).
-    $uprn = $value['address_entry']['uprn'] ?? 0;
-
     // Check to see if there are values in the address element form.
     $has_address_values = FALSE;
-    foreach($value as $indv_key => $indv_element) {
+    foreach ($value as $indv_key => $indv_element) {
       if ($indv_key != 'address_lookup' && !is_array($indv_element)) {
         if (!empty($indv_element)) {
           $has_address_values = TRUE;
@@ -160,11 +151,12 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
     // Only validate composite elements that are visible.
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
     if ($has_access) {
-      // If the address entry element is required,
+      // If the address entry element is required.
       if (!empty($element['#webform_composite_elements']['address_entry']['#required'])) {
         // If there is an address search, but no elements to select
         // (its a markup error)
-        // Then show an error to search for a local address or select can't find the address.
+        // Then show an error to search for a local address or select can't find
+        // the address.
         if (!empty($search_string) && $element['address_lookup']['address_select']['address_select_list']['#type'] == 'markup') {
           $form_state->setError($element, t('Search for a local address, or select "Can\'t find the address" to enter an address.'));
         }
@@ -182,21 +174,23 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
         // to be removed.
         $form_errors = $form_state->getErrors();
 
-        // Loop through errors and remove child elements, except the select element.
-        foreach($form_errors as $error_key => $error_value) {
+        // Loop through errors and remove child elements, except the select
+        // element.
+        foreach ($form_errors as $error_key => $error_value) {
           if (strpos($error_key, $element_key . ']') === 0 && $error_key != $element_key . '][address_lookup][address_select][address_select_list') {
             unset($form_errors[$error_key]);
           }
         }
 
-        // If the search string and the select is empty, also remove the select error.
+        // If the search string and the select is empty, also remove the select
+        // error.
         if (empty($search_string) && empty($selected)) {
           unset($form_errors[$element_key . '][address_lookup][address_select][address_select_list']);
         }
 
         // Reset form errors and reset them with the cleaned ones.
         $form_state->clearErrors();
-        foreach($form_errors as $error_key => $error_value) {
+        foreach ($form_errors as $error_key => $error_value) {
           $form_state->setErrorByName($error_key, $error_value);
         }
       }

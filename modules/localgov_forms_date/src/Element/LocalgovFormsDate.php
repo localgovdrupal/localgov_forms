@@ -3,16 +3,13 @@
 namespace Drupal\localgov_forms_date\Element;
 
 use Drupal\Core\Datetime\Element\Datelist;
-use Drupal\Core\Form\FormStateInterface;
-
 
 /**
  * Provides a datelist element.
  *
  * @FormElement("localgov_forms_date")
  */
-class LocalgovFormsDate extends Datelist{
-
+class LocalgovFormsDate extends Datelist {
 
   /**
    * {@inheritdoc}

@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class ConfigForm.
+ * ConfigForm for central hub URL.
  */
 class ConfigForm extends ConfigFormBase {
 

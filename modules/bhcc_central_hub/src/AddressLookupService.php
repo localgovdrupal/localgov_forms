@@ -2,10 +2,11 @@
 
 namespace Drupal\bhcc_central_hub;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use GuzzleHttp\ClientInterface;
 
 /**
- * Class AddressLookupService.
+ * As it says on the tin.
  */
 class AddressLookupService implements AddressLookupServiceInterface {
 
@@ -17,29 +18,39 @@ class AddressLookupService implements AddressLookupServiceInterface {
   protected $httpClient;
 
   /**
-   * Search parameters
+   * Config factory service.
    *
-   * @var Array
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $config;
+
+  /**
+   * Search parameters.
+   *
+   * @var array
    */
   protected $searchParameters;
 
   /**
-   * HTTP Status Code
+   * HTTP Status Code.
+   *
    * @var int
    */
   protected $statusCode;
 
   /**
-   * Results from address lookup
-   * @var Array
+   * Results from address lookup.
+   *
+   * @var array
    */
   protected $results;
 
   /**
    * Constructs a new AddressLookupService object.
    */
-  public function __construct(ClientInterface $http_client) {
+  public function __construct(ClientInterface $http_client, ConfigFactoryInterface $config) {
     $this->httpClient = $http_client;
+    $this->config     = $config;
   }
 
   /**
@@ -56,18 +67,20 @@ class AddressLookupService implements AddressLookupServiceInterface {
   public function setSearchParameters(Array $options) {
     foreach ($options as $key => $value) {
 
-      switch($key) {
+      switch ($key) {
         case 'searchstring':
           if (is_string($value)) {
             $this->searchParameters['searchstring'] = $this->cleanSearchIfPostcode($value);
           }
           break;
+
         case 'offset':
         case 'limit':
           if (is_numeric($value)) {
             $this->searchParameters[$key] = $value;
           }
           break;
+
         case 'addresstype':
           if ($value == 'residential' || $value == 'commercial' || $value == 'all') {
             $this->searchParameters['addresstype'] = $value;
@@ -85,13 +98,15 @@ class AddressLookupService implements AddressLookupServiceInterface {
    * Sometimes postcodes can be entered in messy, eg bn11aa.
    * To find by postcode on Central hub, the postcode needs to be formatted
    * as BN1 1AA (Uppercase and space between sections).
-   * @param  String $search_string
+   *
+   * @param string $search_string
    *   User entered search string.
-   * @return String
+   *
+   * @return string
    *   Formatted search string, if postcode,
    *   else left untransformed.
    */
-  protected function cleanSearchIfPostcode(String $search_string) {
+  protected function cleanSearchIfPostcode(string $search_string) {
     preg_match('/^([Bb][Nn][0-4]{1,2}) ?([0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2})$/', $search_string, $matches);
     if (!empty($matches[0]) && !empty($matches[1]) && !empty($matches[2])) {
       // @todo: could use preg_replace?
@@ -117,8 +132,7 @@ class AddressLookupService implements AddressLookupServiceInterface {
     ];
 
     try {
-      // @TODO proper dependency injection
-      $config = \Drupal::config('bhcc_central_hub.settings');
+      $config = $this->config->get('bhcc_central_hub.settings');
       $service_url = $config->get('central_hub_service_url');
 
       $response = $this->httpClient->post($service_url, $requestOptions);
@@ -149,7 +163,7 @@ class AddressLookupService implements AddressLookupServiceInterface {
   /**
    * {@inheritdoc}
    */
-  public static function addressLookup(String $search_string, String $address_type, $limit = NULL, $offset = NULL) {
+  public static function addressLookup(string $search_string, string $address_type, $limit = NULL, $offset = NULL) {
 
     $searchParameters = [
       'searchstring' => $search_string,

@@ -20,7 +20,7 @@
     });
 
     // Reset the form.
-    manualButton.click(function() {
+    manualButton.click(function () {
       showManualAddress(centralHubElement);
     });
 
@@ -90,7 +90,7 @@
     // Test manual address if the element is visible.
     if (manualAddressContainer.is(':visible')) {
       var hasManualValue = false
-      manualAddressContainer.find('input[type="text"]').each(function() {
+      manualAddressContainer.find('input[type="text"]').each(function () {
         if ($(this).val() != '') {
           hasManualValue = true;
         }
@@ -129,7 +129,7 @@
     var manualAddressContainer = centralHubElement.find('.js-address-entry-container');
     hideErrorsOnElement(searchElement);
     if (manualAddressContainer.is(':hidden')) {
-      manualAddressContainer.find('input').each(function() {
+      manualAddressContainer.find('input').each(function () {
         hideErrorsOnElement($(this));
       });
     }
@@ -141,7 +141,7 @@
    * Central hub select change handler.
    * Populates the address fields when selecting an address.
    */
-  var localgov_forms_webform_change_handler = function() {
+  var localgov_forms_webform_change_handler = function () {
     // Guard check, don't run if centralhub not yet defined.
     if (typeof drupalSettings.centralHub === 'undefined') {
       return;
@@ -165,7 +165,7 @@
       // Add any extra fields from centrahub for Twig access.
       // @See DRUP-1287.
       var extra_elements = ['lat', 'lng', 'ward'];
-      $.each(extra_elements, function(index, value) {
+      $.each(extra_elements, function (index, value) {
         central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val(addressSelected[value]);
       });
 
@@ -183,7 +183,7 @@
    * Central hub manual address change handler.
    * Clears any central hub values such as UPRN from the address handler.
    */
-  var localgov_forms_webform_manual_address_change_handler = function() {
+  var localgov_forms_webform_manual_address_change_handler = function () {
     var central_hub_webform_address_container = $(this).closest('.js-webform-type-localgov-webform-uk-address');
     var central_hub_webfrom_address_entry = $(this).closest('.js-address-entry-container');
 
@@ -193,15 +193,15 @@
     // Clear any extra fields from centrahub for Twig access.
     // @See DRUP-1287.
     var extra_elements = ['lat', 'lng', 'ward'];
-    $.each(extra_elements, function(index, value) {
+    $.each(extra_elements, function (index, value) {
       central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val('');
     });
   };
 
   // Attach after an ajax refresh
   Drupal.behaviors.localgov_forms_webform = {
-    attach: function(context, settings) {
-      $('.js-webform-type-localgov-webform-uk-address', context).once('localgov-address-webform').each(function() {
+    attach: function (context, settings) {
+      $('.js-webform-type-localgov-webform-uk-address', context).once('localgov-address-webform').each(function () {
         var centralHubElement = $(this);
         addManualEntryButton(centralHubElement);
         // Hide the manual address element, if it has no values.
@@ -211,7 +211,7 @@
         // centralHubElement.find('.js-address-searchstring').change(function() {
         //   hideManualAddress(centralHubElement, 'hard');
         // });
-        centralHubElement.find('.js-reset-address').click(function() {
+        centralHubElement.find('.js-reset-address').click(function () {
           hideManualAddress(centralHubElement, 'hard');
         });
         hideAddressSearchErrors(centralHubElement);
@@ -227,7 +227,7 @@
         $('.js-address-select').on('change', localgov_forms_webform_change_handler);
       });
     },
-    detach: function(context, settings, trigger) {
+    detach: function (context, settings, trigger) {
       $('.js-address-entry-container input').off('change', localgov_forms_webform_manual_address_change_handler);
       $('.js-address-select').off('change', localgov_forms_webform_change_handler);
     }

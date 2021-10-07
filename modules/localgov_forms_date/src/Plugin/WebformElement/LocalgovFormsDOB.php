@@ -2,9 +2,6 @@
 
 namespace Drupal\localgov_forms_date\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElement\DateList;
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a 'localgov_forms_dob' element.
  *
@@ -16,6 +13,6 @@ use Drupal\Core\Form\FormStateInterface;
  *   category = @Translation("LocalGov Forms"),
  * )
  */
-class LocalgovFormsDOB extends LocalgovFormsDate{
+class LocalgovFormsDOB extends LocalgovFormsDate {
 
 }

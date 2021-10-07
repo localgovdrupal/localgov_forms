@@ -58,7 +58,7 @@ class WebformUKAddress extends WebformCompositeBase {
         // from addresslookup - see DRUP-1184.
         'class' => [
           'localgov-forms-webform-uk-address--address-2',
-          'js-localgov-forms-webform-uk-address--address-2'
+          'js-localgov-forms-webform-uk-address--address-2',
         ],
       ],
     ];
