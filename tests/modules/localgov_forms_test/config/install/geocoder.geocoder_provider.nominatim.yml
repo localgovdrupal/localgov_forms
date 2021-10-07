@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+id: nominatim
+label: Nominatim
+plugin: nominatim
+configuration:
+  rootUrl: 'https://nominatim.openstreetmap.org'
+  userAgent: 'LocalGov Drupal'
+  referer: 'LocalGov Drupal'
+  throttle:
+    period: null
+    limit: null
