@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - bhcc_central_hub
+id: bhcc_central_hub_commercial
+label: 'BHCC Central Hub Commercial'
+plugin: bhcc_central_hub_commercial
+configuration: {  }

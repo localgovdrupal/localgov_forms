@@ -1,0 +1,6 @@
+bhcc_central_hub.bhcc_central_hub_config_form:
+  title: 'BHCC Central Hub'
+  route_name: bhcc_central_hub.bhcc_central_hub_config_form
+  description: 'Configure Central Hub'
+  parent: system.admin_config_services
+  weight: 99

@@ -1,0 +1,8 @@
+services:
+  localgov_forms.geocoder_selection:
+    class: Drupal\localgov_forms\Geocoders
+    arguments: ['@entity_type.manager']
+
+  localgov_forms.address_lookup:
+    class: Drupal\localgov_forms\AddressLookup
+    arguments: ['@geocoder', '@localgov_forms.geocoder_selection']

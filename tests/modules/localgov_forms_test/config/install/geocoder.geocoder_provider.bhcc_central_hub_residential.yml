@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - bhcc_central_hub
+id: bhcc_central_hub_residential
+label: 'BHCC Central Hub Residential'
+plugin: bhcc_central_hub_residential
+configuration: {  }
