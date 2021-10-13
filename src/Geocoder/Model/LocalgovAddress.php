@@ -124,7 +124,10 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
     $self->flat        = $data['flat'] ?? '';
     $self->houseName   = $data['houseName'] ?? '';
     $self->org         = $data['org'] ?? '';
-    $self->osGridRef   = new OsGridRef((int) $data['easting'], (int) $data['northing']);
+
+    if (isset($data['easting']) && isset($data['northing'])) {
+      $self->osGridRef = new OsGridRef((int) $data['easting'], (int) $data['northing']);
+    }
 
     return $self;
   }
@@ -143,8 +146,11 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
     $array['flat']      = $this->getFlat();
     $array['houseName'] = $this->getHouseName();
     $array['org']       = $this->getOrganisationName();
-    $array['easting']   = $this->osGridRef->getEasting();
-    $array['northing']  = $this->osGridRef->getNorthing();
+
+    if ($this->osGridRef) {
+      $array['easting']  = $this->osGridRef->getEasting();
+      $array['northing'] = $this->osGridRef->getNorthing();
+    }
 
     return $array;
   }
