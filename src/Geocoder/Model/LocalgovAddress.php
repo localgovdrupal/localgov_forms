@@ -39,6 +39,30 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
   protected $flat = '';
 
   /**
+   * House name.
+   *
+   * @var string
+   */
+  protected $houseName = '';
+
+  /**
+   * Organisation.
+   *
+   * @var string
+   */
+  protected $org = '';
+
+
+  /**
+   * All numeric Ordnance Survey National Grid reference.
+   *
+   * @var OsGridRef
+   *
+   * @see https://en.wikipedia.org/wiki/Ordnance_Survey_National_Grid#All-numeric_grid_references
+   */
+  protected $osGridRef;
+
+  /**
    * As it says on the tin.
    */
   public function getUprn() :string {
@@ -63,6 +87,30 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
   }
 
   /**
+   * Returns the house name if any.
+   */
+  public function getHouseName() :string {
+
+    return $this->houseName;
+  }
+
+  /**
+   * Returns the organisation name if any.
+   */
+  public function getOrganisationName() :string {
+
+    return $this->org;
+  }
+
+  /**
+   * Getter for the OS grid reference object.
+   */
+  public function getOsGridRef() :OsGridRef {
+
+    return $this->osGridRef;
+  }
+
+  /**
    * Creates an Address from an array.
    *
    * @return static
@@ -74,6 +122,9 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
     $self->uprn        = $data['uprn'] ?? '';
     $self->displayName = $data['display'] ?? '';
     $self->flat        = $data['flat'] ?? '';
+    $self->houseName   = $data['houseName'] ?? '';
+    $self->org         = $data['org'] ?? '';
+    $self->osGridRef   = new OsGridRef((int) $data['easting'], (int) $data['northing']);
 
     return $self;
   }
@@ -87,9 +138,13 @@ class LocalgovAddress extends Address implements LocalgovAddressInterface {
 
     $array = parent::toArray();
 
-    $array['uprn']    = $this->getUprn();
-    $array['display'] = $this->getDisplayName();
-    $array['flat']    = $this->getFlat();
+    $array['uprn']      = $this->getUprn();
+    $array['display']   = $this->getDisplayName();
+    $array['flat']      = $this->getFlat();
+    $array['houseName'] = $this->getHouseName();
+    $array['org']       = $this->getOrganisationName();
+    $array['easting']   = $this->osGridRef->getEasting();
+    $array['northing']  = $this->osGridRef->getNorthing();
 
     return $array;
   }
