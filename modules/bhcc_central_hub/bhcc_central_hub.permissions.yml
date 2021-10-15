@@ -1,4 +1,0 @@
-access central hub configuration:
-  title: 'Access Central Hub Configuration'
-  description: 'Allow configuration of Central Hub Service endpoints.'
-  restrict access: TRUE
