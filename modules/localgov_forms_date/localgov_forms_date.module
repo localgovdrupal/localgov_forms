@@ -1,0 +1,26 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook form alter.
+ */
+function localgov_forms_webform_element_localgov_forms_date_alter(array &$element, FormStateInterface $form_state, array $context)  {
+
+  // We want our callback to trigger
+  // on localgov_forms_date webform elements
+  // Fields to apply validation callback on.
+  $webform_key = [
+    'localgov_forms_date',
+  ];
+  //
+  if (isset($element['#webform_key'], $webform_key)) {
+    // Insert the validation at the top so this check
+    // gets done first.
+    array_unshift($element['#element_validate'], [
+      '\Drupal\localgov_forms_date\Validate\LocalgovFormsDateValidateConstraint',
+      'validate',
+    ]);
+  }
+
+}
