@@ -80,7 +80,7 @@ jobs:
           composer global config github-oauth.github.com ${{ github.token }}
           composer --working-dir=./html require --with-all-dependencies localgovdrupal/${{ github.event.repository.name }}:"${COMPOSER_REF} as ${LATEST_RELEASE}"
           # Explicitely installing dev dependencies needed for test run.
-          composer --working-dir=./html require --with-all-dependencies geocoder-php/provider-integration-tests:^1.0
+          composer --working-dir=./html require --dev --with-all-dependencies geocoder-php/provider-integration-tests:^1.0 php-http/curl-client:^2.2
 
   phpcs:
     name: Coding standards checks
