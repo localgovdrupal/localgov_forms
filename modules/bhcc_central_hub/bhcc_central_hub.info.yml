@@ -1,5 +1,0 @@
-name: 'BHCC Central Hub'
-type: module
-description: 'Central Hub interface'
-core_version_requirement: ^8.8 || ^9
-package: 'BHCC'

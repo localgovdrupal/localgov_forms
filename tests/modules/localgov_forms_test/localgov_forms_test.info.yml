@@ -7,4 +7,4 @@ core_version_requirement: ^8.8 || ^9
 dependencies:
 - webform:webform
 - geocoder:geocoder
-- localgov_forms:bhcc_central_hub
+- localgov_forms:localgov_forms

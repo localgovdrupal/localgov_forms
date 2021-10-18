@@ -39,8 +39,7 @@ elements: |-
     '#type': localgov_webform_uk_address
     '#title': Address
     '#geocoder_plugins':
-      bhcc_central_hub_commercial: bhcc_central_hub_commercial
-      bhcc_central_hub_residential: bhcc_central_hub_residential
+      localgov_mock_geocoder: localgov_mock_geocoder
       nominatim: 0
       random: 0
   actions:

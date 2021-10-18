@@ -1,7 +1,0 @@
-bhcc_central_hub.settings:
-  type: config_object
-  label: 'BHCC Central hub'
-  mapping:
-    central_hub_service_url:
-      type: uri
-      label: 'Central Hub Service URL'
