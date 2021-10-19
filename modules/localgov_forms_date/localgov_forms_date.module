@@ -9,7 +9,6 @@ function localgov_forms_webform_element_localgov_forms_date_alter(array &$elemen
 
   // We want our callback to trigger
   // on localgov_forms_date webform elements.
-
   $webform_key = [
     'localgov_forms_date',
   ];

@@ -79,7 +79,7 @@ class LocalgovFormsDate extends DateList {
   public static function afterBuild(array $element, FormStateInterface $form_state) {
     $element = parent::afterBuild($element, $form_state);
 
-    //Set the property of the date of birth elements
+    // Set the property of the date of birth  elements.
     $element['day']['#attributes']['placeholder'] = t('DD');
     $element['day']['#maxlength'] = 2;
     $element['day']['#attributes']['inputmode'] = 'numeric';
