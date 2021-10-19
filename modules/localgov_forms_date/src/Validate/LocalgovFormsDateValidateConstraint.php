@@ -9,13 +9,15 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class LocalgovFormsDateValidateConstraint {
   /**
-   * Validate function
+   * Validate function.
    *
    * @param array $element
-   * @param FormStateInterface $form_state
+   * @param   Drupal\Core\Form\FormStateInterfaceFormStateInterface $form_state
    * @param array $form
+   *
    * @return void
    */
+
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
     $webformKey = $element['#webform_key'];
