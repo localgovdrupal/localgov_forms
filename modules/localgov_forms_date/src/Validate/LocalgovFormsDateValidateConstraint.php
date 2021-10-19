@@ -12,12 +12,11 @@ class LocalgovFormsDateValidateConstraint {
    * Validate function.
    *
    * @param array $element
-   * @param   Drupal\Core\Form\FormStateInterfaceFormStateInterface $form_state
+   * @param Drupal\Core\Form\FormStateInterface $form_state
    * @param array $form
    *
    * @return void
    */
-
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
     $webformKey = $element['#webform_key'];
