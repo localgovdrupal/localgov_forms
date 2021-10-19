@@ -5,15 +5,16 @@ namespace Drupal\localgov_forms_date\Validate;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Localgov Forms Date field validation
- * Form API callback. Validate element value.
+ * Localgov Forms Date field validation constraint.
  */
+
 class LocalgovFormsDateValidateConstraint {
+
   /**
    * Validates given element.
    *
    * @param array $element
-   *    The form element to process.
+   *   The form element to process.
    * @param Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
    * @param array $form

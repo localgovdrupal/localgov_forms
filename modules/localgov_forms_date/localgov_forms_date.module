@@ -1,8 +1,10 @@
 <?php
+
 /**
  * @file
- * LocalGov Forms Date module
+ * LocalGov Forms Date module.
  */
+
 use Drupal\Core\Form\FormStateInterface;
 
 /**
