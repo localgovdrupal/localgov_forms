@@ -18,7 +18,6 @@ class LocalgovFormsDateValidateConstraint {
    * @param array $form
    *   An associative array containing the structure of the form.
    */
-
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
     $webformKey = $element['#webform_key'];
