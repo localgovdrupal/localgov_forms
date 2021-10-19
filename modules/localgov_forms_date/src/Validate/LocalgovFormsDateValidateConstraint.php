@@ -12,16 +12,14 @@ class LocalgovFormsDateValidateConstraint {
    * Validate function.
    *
    * @param array $element
-   *    An associative array containing properties of the date field elements.
+   *   An associative array containing properties of the date field elements.
    * @param Drupal\Core\Form\FormStateInterface $form_state
-   *    The current state of the form.
+   *   The current state of the form.
    * @param array $form
-   *    An associative array containing the structure of the form.
+   *   An associative array containing the structure of the form.
    *
-   * @return void
    */
-
-   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
+  public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
     $webformKey = $element['#webform_key'];
     $date_parts = $form_state->getValue($webformKey);
