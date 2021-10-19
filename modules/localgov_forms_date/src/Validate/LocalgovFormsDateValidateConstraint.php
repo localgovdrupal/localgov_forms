@@ -8,7 +8,14 @@ use Drupal\Core\Form\FormStateInterface;
  * Localgov Forms Date field Alpha numeric validation.
  */
 class LocalgovFormsDateValidateConstraint {
-
+  /**
+   * Validate function
+   *
+   * @param array $element
+   * @param FormStateInterface $form_state
+   * @param array $form
+   * @return void
+   */
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
     $webformKey = $element['#webform_key'];

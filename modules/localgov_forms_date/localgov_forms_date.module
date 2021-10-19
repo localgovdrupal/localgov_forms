@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Module file for LocalGov forms date component
+ */
 
 use Drupal\Core\Form\FormStateInterface;
 
