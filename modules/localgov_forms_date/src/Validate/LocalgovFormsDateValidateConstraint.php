@@ -2,7 +2,6 @@
 
 namespace Drupal\localgov_forms_date\Validate;
 
-use Drupal\Core\Field\FieldException;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -13,9 +12,12 @@ class LocalgovFormsDateValidateConstraint {
   /**
    * Validates given element.
    *
-   * @param array              $element      The form element to process.
-   * @param FormStateInterface $form_state    The form state.
-   * @param array              $form The complete form structure.
+   * @param array $element
+   *    The form element to process.
+   * @param Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   * @param array $form
+   *   The complete form structure.
    */
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
