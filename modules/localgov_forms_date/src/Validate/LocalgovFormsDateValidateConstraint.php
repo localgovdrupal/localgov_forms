@@ -6,9 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Localgov Forms Date field validation constraint.
- *
  */
-
 class LocalgovFormsDateValidateConstraint {
 
   /**
@@ -20,6 +18,7 @@ class LocalgovFormsDateValidateConstraint {
    *   The form state.
    * @param array $form
    *   The complete form structure.
+   *
    */
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
