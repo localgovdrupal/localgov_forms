@@ -18,7 +18,6 @@ class LocalgovFormsDateValidateConstraint {
    *   The form state.
    * @param array $form
    *   The complete form structure.
-   *
    */
   public static function validate(array &$element, FormStateInterface $form_state, array &$form) {
 
