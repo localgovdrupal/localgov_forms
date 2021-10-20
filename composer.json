@@ -8,5 +8,8 @@
   "require": {
     "drupal/webform": "^6.0",
     "drupal/geocoder": "^3.20"
+  },
+  "require-dev": {
+    "geocoder-php/provider-integration-tests": "^1.0"
   }
 }

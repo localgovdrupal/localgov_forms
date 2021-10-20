@@ -152,10 +152,8 @@
 
     if (drupalSettings.centralHub.selectedAddress) {
       var addressSelected = drupalSettings.centralHub.selectedAddress;
-      // Change to use namespaced class for setting address.
-      // @See DRUP-1184.
-      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--address-1').val($.trim(addressSelected.flat + ' ' + addressSelected.house));
-      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--address-2').val(addressSelected.street);
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--address-1').val(addressSelected.line1);
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--address-2').val(addressSelected.line2);
       central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--town-city').val(addressSelected.town);
       central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--postcode').val(addressSelected.postcode);
 

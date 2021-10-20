@@ -125,7 +125,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
 
     // Get the search string and selected value.
     $search_string = $value['address_lookup']['address_search']['address_searchstring'];
-    $selected = $value['address_lookup']['address_select']['address_select_list'];
+    $selected = $value['address_lookup']['address_select']['address_select_list'] ?? [];
 
     // Check to see if there are values in the address element form.
     $has_address_values = FALSE;

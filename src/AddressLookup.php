@@ -52,21 +52,33 @@ class AddressLookup {
    *
    * UPRN is used as the unique id for each address record.  For addresses
    * without the UPRN property, we use "(lat,lon)" as the unique id.
+   *
+   * When no flat number or organisation name or building name is provided, the
+   * street address is used as the first line of the address.  Otherwise the
+   * street address is used as the second line.
    */
   public static function reformat(Location $addr) :array {
 
-    $unique_id     = '';
-    $display_name  = '';
-    $uprn          = '';
-    $flat          = '';
+    $unique_id    = '';
+    $display_name = '';
+    $uprn         = '';
+    $flat         = '';
+    $house_name   = '';
+    $org          = '';
+    $latitude     = 0;
+    $longitude    = 0;
+
     $street_number = $addr->getStreetNumber();
     $street_name   = $addr->getStreetName();
     $locality      = $addr->getLocality();
     $postcode      = $addr->getPostalCode();
     $country_name  = $addr->getCountry()->getName();
     $country_code  = $addr->getCountry()->getCode();
-    $latitude      = $addr->getCoordinates()->getLatitude();
-    $longitude     = $addr->getCoordinates()->getLongitude();
+
+    if ($coordinate = $addr->getCoordinates()) {
+      $latitude  = $coordinate->getLatitude();
+      $longitude = $coordinate->getLongitude();
+    }
 
     $is_lgd_address = $addr instanceof LocalgovAddressInterface;
     if ($is_lgd_address) {
@@ -74,6 +86,8 @@ class AddressLookup {
       $unique_id    = $uprn;
       $display_name = $addr->getDisplayName();
       $flat         = $addr->getFlat();
+      $house_name   = $addr->getHouseName();
+      $org          = $addr->getOrganisationName();
     }
     else {
       $unique_id = sprintf("(%s,%s)", $latitude, $longitude);
@@ -84,21 +98,37 @@ class AddressLookup {
       $display_name = implode(', ', array_filter($display_name_parts));
     }
 
-    return [
-      'name'         => $unique_id,
-      'uprn'         => $uprn,
-      'display'      => $display_name,
-      'street'       => $street_name,
-      'flat'         => $flat,
-      'house'        => $street_number,
-      'town'         => $locality,
-      'postcode'     => $postcode,
+    $address = [
+      'name'         => $unique_id ?? '',
+      'uprn'         => $uprn ?? '',
+      'display'      => $display_name ?? '',
+      'street'       => implode(' ', array_filter([
+        $street_number, $street_name,
+      ])),
+      'flat'         => $flat ?? '',
+      'house'        => implode(', ', array_filter([$org, $house_name])),
+      'town'         => $locality ?? '',
+      'postcode'     => $postcode ?? '',
+      'lat'          => $latitude ?? '',
+      'lng'          => $longitude ?? '',
+      'country'      => $country_name ?? '',
+      'country_code' => $country_code ?? '',
+      'line1'        => '',
+      'line2'        => '',
       'src'          => $addr->getProvidedBy(),
-      'lat'          => $latitude,
-      'lng'          => $longitude,
-      'country'      => $country_name,
-      'country_code' => $country_code,
     ];
+
+    if (empty($address['flat']) && empty($address['house'])) {
+      $address['line1'] = $address['street'];
+    }
+    else {
+      $address['line1'] = implode(', ', array_filter([
+        $address['flat'], $address['house'],
+      ]));
+      $address['line2'] = $address['street'];
+    }
+
+    return $address;
   }
 
   /**
