@@ -7,9 +7,7 @@
   "minimum-stability": "dev",
   "require": {
     "drupal/webform": "^6.0",
-    "drupal/geocoder": "^3.20"
-  },
-  "require-dev": {
-    "geocoder-php/provider-integration-tests": "^1.0"
+    "drupal/geocoder": "^3.20",
+    "localgovdrupal/localgov_os_places_geocoder_provider": "1.x-dev"
   }
 }
