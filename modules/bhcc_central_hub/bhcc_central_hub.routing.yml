@@ -1,9 +1,0 @@
-bhcc_central_hub.bhcc_central_hub_config_form:
-  path: '/admin/config/services/bhcc_central_hub'
-  defaults:
-    _form: '\Drupal\bhcc_central_hub\Form\ConfigForm'
-    _title: 'BHCC Central Hub Configuration'
-  requirements:
-    _permission: 'access central hub configuration'
-  options:
-    _admin_route: TRUE

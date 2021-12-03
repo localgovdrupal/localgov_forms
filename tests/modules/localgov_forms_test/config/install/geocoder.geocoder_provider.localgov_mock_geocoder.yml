@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - localgov_forms_test
+id: localgov_mock_geocoder
+label: 'Localgov mock geocoder'
+plugin: localgov_mock_geocoder
+configuration: {  }
