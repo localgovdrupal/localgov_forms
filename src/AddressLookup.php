@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Drupal\localgov_forms;
 
 use Geocoder\Location;
-use Drupal\localgov_forms\Geocoder\Model\LocalgovAddressInterface;
+use LocalgovDrupal\OsPlacesGeocoder\Model\LocationUprnInterface;
 
 /**
  * Address lookup service.
@@ -80,7 +80,7 @@ class AddressLookup {
       $longitude = $coordinate->getLongitude();
     }
 
-    $is_lgd_address = $addr instanceof LocalgovAddressInterface;
+    $is_lgd_address = $addr instanceof LocationUprnInterface;
     if ($is_lgd_address) {
       $uprn         = $addr->getUprn();
       $unique_id    = $uprn;
