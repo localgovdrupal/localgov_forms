@@ -152,3 +152,15 @@ function localgov_forms_preprocess_webform_submission_information(array &$variab
   }
 
 }
+
+function webform_ui_menu_local_tasks_alter(&$local_tasks) {
+
+  // Load the user object
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+  // Only show the Clear submission tab to uid 1
+  if  ($user->get('uid')->value !== '1') {
+    $local_tasks["tabs"][1]["entity.webform.results_clear"]["#access"] = FALSE;
+  }
+
+}
