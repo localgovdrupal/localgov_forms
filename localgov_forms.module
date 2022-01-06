@@ -20,9 +20,6 @@ function localgov_forms_theme() {
     'localgov_forms_uk_address' => [
       'render element' => 'element',
     ],
-    'localgov_forms_webform_submission_information' => [
-      'render element' => 'element',
-    ],
   ];
 }
 
@@ -131,5 +128,27 @@ function localgov_forms_webform_element_access($operation, array &$element, \Dru
 
   return !empty($element['#confidential']) ? \Drupal\Core\Access\AccessResult::forbidden() : \Drupal\Core\Access\AccessResult::neutral();
 }
+/**
+ * Prepares variables for webform submission information template.
+ *
+ * Default template: webform-submission-information.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing the following key:
+ *   - webform_submission: A webform submission.
+ */
+function localgov_forms_preprocess_webform_submission_information(array &$variables) {
+  /** @var \Drupal\webform\WebformSubmiss5ionInterface $webform_submission */
+  $webform_submission = $variables['webform_submission'];
+  $webform = $webform_submission->getWebform();
 
+  // Load the user object
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
 
+  // Only show the Delete submission' button to uid 1
+  if  ($user->get('uid')->value !== '1') {
+    // Stop displaying the 'Delete submission' button
+    $variables["delete"]["#access"] = false;
+  }
+
+}
