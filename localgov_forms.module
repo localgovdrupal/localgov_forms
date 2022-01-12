@@ -1,5 +1,10 @@
 <?php
 
+use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform\Entity\Webform;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\webform\WebformSubmissionForm;
+
 /**
  * @file
  * Hook implementations.
@@ -37,4 +42,125 @@ function template_preprocess_localgov_forms_uk_address(array &$variables) {
  */
 function localgov_forms_preprocess_webform(array &$variables) {
   $variables['#attached']['library'][] = 'localgov_forms/localgov_forms.form_errors';
+}
+
+/**
+ *
+ * Show the Lock this submission checkbox only to
+ * the role admin on the Notes page
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param [type] $form_id
+ * @return void
+ */
+function localgov_forms_form_webform_submission_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+  // Check the Lock this submission checkbox on all webforms
+  if (isset($form['locked'])) {
+    $form["locked"]["#default_value"] = FALSE;
+
+    // Load the user object
+    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+    // Only show the Lock this submission checkbox to uid 1
+    if  ($user->get('uid')->value !== '1') {
+      // Stop displaying the - Lock this submission checkbox
+      $form["locked"]["#access"] = false;
+    }
+  }
+}
+
+/**
+ * Check and set an element's #access property and/or return access.
+ *
+ * @param string $operation
+ *   An element create, view, or update operation.
+ * @param array $element
+ *   Webform specific element properties include:
+ *   - #webform: The element's parent webform ID.
+ *   - #webform_submission: The element's related webform submission ID.
+ *   - #webform_id: The element's unique webform key.
+ *   - #webform_key: The element's webform key/name.
+ *   - #webform_parent_key: The element's parent key/name.
+ *   - #webform_parent_flexbox: TRUE if the element's parent is a
+ *     flexbox container.
+ *   - #webform_depth: The depth level of the element in the form's
+ *     tree hierarchy.
+ *   - #webform_children: An array of child element keys/names.
+ *   - #webform_multiple: TRUE if element stores multiple values.
+ *   - #webform_composite: TRUE if element stores composite values.
+ *   - #webform_parents: An array containing the element's parent keys/names.
+ *
+ *   Webform specific composite sub-element properties include:
+ *   - #webform_composite_id: The composite sub-element's ID.
+ *   - #webform_composite_key: The composite sub-element's parent key and
+ *     element key.
+ *   - #webform_composite_parent_key: The composite sub-element's parent key.
+ *
+ *   Sub-element's can have properties defined using #SUB_ELEMENT__PROPERTY.
+ *   For example, an other element's placeholder can be defined using
+ *   the #other__placeholder property.
+ * @param \Drupal\Core\Session\AccountInterface|null $account
+ *   (optional) If provided, only those formats that are allowed for this user
+ *   account will be returned. All enabled formats will be returned otherwise.
+ *   Defaults to NULL.
+ * @param array $context
+ *   The element's current context which include the webform and
+ *   webform submission entity.
+ *
+ * @return \Drupal\Core\Access\AccessResult
+ *   The access provided. Return neutral if no change.
+ */
+function localgov_forms_webform_element_access($operation, array &$element, \Drupal\Core\Session\AccountInterface $account = NULL, array $context = []) {
+  // Load the current webform and submission for element's context.
+  $webform = $context['webform'];
+  $webform_submission = $context['webform_submission'];
+
+  // 15465 - Lock form submissions once submitted
+  // Set the lock status
+  $locked = TRUE;
+
+  // We want to lock all submissions by default.
+  if (isset($webform_submission)) {
+    $webform_submission->setLocked($locked);
+  }
+
+  return !empty($element['#confidential']) ? \Drupal\Core\Access\AccessResult::forbidden() : \Drupal\Core\Access\AccessResult::neutral();
+}
+/**
+ * Prepares variables for webform submission information template.
+ *
+ * Default template: webform-submission-information.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing the following key:
+ *   - webform_submission: A webform submission.
+ */
+function localgov_forms_preprocess_webform_submission_information(array &$variables) {
+  /** @var \Drupal\webform\WebformSubmiss5ionInterface $webform_submission */
+  $webform_submission = $variables['webform_submission'];
+  $webform = $webform_submission->getWebform();
+
+  // Load the user object
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+  // Only show the Delete submission' button to uid 1
+  if  ($user->get('uid')->value !== '1') {
+    // Stop displaying the 'Delete submission' button
+    $variables["delete"]["#access"] = false;
+  }
+
+}
+
+function webform_ui_menu_local_tasks_alter(&$local_tasks) {
+
+  // Load the user object
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+
+  // Only show the Clear submission tab to uid 1
+  if  ($user->get('uid')->value !== '1') {
+    $local_tasks["tabs"][1]["entity.webform.results_clear"]["#access"] = FALSE;
+  }
+
 }
