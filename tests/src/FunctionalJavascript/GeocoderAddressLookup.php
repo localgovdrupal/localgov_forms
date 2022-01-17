@@ -23,7 +23,7 @@ class GeocoderAddressLookup extends WebDriverTestBase {
    *
    * @var array
    */
-  protected $defaultTheme = 'localgov_base';
+  protected $defaultTheme = 'stark';
 
   /**
    * Test for postcode-based address lookup.
@@ -66,7 +66,7 @@ class GeocoderAddressLookup extends WebDriverTestBase {
     $postcode_textfield = $page->find('css', '#edit-address-postcode');
     $this->assertNotEmpty($postcode_textfield);
 
-    $this->assertEquals('Bartholomew House', $address1_textfield->getValue());
+    $this->assertEquals('Brighton & Hove City Council, Bartholomew House', $address1_textfield->getValue());
     $this->assertEquals('Bartholomew Square', $address2_textfield->getValue());
     $this->assertEquals('Brighton', $town_textfield->getValue());
     $this->assertEquals('BN1 1JE', $postcode_textfield->getValue());

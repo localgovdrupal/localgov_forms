@@ -10,12 +10,12 @@ use Geocoder\Model\AddressCollection;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
 use Geocoder\Provider\Provider as ProviderInterface;
-use Drupal\localgov_forms\Geocoder\Model\LocalgovAddress;
+use LocalgovDrupal\OsPlacesGeocoder\Model\UprnAddress;
 
 /**
  * A Mock PHP Geocoder provider.
  *
- * Generates a collection of LocalgovAddress instances for automated testing
+ * Generates a collection of UprnAddress instances for automated testing
  * purposes.
  */
 class LocalgovMockGeocoder implements ProviderInterface {
@@ -40,18 +40,18 @@ class LocalgovMockGeocoder implements ProviderInterface {
     $is_bhcc_hq    = !strcasecmp($search_string, 'BN1 1JE');
 
     if ($is_bhcc_hq) {
-      $results[] = LocalgovAddress::createFromArray([
+      $results[] = UprnAddress::createFromArray([
         'providedBy'       => $this->getName(),
-        'streetNumber'     => 'Bartholomew House',
+        'org'              => 'Brighton & Hove City Council',
+        'houseName'        => 'Bartholomew House',
+        'streetNumber'     => NULL,
         'streetName'       => 'Bartholomew Square',
         'flat'             => '',
         'locality'         => 'Brighton',
         'postalCode'       => 'BN1 1JE',
-        'county'           => 'East Sussex',
         'country'          => 'United Kingdom',
         'countryCode'      => 'GB',
-        'display'          => 'Bartholomew House, Bartholomew Square, Brighton, BN1 1JE',
-        'formattedAddress' => 'Bartholomew House, Bartholomew Square, Brighton, BN1 1JE',
+        'display'          => 'Brighton & Hove City Council, Bartholomew House, Bartholomew Square, Brighton, BN1 1JE',
         'latitude'         => '-0.1409790',
         'longitude'        => '50.8208609',
         'easting'          => '531044',
