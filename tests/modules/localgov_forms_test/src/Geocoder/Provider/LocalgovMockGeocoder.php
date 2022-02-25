@@ -10,7 +10,7 @@ use Geocoder\Model\AddressCollection;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
 use Geocoder\Provider\Provider as ProviderInterface;
-use LocalgovDrupal\OsPlacesGeocoder\Model\UprnAddress;
+use LocalgovDrupal\OsPlacesGeocoder\Model\OsPlacesAddress;
 
 /**
  * A Mock PHP Geocoder provider.
@@ -40,7 +40,7 @@ class LocalgovMockGeocoder implements ProviderInterface {
     $is_bhcc_hq    = !strcasecmp($search_string, 'BN1 1JE');
 
     if ($is_bhcc_hq) {
-      $results[] = UprnAddress::createFromArray([
+      $results[] = OsPlacesAddress::createFromArray([
         'providedBy'       => $this->getName(),
         'org'              => 'Brighton & Hove City Council',
         'houseName'        => 'Bartholomew House',

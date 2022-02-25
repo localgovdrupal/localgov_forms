@@ -9,5 +9,8 @@
     "drupal/webform": "^6.0",
     "drupal/geocoder": "^3.20",
     "localgovdrupal/localgov_os_places_geocoder_provider": "1.x-dev"
+  },
+  "require-dev": {
+    "geocoder-php/nominatim-provider": "^5.2"
   }
 }
