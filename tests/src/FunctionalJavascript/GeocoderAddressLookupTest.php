@@ -9,7 +9,7 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 /**
  * Sets up and tests a Geocoder-based address lookup plugin.
  */
-class GeocoderAddressLookup extends WebDriverTestBase {
+class GeocoderAddressLookupTest extends WebDriverTestBase {
 
   /**
    * Modules to enable.
