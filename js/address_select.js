@@ -158,7 +158,7 @@
       central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--postcode').val(addressSelected.postcode);
 
       // add UPRN
-      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--uprn').val(parseInt(addressSelected.uprn));
+      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--uprn').val(addressSelected.uprn);
 
       // Add any extra fields from centrahub for Twig access.
       // @See DRUP-1287.

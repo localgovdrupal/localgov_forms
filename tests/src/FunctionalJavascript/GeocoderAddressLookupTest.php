@@ -9,7 +9,7 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 /**
  * Sets up and tests a Geocoder-based address lookup plugin.
  */
-class GeocoderAddressLookup extends WebDriverTestBase {
+class GeocoderAddressLookupTest extends WebDriverTestBase {
 
   /**
    * Modules to enable.
@@ -65,11 +65,17 @@ class GeocoderAddressLookup extends WebDriverTestBase {
     $this->assertNotEmpty($town_textfield);
     $postcode_textfield = $page->find('css', '#edit-address-postcode');
     $this->assertNotEmpty($postcode_textfield);
+    $uprn_hidden_field = $page->find('css', '[data-drupal-selector="edit-address-uprn"]');
+    $this->assertNotEmpty($uprn_hidden_field);
+    $latitude_hidden_field = $page->find('css', '[data-drupal-selector="edit-address-lat"]');
+    $this->assertNotEmpty($latitude_hidden_field);
 
     $this->assertEquals('Brighton & Hove City Council, Bartholomew House', $address1_textfield->getValue());
     $this->assertEquals('Bartholomew Square', $address2_textfield->getValue());
     $this->assertEquals('Brighton', $town_textfield->getValue());
     $this->assertEquals('BN1 1JE', $postcode_textfield->getValue());
+    $this->assertEquals('000022062038', $uprn_hidden_field->getValue());
+    $this->assertEquals('-0.140979', $latitude_hidden_field->getValue());
   }
 
 }

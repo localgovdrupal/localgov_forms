@@ -153,7 +153,7 @@ class AddressLookupElement extends FormElement {
       '#attributes' => [
         'class' => ['js-address-select'],
       ],
-      '#address_type' => isset($element['#address_type']) ? $element['#address_type'] : 'residential',
+      '#address_type' => $element['#address_type'] ?? 'residential',
     ];
 
     if ($form_state->isProcessingInput()) {
