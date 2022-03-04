@@ -84,9 +84,17 @@ class LocalgovFormsDate extends Datelist {
    */
   private static function restoreUnprocessedDate(array &$element) :void {
 
-    $element['year']['#value']  = $element['#value']['year'];
-    $element['month']['#value'] = $element['#value']['month'];
-    $element['day']['#value']   = $element['#value']['day'];
+    if (isset($element['#value']['year'])) {
+      $element['year']['#value'] = $element['#value']['year'];
+    }
+
+    if (isset($element['#value']['month'])) {
+      $element['month']['#value'] = $element['#value']['month'];
+    }
+
+    if (isset($element['#value']['day'])) {
+      $element['day']['#value'] = $element['#value']['day'];
+    }
   }
 
 }
