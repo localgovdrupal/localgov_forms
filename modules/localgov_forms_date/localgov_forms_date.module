@@ -5,11 +5,8 @@
  * LocalGov Forms Date module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\Utility\WebformElementHelper;
-
 /**
- * Implements hook_theme()
+ * Implements hook_theme().
  */
 function localgov_forms_date_theme() {
   return [
@@ -19,28 +16,6 @@ function localgov_forms_date_theme() {
   ];
 }
 
-
-/**
- * Implements hook_web_element_alter().
- */
-function localgov_forms_webform_element_localgov_forms_date_alter(array &$element, FormStateInterface $form_state, array $context) {
-
-  // We want our callback to trigger
-  // on localgov_forms_date webform elements.
-  $webform_key = [
-    'localgov_forms_date',
-  ];
-
-  if (isset($element['#webform_key'], $webform_key)) {
-    // Insert the validation at the top so this check
-    // gets done first.
-    array_unshift($element['#element_validate'], [
-      '\Drupal\localgov_forms_date\Validate\LocalgovFormsDateValidateConstraint',
-      'validate',
-    ]);
-  }
-
-}
 /**
  * Prepares variables for datetime form element templates.
  *
@@ -57,7 +32,7 @@ function localgov_forms_webform_element_localgov_forms_date_alter(array &$elemen
  *
  * @see form_process_datetime()
  */
-function template_preprocess_localgov_forms_date(&$variables) {
+function template_preprocess_localgov_forms_date(array &$variables) {
   $element = $variables['element'];
 
   $variables['attributes'] = [];
@@ -79,7 +54,11 @@ function template_preprocess_localgov_forms_date(&$variables) {
     $variables['attributes']['data-drupal-field-elements'] = 'date' . ($element['#date_time_element'] === 'none' ? '' : '-time');
     $date_format = is_array($element['#date_date_format']) ? $element['#date_date_format'][0] : date($element['#date_date_format']);
     $variables['content']['date']['#attributes']['placeholder'] = $placeholder_date;
-    $help_date = t('Enter the date using the format @placeholder_date (e.g., @date_format).', ['@date_format' => $date_format, '@placeholder_date' => $placeholder_date]);
+    $help_date = t('Enter the date using the format @placeholder_date (e.g., @date_format).',
+      [
+        '@date_format' => $date_format,
+        '@placeholder_date' => $placeholder_date,
+      ]);
     $variables['content']['date']['#attributes']['data-help'] = $help_date;
 
     // Include time formatting instructions when a time input is present.
@@ -87,7 +66,11 @@ function template_preprocess_localgov_forms_date(&$variables) {
       $placeholder_time = 'hh:mm:ss';
       $time_format = is_array($element['#date_time_format']) ? $element['#date_time_format'][0] : date($element['#date_time_format']);
       $variables['content']['time']['#attributes']['placeholder'] = $placeholder_time;
-      $help_time = t('Enter the time using the format @placeholder_time (e.g., @time_format).', ['@time_format' => $time_format, '@placeholder_time' => $placeholder_time]);
+      $help_time = t('Enter the time using the format @placeholder_time (e.g., @time_format).',
+        [
+          '@time_format' => $time_format,
+          '@placeholder_time' => $placeholder_time,
+        ]);
       $variables['content']['time']['#attributes']['data-help'] = $help_time;
     }
   }
@@ -103,7 +86,7 @@ function template_preprocess_localgov_forms_date(&$variables) {
  *   - element: An associative array containing the properties of the element.
  *     Properties used: #title, #children, #required, #attributes.
  */
-function template_preprocess_localgov_forms_date_wrapper(&$variables) {
+function template_preprocess_localgov_forms_date_wrapper(array &$variables) {
   $element = $variables['element'];
 
   if (!empty($element['#title'])) {
