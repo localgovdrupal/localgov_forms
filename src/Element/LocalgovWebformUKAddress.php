@@ -43,6 +43,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
       '#address_search_description' => $element['#address_search_description'] ?? NULL,
       '#address_select_title' => $element['#address_select_title'] ?? NULL,
       '#geocoder_plugins' => $element['#geocoder_plugins'] ?? [],
+      '#always_display_manual_address_entry_btn' => $element['#always_display_manual_address_entry_btn'] ?? 'yes',
     ];
 
     $elements['address_entry'] = [
@@ -86,6 +87,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
     }
 
     $elements['#attached']['library'][] = 'localgov_forms/localgov_forms.address_select';
+    $elements['#attached']['drupalSettings']['centralHub']['isManualAddressEntryBtnAlwaysVisible'] = isset($element['#always_display_manual_address_entry_btn']) ? ($element['#always_display_manual_address_entry_btn'] === 'yes') : TRUE;
 
     return $elements;
   }
