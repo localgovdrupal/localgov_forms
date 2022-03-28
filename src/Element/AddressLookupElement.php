@@ -55,6 +55,7 @@ class AddressLookupElement extends FormElement {
       '#address_search_description' => '',
       '#address_select_title'       => '',
       '#geocoder_plugins'           => [],
+      '#always_display_manual_address_entry_btn' => 'yes',
     ];
   }
 
