@@ -45,7 +45,7 @@ class ManualAddressEntryTest extends WebDriverTestBase {
     // The "Can't see the address?" button should be visible at this stage.
     $manual_address_entry_btn = $page->find('css', '.js-manual-address');
     $this->assertNotEmpty($manual_address_entry_btn);
-    $this->assert($manual_address_entry_btn->isVisible());
+    $this->assertTrue($manual_address_entry_btn->isVisible());
 
     // Now load the *contact4* webform where the "Can't find the address?"
     // button appears after an address search.
@@ -69,7 +69,7 @@ class ManualAddressEntryTest extends WebDriverTestBase {
     $session_assert->waitForElementVisible('css', '[data-drupal-selector=edit-address-address-lookup-address-select-address-select-list]');
 
     // The "Can't see the address?" button should appear at this stage.
-    $this->assert($manual_address_entry_btn->isVisible());
+    $this->assertTrue($manual_address_entry_btn->isVisible());
 
     // At this point, the address entry fields are all hidden.
     $address1_textfield = $page->find('css', '#edit-address-address-1');
@@ -89,10 +89,10 @@ class ManualAddressEntryTest extends WebDriverTestBase {
     // address entry fields.
     $manual_address_entry_btn->click();
 
-    $this->assert($address1_textfield->isVisible());
-    $this->assert($address2_textfield->isVisible());
-    $this->assert($town_textfield->isVisible());
-    $this->assert($postcode_textfield->isVisible());
+    $this->assertTrue($address1_textfield->isVisible());
+    $this->assertTrue($address2_textfield->isVisible());
+    $this->assertTrue($town_textfield->isVisible());
+    $this->assertTrue($postcode_textfield->isVisible());
   }
 
 }
