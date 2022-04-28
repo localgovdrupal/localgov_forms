@@ -30,3 +30,11 @@ localgov_forms.address_change:
   dependencies:
     - core/drupal
     - core/jquery
+
+localgov_forms.error_message_above_input_field:
+  version: VERSION
+  js:
+    js/error_message_above_input_field.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

@@ -1,5 +1,6 @@
 .localgov-forms-date {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .localgov-forms-date div[class*="-day"] {
