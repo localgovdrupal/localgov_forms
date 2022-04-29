@@ -1,7 +1,7 @@
 /**
  * @file JS file for moving webform
  * error messages above the erroneous form input
- * fields. As defined in the
+ * fields as per design pattern specification
  * https://design-system.service.gov.uk/components/error-summary/
  *
  */
@@ -17,10 +17,10 @@
       formField.forEach((formField) => {
         // Email and Text fields
         if (formField.type == "email" || formField.type == "text") {
-          // LocalGov Date Field input consists of three text input fields
-          // Day, Month and Year. We want all date validation error message
-          // to appear undere the fields label as  per GDS pattern
           if (
+            // LocalGov Date Field input consists of three text input fields
+            // Day, Month and Year. We want all date validation error message
+            // to appear under the fields label as per GDS pattern.
             // Check if it's a date part input field
             formField.className == "localgov_forms_date__day form-text error" ||
             formField.className == "localgov_forms_date__month form-text error" ||
@@ -35,14 +35,14 @@
               );
             }
           } else {
-            // Webform Text Input or Email input fields
+            // Webform text input or email input fields.
             formField.parentNode.insertBefore(
               formField.nextElementSibling,
               formField
             );
           }
         }
-        // Webform Textarea Input fields
+        // Webform textarea input fields.
         else if (formField.type == "textarea") {
           formField.parentNode.insertBefore(
             formField.parentElement.nextElementSibling,
