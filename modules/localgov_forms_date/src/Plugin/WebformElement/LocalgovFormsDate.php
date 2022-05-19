@@ -82,14 +82,20 @@ class LocalgovFormsDate extends DateList {
     // Set the property of the date of birth elements.
     $element['day']['#attributes']['placeholder'] = t('DD');
     $element['day']['#maxlength'] = 2;
+    $element['day']['#attributes']['inputmode'] = 'numeric';
+    $element['day']['#attributes']['pattern'] = '[0-9]*';
     $element['day']['#attributes']['class'][] = 'localgov_forms_date__day';
 
     $element['month']['#attributes']['placeholder'] = t('MM');
     $element['month']['#maxlength'] = 2;
+    $element['month']['#attributes']['inputmode'] = 'numeric';
+    $element['month']['#attributes']['pattern'] = '[0-9]*';
     $element['month']['#attributes']['class'][] = 'localgov_forms_date__month';
 
     $element['year']['#attributes']['placeholder'] = t('YYYY');
     $element['year']['#maxlength'] = 4;
+    $element['year']['#attributes']['inputmode'] = 'numeric';
+    $element['year']['#attributes']['pattern'] = '[0-9]*';
     $element['year']['#attributes']['class'][] = 'localgov_forms_date__year';
 
     return $element;
