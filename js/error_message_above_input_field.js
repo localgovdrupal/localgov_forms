@@ -24,7 +24,11 @@
             // Check if it's a date part input field
             formField.className == "localgov_forms_date__day form-text error" ||
             formField.className == "localgov_forms_date__month form-text error" ||
-            formField.className == "localgov_forms_date__year form-text error"
+            formField.className == "localgov_forms_date__year form-text error" ||
+            // LocalGov Date reqquired error class
+            formField.className == "localgov_forms_date__day form-text required error" ||
+            formField.className == "localgov_forms_date__month form-text required error" ||
+            formField.className == "localgov_forms_date__year form-text required error"
           ) {
             // Check if the error message is beneath the
             // date part input field. If so move it above it.
