@@ -25,7 +25,7 @@
             formField.className == "localgov_forms_date__day form-text error" ||
             formField.className == "localgov_forms_date__month form-text error" ||
             formField.className == "localgov_forms_date__year form-text error" ||
-            // LocalGov Date reqquired error class
+            // LocalGov Date Field input required error class
             formField.className == "localgov_forms_date__day form-text required error" ||
             formField.className == "localgov_forms_date__month form-text required error" ||
             formField.className == "localgov_forms_date__year form-text required error"
