@@ -111,7 +111,7 @@ class AddressLookupElement extends FormElement {
         'address_search', 'address_actions', 'address_searchbutton',
       ]),
       '#type' => 'button',
-      '#value' => t('Search'),
+      '#value' => t('Find address'),
       '#limit_validation_errors' => [],
       '#ajax' => [
         'callback' => [
