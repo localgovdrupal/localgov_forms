@@ -17,8 +17,7 @@ function localgov_forms_date_theme() {
 }
 
 /**
- *
- *
+ * Datetime Form preprocess function.
  */
 function localgov_forms_date_preprocess_datetime_form(array &$variables) {
   // Check that this is a localgov_forms_date form element.
