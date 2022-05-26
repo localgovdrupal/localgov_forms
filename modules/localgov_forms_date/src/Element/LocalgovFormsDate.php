@@ -26,9 +26,9 @@ class LocalgovFormsDate extends Datelist {
       '#process' => [
         [static::class, 'processDatelist'],
       ],
-      '#theme' => 'localgov_forms_date',
-      // '#theme' => 'datetime_form',
-      '#theme_wrappers' => ['localgov_forms_date_wrapper'],
+      // '#theme' => 'localgov_forms_date',
+      '#theme' => 'datetime_form',
+      // '#theme_wrappers' => ['localgov_forms_date_wrapper'],
       '#date_part_order' => ['day', 'month', 'year'],
       '#date_text_parts' => ['day', 'month', 'year'],
       '#date_year_range' => '1900:2050',
