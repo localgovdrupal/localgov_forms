@@ -21,6 +21,8 @@ function localgov_forms_date_theme() {
  */
 function localgov_forms_date_preprocess_datetime_form(array &$variables) {
   // Check that this is a localgov_forms_date form element.
-  $variables['attributes']['class'][] = 'localgov-forms-date';
-  $variables['#attached']['library'][] = 'localgov_forms_date/localgov_forms_date';
+  if ($variables['element']['#type'] === 'localgov_forms_date') {
+    $variables['attributes']['class'][] = 'localgov-forms-date';
+    $variables['#attached']['library'][] = 'localgov_forms_date/localgov_forms_date';
+  }
 }
