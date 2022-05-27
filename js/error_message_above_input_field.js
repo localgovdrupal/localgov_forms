@@ -47,7 +47,7 @@
           }
         }
         // Webform textarea input fields.
-        else if (formField.type == "textarea") {
+        else if (formField.parentElement.nextElementSibling) {
           formField.parentNode.insertBefore(
             formField.parentElement.nextElementSibling,
             formField
