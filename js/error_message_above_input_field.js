@@ -21,14 +21,14 @@
             // LocalGov Date Field input consists of three text input fields
             // Day, Month and Year. We want all date validation error message
             // to appear under the fields label as per GDS pattern.
-            // Check if it's a date part input field
+
             formField.classList.contains('form-text'),
             formField.classList.contains('error'),
             formField.classList.contains('required'),
             // LocalGov Date Field input required error class
-            formField.className == 'localgov_forms_date__day form-text required error' ||
-            formField.className == 'localgov_forms_date__month form-text required error' ||
-            formField.className == 'localgov_forms_date__year form-text required error'
+            formField.classList.contains('localgov_forms_date__day') ||
+            formField.classList.contains('localgov_forms_date__month') ||
+            formField.classList.contains('localgov_forms_date__year')
           ) {
             // Check if the error message is beneath the
             // date part input field. If so move it above it.
