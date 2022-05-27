@@ -6,17 +6,6 @@
  */
 
 /**
- * Implements hook_theme().
- */
-function localgov_forms_date_theme() {
-  return [
-    'localgov_forms_date' => [
-      'render element' => 'element',
-    ],
-  ];
-}
-
-/**
  * Datetime Form preprocess function.
  */
 function localgov_forms_date_preprocess_datetime_form(array &$variables) {
