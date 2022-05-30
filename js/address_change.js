@@ -22,6 +22,12 @@
     // Reset the form.
     resetButton.click(function () {
       resetAddressLookUpForm(addressLookupElement, $(this), 'hard');
+
+      // Hide manual entry button if asked for.
+      if (typeof drupalSettings.centralHub.isManualAddressEntryBtnAlwaysVisible !== 'undefined' && drupalSettings.centralHub.isManualAddressEntryBtnAlwaysVisible) {
+        var manualButton = addressLookupElement.parent().find('.js-manual-address');
+        manualButton.show();
+      }
     });
 
     // Append the reset button.
@@ -30,6 +36,7 @@
 
   /**
    * Reset Address Lookup Form.
+   *
    * @param {jQuery} addressLookupElement
    *   Address lookup element.
    * @param {jQuery} resetButton
@@ -149,12 +156,20 @@
         var selectList = selectListContainer.find('.js-address-select');
         var error = selectListContainer.find('.js-address-error');
         var resetButton = addressLookupElement.find('.js-reset-address');
+        var manualButton = addressLookupElement.find('.js-manual-address');
+        var manualAddressContainer = addressLookupElement.find('+ .js-address-entry-container');
         var ajaxProgressElement = addressLookupElement.find('.ajax-progress');
 
         // This ajac was either not initiated by the address lookup,
         // or the search is still in progress.
         if (!searchButton.hasClass('js-searching') || ajaxProgressElement.length > 0) {
           return;
+        }
+
+        // Unhide the manual entry button only when manual address entry fields
+        // are hidden.
+        if (typeof settings.centralHub.isManualAddressEntryBtnAlwaysVisible !== 'undefined' && !settings.centralHub.isManualAddressEntryBtnAlwaysVisible && manualAddressContainer.is(':hidden')) {
+          manualButton.show();
         }
 
         // If there has been a search.
