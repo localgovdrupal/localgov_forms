@@ -37,5 +37,4 @@ function template_preprocess_localgov_forms_uk_address(array &$variables) {
  */
 function localgov_forms_preprocess_webform(array &$variables) {
   $variables['#attached']['library'][] = 'localgov_forms/localgov_forms.form_errors';
-  $variables['#attached']['library'][] = 'localgov_forms/localgov_forms.error_message_above_input_field';
 }
