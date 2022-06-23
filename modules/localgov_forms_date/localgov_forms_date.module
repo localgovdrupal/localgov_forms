@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * LocalGov Forms Date module.
+ */
+
+/**
+ * Datetime Form preprocess function.
+ */
+function localgov_forms_date_preprocess_datetime_form(array &$variables) {
+  // Check that this is a localgov_forms_date form element.
+  if ($variables['element']['#type'] === 'localgov_forms_date') {
+    $variables['attributes']['class'][] = 'localgov-forms-date';
+    $variables['#attached']['library'][] = 'localgov_forms_date/localgov_forms_date';
+  }
+}

@@ -1,0 +1,40 @@
+.localgov-forms-date {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.localgov-forms-date div[class*="-day"] {
+  margin-left: 0em;
+  flex: 1;
+  max-width: 100%;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+}
+
+.localgov-forms-date div[class*="-month"] {
+  flex: 2;
+  margin: 0.5em;
+  max-width: 100%;
+}
+
+.localgov-forms-date div[class*="-year"] {
+  flex: 3;
+  max-width: 100%;
+  margin: 0.5em;
+}
+
+.localgov-forms-date > .form-item--error-message {
+  flex: 0 0 100%;
+}
+
+@media screen and (min-width: 64rem) {
+  .localgov-forms-date div[class*="-day"] {
+    max-width: 6%;
+  }
+  .localgov-forms-date div[class*="-month"] {
+    max-width: 6%;
+  }
+  .localgov-forms-date div[class*="-year"] {
+    max-width: 9%;
+  }
+}
