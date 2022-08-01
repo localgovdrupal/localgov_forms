@@ -5,8 +5,6 @@
  * Hook implementations.
  */
 
-module_load_include('inc', 'webform', 'includes/webform.theme.template');
-
 /**
  * Implements hook_theme().
  */
@@ -29,6 +27,8 @@ function localgov_forms_theme() {
  */
 function template_preprocess_localgov_forms_uk_address(array &$variables) {
   // Here you can get the composite element and alter it.
+  Drupal::moduleHandler()->loadInclude('webform', 'inc', 'includes/webform.theme.template');
+
   _template_preprocess_webform_composite($variables);
 }
 
