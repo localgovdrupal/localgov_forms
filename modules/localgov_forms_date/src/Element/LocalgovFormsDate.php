@@ -38,6 +38,22 @@ class LocalgovFormsDate extends Datelist {
   }
 
   /**
+   * Wrapper over Datelist::valueCallback().
+   *
+   * Absorbs non-numeric day, month, or year values such as "1a", "dd", etc.
+   * Such values leads PHP 8.x's checkdate() to throw TypeError exceptions
+   * which core's Datelist class does not process gracefully yet.
+   */
+  public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
+    try {
+      return parent::valueCallback($element, $input, $form_state);
+    }
+    catch (\TypeError $e) {
+      $form_state->setError($element, t('Non-numeric date part values detected.'));
+    }
+  }
+
+  /**
    * Validation callback.
    *
    * Are all the parts of a date numeric?  There are three parts we are
