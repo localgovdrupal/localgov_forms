@@ -2,6 +2,7 @@
 
 namespace Drupal\localgov_forms_date\Element;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Datetime\Element\Datelist;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -49,7 +50,16 @@ class LocalgovFormsDate extends Datelist {
       return parent::valueCallback($element, $input, $form_state);
     }
     catch (\TypeError $e) {
-      $form_state->setError($element, t('Non-numeric date part values detected.'));
+      // This error msg will cancel any other error message added in
+      // ::areDatePartsNumeric().
+      // @see https://www.drupal.org/project/drupal/issues/2818437
+      $form_state->setError($element, t('Non-numeric date parts detected.'));
+
+      // Suppress PHP warning in Datelist::validateDatelist().
+      $placeholder_date = DateTimePlus::createFromArray([], $element['#date_timezone']);
+      $return = $input;
+      $return['object'] = $placeholder_date;
+      return $return;
     }
   }
 
