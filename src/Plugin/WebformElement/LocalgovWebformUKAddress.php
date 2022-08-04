@@ -27,7 +27,11 @@ use Drupal\Core\Form\FormStateInterface;
 class LocalgovWebformUKAddress extends WebformUKAddress {
 
   /**
-   * Declares our geocoder_plugins property.
+   * Declares our properties.
+   *
+   * Configurable properties:
+   * - geocoder_plugins
+   * - always_display_manual_address_entry_btn.
    *
    * {@inheritdoc}
    */
@@ -35,6 +39,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
 
     $parent_properties = parent::defineDefaultProperties();
     $parent_properties['geocoder_plugins'] = [];
+    $parent_properties['always_display_manual_address_entry_btn'] = 'yes';
 
     return $parent_properties;
   }
@@ -61,7 +66,9 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
   /**
    * Webform element config form.
    *
-   * Adds a settings for selecting Geocoder plugins for address lookup.
+   * Adds settings for:
+   * - Selecting Geocoder plugins for address lookup.
+   * - Deciding whether to display the manual address entry button at all times.
    *
    * {@inheritdoc}
    */
@@ -75,6 +82,16 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
       '#options'  => \Drupal::service('localgov_forms.geocoder_selection')->listInstalledPluginNames(),
       '#required' => TRUE,
       '#description' => $this->t('These plugins are used for address lookup.  They are added from Configuration > System > Geocoder > Providers.'),
+    ];
+
+    $parent_form['element']['always_display_manual_address_entry_btn'] = [
+      '#type'        => 'radios',
+      '#title'       => 'When to display the manual address entry button',
+      '#description'   => $this->t('Either display at all times or only after an address search.'),
+      '#options'     => [
+        'yes' => $this->t('Always'),
+        'no'  => $this->t('After an address search'),
+      ],
     ];
 
     return $parent_form;

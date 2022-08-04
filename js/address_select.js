@@ -5,7 +5,8 @@
 (function ($, Drupal) {
 
   /**
-   * Add manual entry button
+   * Adds manual entry button.
+   *
    * @param {jQuery} centralHubElement
    *   Centralhub address element.
    */
@@ -29,28 +30,35 @@
   }
 
   /**
-   * Hide manual address form
+   * Hide manual address form.
+   *
    * @param  {jQuery} centralHubElement
    *   Central hub address lookup element.
    * @param  {String} type
    *   'soft' = Do not clear the address values.
    *            (used when an address is selected)
    *   'hard' = Clear the address values.
+   * @param {Object} settings
+   *   drupalSettings.
    */
-  function hideManualAddress(centralHubElement, type) {
+  function hideManualAddress(centralHubElement, type, settings) {
     var manualAddressContainer = centralHubElement.find('.js-address-entry-container');
     var manualButton = centralHubElement.find('.js-manual-address');
     var addressSelectContainer = centralHubElement.find('.js-address-select-container');
     manualAddressContainer.addClass('hidden');
-    if (type == 'hard') {
 
+    if (type == 'hard') {
       // Clear all values.
       manualAddressContainer.find('input').val('');
 
       // Trigger change events so UPRN and extra fields are cleared.
       manualAddressContainer.find('input').first().trigger('change');
     }
-    manualButton.removeClass('hidden');
+
+    // Hide manual entry button if asked for.
+    if (typeof settings.centralHub.isManualAddressEntryBtnAlwaysVisible !== 'undefined' && !settings.centralHub.isManualAddressEntryBtnAlwaysVisible) {
+      manualButton.hide();
+    }
   }
 
   /**
@@ -67,7 +75,7 @@
     var addressError = addressSelectContainer.find('.js-address-error');
     manualAddressContainer.removeClass('hidden');
     // manualAddressContainer.find('input').val('');
-    manualButton.addClass('hidden');
+    manualButton.hide();
     // addressSelectContainer.addClass('hidden');
     // addressSelect.val('0');
     // Clear the search element when entering a manual address.
@@ -171,7 +179,7 @@
       showManualAddress(centralHubElement);
     } else if ($(this).val() == 0) {
       // If choosing the empty option, clear out the address fields.
-      hideManualAddress(centralHubElement, 'hard');
+      hideManualAddress(centralHubElement, 'hard', drupalSettings);
     }
   };
 
@@ -202,15 +210,17 @@
       $('.js-webform-type-localgov-webform-uk-address', context).once('localgov-address-webform').each(function () {
         var centralHubElement = $(this);
         addManualEntryButton(centralHubElement);
+
         // Hide the manual address element, if it has no values.
         if (!isManualAddressEntered(centralHubElement)) {
-          hideManualAddress(centralHubElement, 'soft');
+          hideManualAddress(centralHubElement, 'soft', settings);
         }
+
         // centralHubElement.find('.js-address-searchstring').change(function() {
         //   hideManualAddress(centralHubElement, 'hard');
         // });
         centralHubElement.find('.js-reset-address').click(function () {
-          hideManualAddress(centralHubElement, 'hard');
+          hideManualAddress(centralHubElement, 'hard', settings);
         });
         hideAddressSearchErrors(centralHubElement);
       });
