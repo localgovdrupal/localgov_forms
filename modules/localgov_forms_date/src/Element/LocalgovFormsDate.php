@@ -2,6 +2,7 @@
 
 namespace Drupal\localgov_forms_date\Element;
 
+use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Datetime\Element\Datelist;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -26,9 +27,8 @@ class LocalgovFormsDate extends Datelist {
       '#process' => [
         [static::class, 'processDatelist'],
       ],
-      '#theme' => 'localgov_forms_date',
-      // '#theme' => 'datetime_form',
-      '#theme_wrappers' => ['localgov_forms_date_wrapper'],
+      '#theme' => 'datetime_form',
+      '#theme_wrappers' => ['datetime_wrapper'],
       '#date_part_order' => ['day', 'month', 'year'],
       '#date_text_parts' => ['day', 'month', 'year'],
       '#date_year_range' => '1900:2050',
@@ -36,6 +36,31 @@ class LocalgovFormsDate extends Datelist {
       '#date_date_callbacks' => [],
       '#date_timezone' => date_default_timezone_get(),
     ];
+  }
+
+  /**
+   * Wrapper over Datelist::valueCallback().
+   *
+   * Absorbs non-numeric day, month, or year values such as "1a", "dd", etc.
+   * Such values leads PHP 8.x's checkdate() to throw TypeError exceptions
+   * which core's Datelist class does not process gracefully yet.
+   */
+  public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
+    try {
+      return parent::valueCallback($element, $input, $form_state);
+    }
+    catch (\TypeError $e) {
+      // This error msg will cancel any other error message added in
+      // ::areDatePartsNumeric().
+      // @see https://www.drupal.org/project/drupal/issues/2818437
+      $form_state->setError($element, t('Non-numeric date parts detected.'));
+
+      // Suppress PHP warning in Datelist::validateDatelist().
+      $placeholder_date = DateTimePlus::createFromArray([], $element['#date_timezone']);
+      $return = $input;
+      $return['object'] = $placeholder_date;
+      return $return;
+    }
   }
 
   /**

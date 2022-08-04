@@ -23,6 +23,10 @@
   margin: 0.5em;
 }
 
+.localgov-forms-date > .form-item--error-message {
+  flex: 0 0 100%;
+}
+
 @media screen and (min-width: 64rem) {
   .localgov-forms-date div[class*="-day"] {
     max-width: 6%;
