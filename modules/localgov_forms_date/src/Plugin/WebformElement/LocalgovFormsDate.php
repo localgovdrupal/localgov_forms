@@ -101,4 +101,22 @@ class LocalgovFormsDate extends DateList {
     return $element;
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * DateBase::setDefaultValue() can only process datelist and datetime
+   * elements.  So here we pretend that we are a datelist element.  This is
+   * particularly important when this element is used as part of a composite
+   * element such as a multipage form.
+   *
+   * @see Drupal\Webform\Plugin\WebformElement\DateBase::setDefaultValue()
+   */
+  public function setDefaultValue(array &$element) {
+
+    $orig_type = $element['#type'];
+    $element['#type'] = 'datelist';
+    parent::setDefaultValue($element);
+    $element['#type'] = $orig_type;
+  }
+
 }
