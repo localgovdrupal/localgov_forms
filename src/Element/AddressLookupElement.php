@@ -55,6 +55,7 @@ class AddressLookupElement extends FormElement {
       '#address_search_description' => '',
       '#address_select_title'       => '',
       '#geocoder_plugins'           => [],
+      '#always_display_manual_address_entry_btn' => 'yes',
     ];
   }
 
@@ -110,7 +111,7 @@ class AddressLookupElement extends FormElement {
         'address_search', 'address_actions', 'address_searchbutton',
       ]),
       '#type' => 'button',
-      '#value' => t('Search'),
+      '#value' => t('Find address'),
       '#limit_validation_errors' => [],
       '#ajax' => [
         'callback' => [
@@ -153,7 +154,7 @@ class AddressLookupElement extends FormElement {
       '#attributes' => [
         'class' => ['js-address-select'],
       ],
-      '#address_type' => isset($element['#address_type']) ? $element['#address_type'] : 'residential',
+      '#address_type' => $element['#address_type'] ?? 'residential',
     ];
 
     if ($form_state->isProcessingInput()) {

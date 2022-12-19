@@ -43,6 +43,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
       '#address_search_description' => $element['#address_search_description'] ?? NULL,
       '#address_select_title' => $element['#address_select_title'] ?? NULL,
       '#geocoder_plugins' => $element['#geocoder_plugins'] ?? [],
+      '#always_display_manual_address_entry_btn' => $element['#always_display_manual_address_entry_btn'] ?? 'yes',
     ];
 
     $elements['address_entry'] = [
@@ -86,6 +87,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
     }
 
     $elements['#attached']['library'][] = 'localgov_forms/localgov_forms.address_select';
+    $elements['#attached']['drupalSettings']['centralHub']['isManualAddressEntryBtnAlwaysVisible'] = isset($element['#always_display_manual_address_entry_btn']) ? ($element['#always_display_manual_address_entry_btn'] === 'yes') : TRUE;
 
     return $elements;
   }
@@ -125,7 +127,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
 
     // Get the search string and selected value.
     $search_string = $value['address_lookup']['address_search']['address_searchstring'];
-    $selected = $value['address_lookup']['address_select']['address_select_list'];
+    $selected = $value['address_lookup']['address_select']['address_select_list'] ?? [];
 
     // Check to see if there are values in the address element form.
     $has_address_values = FALSE;

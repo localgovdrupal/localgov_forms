@@ -82,17 +82,41 @@ class LocalgovFormsDate extends DateList {
     // Set the property of the date of birth elements.
     $element['day']['#attributes']['placeholder'] = t('DD');
     $element['day']['#maxlength'] = 2;
+    $element['day']['#attributes']['inputmode'] = 'numeric';
+    $element['day']['#attributes']['pattern'] = '[0-9]*';
     $element['day']['#attributes']['class'][] = 'localgov_forms_date__day';
 
     $element['month']['#attributes']['placeholder'] = t('MM');
     $element['month']['#maxlength'] = 2;
+    $element['month']['#attributes']['inputmode'] = 'numeric';
+    $element['month']['#attributes']['pattern'] = '[0-9]*';
     $element['month']['#attributes']['class'][] = 'localgov_forms_date__month';
 
     $element['year']['#attributes']['placeholder'] = t('YYYY');
     $element['year']['#maxlength'] = 4;
+    $element['year']['#attributes']['inputmode'] = 'numeric';
+    $element['year']['#attributes']['pattern'] = '[0-9]*';
     $element['year']['#attributes']['class'][] = 'localgov_forms_date__year';
 
     return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * DateBase::setDefaultValue() can only process datelist and datetime
+   * elements.  So here we pretend that we are a datelist element.  This is
+   * particularly important when this element is used as part of a composite
+   * element such as a multipage form.
+   *
+   * @see Drupal\Webform\Plugin\WebformElement\DateBase::setDefaultValue()
+   */
+  public function setDefaultValue(array &$element) {
+
+    $orig_type = $element['#type'];
+    $element['#type'] = 'datelist';
+    parent::setDefaultValue($element);
+    $element['#type'] = $orig_type;
   }
 
 }
