@@ -2,9 +2,9 @@
 
 namespace Drupal\localgov_forms\Element;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
-use Drupal\Component\Utility\Html;
 
 /**
  * Provides a central hub address lookup element.
