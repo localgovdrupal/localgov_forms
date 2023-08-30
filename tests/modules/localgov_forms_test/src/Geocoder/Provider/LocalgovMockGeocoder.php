@@ -7,9 +7,9 @@ namespace Drupal\localgov_forms_test\Geocoder\Provider;
 use Geocoder\Collection as LocationCollectionInterface;
 use Geocoder\Exception\UnsupportedOperation;
 use Geocoder\Model\AddressCollection;
+use Geocoder\Provider\Provider as ProviderInterface;
 use Geocoder\Query\GeocodeQuery;
 use Geocoder\Query\ReverseQuery;
-use Geocoder\Provider\Provider as ProviderInterface;
 use LocalgovDrupal\OsPlacesGeocoder\Model\OsPlacesAddress;
 
 /**
