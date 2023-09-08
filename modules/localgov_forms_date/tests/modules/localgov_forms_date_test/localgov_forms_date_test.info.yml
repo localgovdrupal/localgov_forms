@@ -2,7 +2,7 @@ name: 'Localgov form date test'
 description: 'Helper module to setup a webform with a localgov_forms_date field.'
 type: module
 package: Testing
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 
 dependencies:
 - webform:webform
