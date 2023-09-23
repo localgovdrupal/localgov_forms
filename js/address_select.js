@@ -207,7 +207,7 @@
   // Attach after an ajax refresh
   Drupal.behaviors.localgov_forms_webform = {
     attach: function (context, settings) {
-      $('.js-webform-type-localgov-webform-uk-address', context).once('localgov-address-webform').each(function () {
+      $(once('localgov-address-webform', '.js-webform-type-localgov-webform-uk-address', context)).each(function () {
         var centralHubElement = $(this);
         addManualEntryButton(centralHubElement);
 
@@ -226,14 +226,10 @@
       });
 
       // Manual address change handler first.
-      $(document).once('.js-address-entry-container input', context).ajaxSuccess(function (event, data) {
-        $('.js-address-entry-container input').on('change', localgov_forms_webform_manual_address_change_handler);
-      });
+      $('.js-address-entry-container input').on('change', localgov_forms_webform_manual_address_change_handler);
 
       // Select box change handler.
-      $(document).once('.js-address-select-container', context).ajaxSuccess(function (event, data) {
-        $('.js-address-select').on('change', localgov_forms_webform_change_handler);
-      });
+      $('.js-address-select').on('change', localgov_forms_webform_change_handler);
     },
     detach: function (context, settings, trigger) {
       $('.js-address-entry-container input').off('change', localgov_forms_webform_manual_address_change_handler);

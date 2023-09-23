@@ -80,7 +80,7 @@
     attach: function (context, settings) {
 
       // Behaviors to only attach once.
-      $('.js-centralhub-address-lookup', context).once('central-hub-behaviours').each(function () {
+      $(once('central-hub-behaviours', '.js-centralhub-address-lookup', context)).each(function () {
         // Get form elements.
         var addressLookupElement = $(this);
         var searchElement = addressLookupElement.find('.js-address-searchstring');
