@@ -2,8 +2,8 @@
 
 namespace Drupal\localgov_forms\Plugin\WebformElement;
 
-use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'localgov_webform_uk_address' Webform element.

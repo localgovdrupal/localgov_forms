@@ -2,8 +2,8 @@
 
 namespace Drupal\localgov_forms_date\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElement\DateList;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Plugin\WebformElement\DateList;
 
 /**
  * Provides a 'localgov_forms_date' element.

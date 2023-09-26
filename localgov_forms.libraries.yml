@@ -21,6 +21,7 @@ localgov_forms.address_select:
   dependencies:
     - localgov_forms/localgov_forms.address_change
     - core/drupal
+    - core/once
     - core/jquery
 
 localgov_forms.address_change:
@@ -29,4 +30,5 @@ localgov_forms.address_change:
     js/address_change.js: {}
   dependencies:
     - core/drupal
+    - core/once
     - core/jquery
