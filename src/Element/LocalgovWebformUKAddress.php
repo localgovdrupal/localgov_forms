@@ -17,6 +17,12 @@ use Drupal\webform\Utility\WebformElementHelper;
  * Webform composite can not contain multiple value elements (i.e. checkboxes)
  * or composites (i.e. webform_address)
  *
+ * Tokens for sub-elements of composite webform elements are available
+ * from webform submissions.  For this element, available sub-elements include:
+ * lat, lng, uprn, and ward.  The address_lookup and address_entry
+ * sub-elements always return empty token values.  Example token:
+ * [webform_submission:values:WEBFORM-ELEMENT-ID-GOES-HERE:uprn]
+ *
  * @FormElement("localgov_webform_uk_address")
  *
  * @see \Drupal\webform\Element\WebformCompositeBase
@@ -54,18 +60,6 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
       '#tree' => TRUE,
     ] + parent::getCompositeElements($element);
 
-    // Add UPRN element.
-    // Seperate element as the select box is dynamic and can get erased.
-    // This should also allow the default support in case management handler.
-    $elements['address_entry']['uprn'] = [
-      '#type' => 'hidden',
-      '#title' => 'UPRN',
-      '#default_value' => '',
-      '#attributes' => [
-        'class' => ['js-localgov-forms-webform-uk-address--uprn'],
-      ],
-    ];
-
     if (!empty($element['#webform_composite_elements']['address_entry']['#required'])) {
       $elements['address_entry']['address_1']['#required'] = TRUE;
       $elements['address_entry']['town_city']['#required'] = TRUE;
@@ -75,7 +69,7 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
     // Extras to store information for webform builders to access in
     // computed twig.
     // @See DRUP-1287.
-    $extra_elements = ['lat', 'lng', 'ward'];
+    $extra_elements = ['lat', 'lng', 'uprn', 'ward'];
     foreach ($extra_elements as $extra_element) {
       $elements[$extra_element] = [
         '#type' => 'hidden',

@@ -165,12 +165,9 @@
       central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--town-city').val(addressSelected.town);
       central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--postcode').val(addressSelected.postcode);
 
-      // add UPRN
-      central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--uprn').val(addressSelected.uprn);
-
       // Add any extra fields from centrahub for Twig access.
       // @See DRUP-1287.
-      var extra_elements = ['lat', 'lng', 'ward'];
+      var extra_elements = ['lat', 'lng', 'uprn', 'ward'];
       $.each(extra_elements, function (index, value) {
         central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val(addressSelected[value]);
       });
@@ -191,14 +188,10 @@
    */
   var localgov_forms_webform_manual_address_change_handler = function () {
     var central_hub_webform_address_container = $(this).closest('.js-webform-type-localgov-webform-uk-address');
-    var central_hub_webfrom_address_entry = $(this).closest('.js-address-entry-container');
-
-    // Clear UPRN.
-    central_hub_webfrom_address_entry.find('input.js-localgov-forms-webform-uk-address--uprn').val('');
 
     // Clear any extra fields from centrahub for Twig access.
     // @See DRUP-1287.
-    var extra_elements = ['lat', 'lng', 'ward'];
+    var extra_elements = ['lat', 'lng', 'uprn', 'ward'];
     $.each(extra_elements, function (index, value) {
       central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val('');
     });
