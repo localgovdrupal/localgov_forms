@@ -3,6 +3,7 @@
 namespace Drupal\localgov_forms\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -10,7 +11,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @WebformElement(
  *   id = "localgov_webform_uk_address",
- *   label = @Translation("Localgov address lookup"),
+ *   label = @Translation("LocalGov address lookup"),
  *   description = @Translation("Provides a UK address lookup element."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
@@ -24,7 +25,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * @see \Drupal\webform\Plugin\WebformElementInterface
  * @see \Drupal\webform\Annotation\WebformElement
  */
-class LocalgovWebformUKAddress extends WebformUKAddress {
+class UKAddressLookup extends WebformCompositeBase {
 
   /**
    * Declares our properties.

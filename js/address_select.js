@@ -32,9 +32,9 @@
   /**
    * Hide manual address form.
    *
-   * @param  {jQuery} centralHubElement
+   * @param {jQuery} centralHubElement
    *   Central hub address lookup element.
-   * @param  {String} type
+   * @param {String} type
    *   'soft' = Do not clear the address values.
    *            (used when an address is selected)
    *   'hard' = Clear the address values.
@@ -87,7 +87,8 @@
 
   /**
    * Check if a manual address has been entered.
-   * @param  {jQuery}  centralHubElement
+   *
+   * @param {jQuery} centralHubElement
    *   Centralhub address element.
    * @return {Boolean}
    *   True if the a manual address is present and the search box is empty.
@@ -110,7 +111,8 @@
 
   /**
    * Hide errors on an element
-   * @param  {jQuery} indvElement
+   *
+   * @param {jQuery} indvElement
    *   The individual form input element to hide errors.
    */
   function hideErrorsOnElement(indvElement) {
