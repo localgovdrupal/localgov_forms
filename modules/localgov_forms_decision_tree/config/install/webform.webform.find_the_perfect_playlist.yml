@@ -1,0 +1,504 @@
+uuid: 42604f35-8aa4-4d8b-a7d2-5d8094f638ce
+langcode: en
+status: open
+dependencies: {  }
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: find_the_perfect_playlist
+title: 'Find the Perfect Playlist'
+description: ''
+category: ''
+elements: |-
+  what_era_are_you_interested_in:
+    '#type': radios
+    '#title': 'What era are you interested in?'
+    '#options':
+      1980s: 1980s
+      1990s: 1990s
+  what_kind_of_music_do_you_like:
+    '#type': radios
+    '#title': 'What kind of music do you like?'
+    '#options':
+      Rock: Rock
+      Pop: Pop
+      Singer/Songwriter: Singer/Songwriter
+    '#states':
+      visible:
+        ':input[name="what_era_are_you_interested_in"]':
+          checked: true
+  do_you_prefer_metal_or_grunge:
+    '#type': radios
+    '#title': 'Do you prefer metal or grunge?'
+    '#options':
+      Metal: Metal
+      Grunge: Grunge
+    '#states':
+      visible:
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Rock
+  do_you_prefer_lyrics_or_music:
+    '#type': radios
+    '#title': 'Do you prefer lyrics or music?'
+    '#options':
+      Lyrics: Lyrics
+      Music: Music
+    '#states':
+      visible:
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Singer/Songwriter
+  do_you_prefer_artists_or_pop_stars:
+    '#type': radios
+    '#title': 'Do you prefer artists or pop stars?'
+    '#options':
+      Artists: Artists
+      Popstars: Popstars
+    '#states':
+      visible:
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Pop
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: both
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: page
+  confirmation_url: ''
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  1980s_rock_grunge:
+    id: settings
+    handler_id: 1980s_rock_grunge
+    label: '1980s Rock Grunge'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1980s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Rock
+        ':input[name="do_you_prefer_metal_or_grunge"]':
+          value: Grunge
+    weight: 0
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: "Because you like 1980s Rock music with a grunge style, we think you&#39;d like to listen to <a href=\"https://open.spotify.com/album/0DQyTVcDhK9wm0f6RaErWO?si=I8EcSzWeSRelONDRa8XNIQ\">The Pixies</a>.<br />\r\n<br />\r\n&nbsp;"
+  1980s_rock_metal:
+    id: settings
+    handler_id: 1980s_rock_metal
+    label: '1980s Rock Metal'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1980s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Rock
+        ':input[name="do_you_prefer_metal_or_grunge"]':
+          value: Metal
+    weight: 0
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: "Because you liked 1980s Rock with a hint of metal, we think you&#39;d like to listen to <a href=\"https://open.spotify.com/album/2Lq2qX3hYhiuPckC8Flj21?si=Hm1L1EITTCyJ2jAbbS-64g\">Metallica</a>.<br />\r\n<br />\r\n&nbsp;"
+  1980s_singer_songwriter_lyrics:
+    id: settings
+    handler_id: 1980s_singer_songwriter_lyrics
+    label: '1980s Singer/Songwriter Lyrics'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1980s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Singer/Songwriter
+        ':input[name="do_you_prefer_lyrics_or_music"]':
+          value: Lyrics
+    weight: 0
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you chose 1980s Singer Songwriters who are interested in lyrics, we think you would like to listen to <a href="https://open.spotify.com/album/2t2sAWQl1NwwHy793LyEfR?si=D_H0E1eOST2rkjbpgV6l6A">Leonard Cohen</a>.'
+  1980s_singer_songwriter_music:
+    id: settings
+    handler_id: 1980s_singer_songwriter_music
+    label: '1980s Singer/Songwriter Music'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1980s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Singer/Songwriter
+        ':input[name="do_you_prefer_lyrics_or_music"]':
+          value: Music
+    weight: 0
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you liked 1980s Singer Songwriters interested in music, we think you&#39;d like to listen to <a href="https://open.spotify.com/album/24TAupSNVWSAHL0R7n71vm?si=hsMCExBgQlS5_mK3TzKkoQ">Michael Jackson</a>.'
+  1980s_pop_artist:
+    id: settings
+    handler_id: 1980s_pop_artist
+    label: '1980s Pop Artist'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you chose 1980s Pop Artist, we think you&#39;d like to listen to <a href="https://open.spotify.com/album/5MzwGwnO9gkh0z6Nl4FF8h?si=-utR83C7TxOtqqaFgIPDWw">Madonna</a>.'
+  1980s_pop_popstar:
+    id: settings
+    handler_id: 1980s_pop_popstar
+    label: '1980s Pop Popstar'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1980s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Pop
+        ':input[name="do_you_prefer_artists_or_pop_stars"]':
+          value: Popstars
+    weight: 0
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you chose 1980s pop popstar, we think you&#39;d like to listen to <a href="https://open.spotify.com/artist/3vRclCt9VnNhYIxFMQCxuM?si=2szaowyPQtefcG2Lj2giKg">Milli Vanilli</a>.'
+  1990s_pop_artist:
+    id: settings
+    handler_id: 1990s_pop_artist
+    label: '1990s Pop Artist'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1990s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Pop
+        ':input[name="do_you_prefer_artists_or_pop_stars"]':
+          value: Artists
+    weight: 6
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you chose 1990s Pop Artist, we think you&#39;d like to listen to <a href="https://open.spotify.com/album/5Ap3F8CxjjsQKZGASDcHNA?si=TfRbUyyxTimyGlr-Ago4zA">Alanis Morissette</a>.'
+  1990s_pop_popstar:
+    id: settings
+    handler_id: 1990s_pop_popstar
+    label: '1990s Pop Popstar'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1990s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Pop
+        ':input[name="do_you_prefer_artists_or_pop_stars"]':
+          value: Popstars
+    weight: 7
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you chose 1990s pop popstar, we think you&#39;d like to listen to <a href="https://open.spotify.com/album/3x2jF7blR6bFHtk4MccsyJ?si=je5RPVsMQMeM6hE2VFivyA">Spice Girls</a>.'
+  1990s_rock_grunge:
+    id: settings
+    handler_id: 1990s_rock_grunge
+    label: '1990s Rock Grunge'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1990s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Rock
+        ':input[name="do_you_prefer_metal_or_grunge"]':
+          value: Grunge
+    weight: 8
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: "Because you like 1990s Rock music with a grunge style, we think you&#39;d like to listen to <a href=\"https://open.spotify.com/playlist/1f25bMPgqD6jeDoV1cGAkc?si=162834c5ce6e4b79\">Nirvana</a>.<br />\r\n<br />\r\n&nbsp;"
+  1990s_rock_metal:
+    id: settings
+    handler_id: 1990s_rock_metal
+    label: '1990s Rock Metal'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1990s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Rock
+        ':input[name="do_you_prefer_metal_or_grunge"]':
+          value: Metal
+    weight: 9
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: "Because you liked 1990s Rock with a hint of metal, we think you&#39;d like to listen to <a href=\"https://open.spotify.com/playlist/7j6LvcXMo8JkBzAgBmBVaN?si=352005d2e0554975\">Rage Against the Machine</a>.<br />\r\n<br />\r\n&nbsp;"
+  1990s_singer_songwriter_lyrics:
+    id: settings
+    handler_id: 1990s_singer_songwriter_lyrics
+    label: '1990s Singer/Songwriter Lyrics'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1990s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Singer/Songwriter
+        ':input[name="do_you_prefer_lyrics_or_music"]':
+          value: Lyrics
+    weight: 10
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you chose 1990s Singer Songwriters who are interested in lyrics, we think you would like to listen to <a href="https://open.spotify.com/album/2fDJpBJhtloxzUENHlU9JB?si=63Z12lEjTzmo0sMDqFvftQ">PJ Harvey</a>.'
+  1990s_singer_songwriter_music:
+    id: settings
+    handler_id: 1990s_singer_songwriter_music
+    label: '1990s Singer/Songwriter Music'
+    notes: ''
+    status: true
+    conditions:
+      enabled:
+        ':input[name="what_era_are_you_interested_in"]':
+          value: 1990s
+        ':input[name="what_kind_of_music_do_you_like"]':
+          value: Singer/Songwriter
+        ':input[name="do_you_prefer_lyrics_or_music"]':
+          value: Music
+    weight: 11
+    settings:
+      debug: ''
+      preview_title: ''
+      preview_message: ''
+      confirmation_url: ''
+      confirmation_title: ''
+      confirmation_message: 'Because you liked 1990s Singer Songwriters interested in music, we think you&#39;d like to listen to <a href="https://open.spotify.com/album/3Gby5NNeNYkMgAnrtEA3lc?si=PTO70whlTGmRWt2u1zflGA">Jennifer Lopez</a>.'
+variants: {  }
