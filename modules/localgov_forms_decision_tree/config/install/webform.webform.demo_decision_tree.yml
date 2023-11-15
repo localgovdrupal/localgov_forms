@@ -7,9 +7,9 @@ close: null
 uid: 1
 template: false
 archive: false
-id: find_the_perfect_playlist
-title: 'Find the Perfect Playlist'
-description: ''
+id: demo_decision_tree
+title: 'Demo Decision Tree: Find the Perfect Playlist'
+description: 'An example of how to create a decision tree/smart answer form.'
 category: ''
 elements: |-
   what_era_are_you_interested_in:
