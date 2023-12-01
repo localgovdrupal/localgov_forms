@@ -111,12 +111,11 @@ class UKAddressLookup extends WebformCompositeBase {
   protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $value = $this->getValue($element, $webform_submission, $options);
 
-    $lines = [];
-    $lines[] =
-      ($value['address_1'] ? $value['address_1'] : '') .
+    $full_address_line = ($value['address_1'] ? $value['address_1'] : '') .
       ($value['address_2'] ? ' ' . $value['address_2'] : '') .
       ($value['town_city'] ? ' ' . $value['town_city'] : '') .
       ($value['postcode'] ? ' ' . $value['postcode'] : '');
+    $lines = $full_address_line ? [$full_address_line]: [];
     return $lines;
   }
 
