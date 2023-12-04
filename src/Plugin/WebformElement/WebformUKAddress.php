@@ -11,7 +11,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * @WebformElement(
  *   id = "webform_uk_address",
  *   label = @Translation("UK Address"),
- *   description = @Translation("Provides a UK address lookup webform element."),
+ *   description = @Translation("Provides a UK address entry webform element."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
  *   composite = TRUE,
