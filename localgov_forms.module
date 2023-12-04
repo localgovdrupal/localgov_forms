@@ -5,11 +5,18 @@
  * Hook implementations.
  */
 
+use Drupal\Core\Render\Element;
+
 /**
  * Implements hook_theme().
  */
 function localgov_forms_theme() {
   return [
+    // Form element: localgov_webform_uk_address.
+    'localgov_forms_uk_address_lookup' => [
+      'render element' => 'element',
+    ],
+    // Form element: webform_uk_address.
     'localgov_forms_uk_address' => [
       'render element' => 'element',
     ],
@@ -17,19 +24,33 @@ function localgov_forms_theme() {
 }
 
 /**
- * Prepares variables for BHCC Webform templates.
+ * Implements hook_preprocess_localgov_forms_uk_address_lookup().
  *
- * Default template: localgov-forms-uk-address.html.twig.
+ * Prepares variables for the Address lookup element template.
  *
- * @param array $variables
- *   An associative array containing:
- *   - element: An associative array containing the properties of the element.
+ * Makes sub-elements available within the `content` variable.  Mostly lifted
+ * from _template_preprocess_webform_composite().
  */
-function template_preprocess_localgov_forms_uk_address(array &$variables) {
-  // Here you can get the composite element and alter it.
-  Drupal::moduleHandler()->loadInclude('webform', 'inc', 'includes/webform.theme.template');
+function localgov_forms_preprocess_localgov_forms_uk_address_lookup(array &$variables) {
 
-  _template_preprocess_webform_composite($variables);
+  $element = $variables['element'];
+  foreach (Element::children($element) as $key) {
+    if (!isset($element[$key]['#access']) || $element[$key]['#access']) {
+      $variables['content'][$key] = $element[$key];
+    }
+  }
+
+  $variables['flexbox'] = $element['#flexbox'] ?? FALSE;
+}
+
+/**
+ * Implements hook_preprocess_localgov_forms_uk_address().
+ *
+ * Prepares variables for the UK address element template.
+ */
+function localgov_forms_preprocess_localgov_forms_uk_address(array &$variables) {
+
+  localgov_forms_preprocess_localgov_webform_uk_address($variables);
 }
 
 /**

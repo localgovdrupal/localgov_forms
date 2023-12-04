@@ -3,6 +3,7 @@
 namespace Drupal\localgov_forms\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -10,7 +11,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @WebformElement(
  *   id = "localgov_webform_uk_address",
- *   label = @Translation("Localgov address lookup"),
+ *   label = @Translation("LocalGov address lookup"),
  *   description = @Translation("Provides a UK address lookup element."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
@@ -24,7 +25,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * @see \Drupal\webform\Plugin\WebformElementInterface
  * @see \Drupal\webform\Annotation\WebformElement
  */
-class LocalgovWebformUKAddress extends WebformUKAddress {
+class UKAddressLookup extends WebformCompositeBase {
 
   /**
    * Declares our properties.
@@ -110,12 +111,11 @@ class LocalgovWebformUKAddress extends WebformUKAddress {
   protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $value = $this->getValue($element, $webform_submission, $options);
 
-    $lines = [];
-    $lines[] =
-      ($value['address_1'] ? $value['address_1'] : '') .
+    $full_address_line = ($value['address_1'] ? $value['address_1'] : '') .
       ($value['address_2'] ? ' ' . $value['address_2'] : '') .
       ($value['town_city'] ? ' ' . $value['town_city'] : '') .
       ($value['postcode'] ? ' ' . $value['postcode'] : '');
+    $lines = $full_address_line ? [$full_address_line] : [];
     return $lines;
   }
 

@@ -13,7 +13,7 @@ use Drupal\webform\Plugin\WebformElementBase;
  *
  * @WebformElement(
  *   id = "localgov_forms_address_lookup",
- *   label = @Translation("LocalGov Address lookup"),
+ *   label = @Translation("LocalGov Address select"),
  *   description = @Translation("Address lookup element."),
  *   category = @Translation("LocalGov Forms"),
  *   hidden = TRUE,
