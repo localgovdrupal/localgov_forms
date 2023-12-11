@@ -24,14 +24,12 @@ function localgov_forms_theme() {
 }
 
 /**
- * Implements hook_preprocess_localgov_forms_uk_address_lookup().
- *
  * Prepares variables for the Address lookup element template.
  *
  * Makes sub-elements available within the `content` variable.  Mostly lifted
  * from _template_preprocess_webform_composite().
  */
-function localgov_forms_preprocess_localgov_forms_uk_address_lookup(array &$variables) {
+function template_preprocess_localgov_forms_uk_address_lookup(array &$variables) {
 
   $element = $variables['element'];
   foreach (Element::children($element) as $key) {
@@ -44,13 +42,11 @@ function localgov_forms_preprocess_localgov_forms_uk_address_lookup(array &$vari
 }
 
 /**
- * Implements hook_preprocess_localgov_forms_uk_address().
- *
  * Prepares variables for the UK address element template.
  */
-function localgov_forms_preprocess_localgov_forms_uk_address(array &$variables) {
+function template_preprocess_localgov_forms_uk_address(array &$variables) {
 
-  localgov_forms_preprocess_localgov_webform_uk_address($variables);
+  template_preprocess_localgov_forms_uk_address_lookup($variables);
 }
 
 /**
