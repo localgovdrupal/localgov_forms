@@ -27,7 +27,7 @@ class AddressLookup {
       return [];
     }
 
-    $formatted_addr_list = array_map('self::reformat', iterator_to_array($addr_list));
+    $formatted_addr_list = array_map(static::reformat(...), iterator_to_array($addr_list));
 
     return $formatted_addr_list;
   }
