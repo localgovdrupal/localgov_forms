@@ -42,7 +42,7 @@ elements: |-
       localgov_mock_geocoder: localgov_mock_geocoder
       nominatim: 0
       random: 0
-    '#always_display_manual_address_entry_btn': 'no'
+    '#always_display_manual_address_entry_btn': 'yes'
     '#local_custodian_code': 0
   actions:
     '#type': webform_actions
