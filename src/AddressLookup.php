@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\localgov_forms;
 
+use Drupal\Component\Plugin\ConfigurableInterface as ConfigurablePluginInterface;
 use Drupal\geocoder\GeocoderInterface;
 use Geocoder\Location;
 use LocalgovDrupal\OsPlacesGeocoder\Model\AddressUprnInterface;
@@ -21,11 +22,11 @@ class AddressLookup {
   public function search(array $search_param, array $geocoder_plugin_ids, int $local_custodian_code = 0) :array {
 
     $search_str = self::toSearchStr($search_param);
-    $geocoder_plugins = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
+    $geocoder_providers = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
 
-    array_walk($geocoder_plugins, static::applyLocalCustodianCode(...), $local_custodian_code);
+    array_walk($geocoder_providers, static::applyLocalCustodianCode(...), $local_custodian_code);
 
-    $addr_list = $this->geocoder->geocode($search_str, $geocoder_plugins);
+    $addr_list = $this->geocoder->geocode($search_str, $geocoder_providers);
     if (is_null($addr_list) || $addr_list === FALSE) {
       return [];
     }
@@ -51,11 +52,16 @@ class AddressLookup {
   /**
    * As it says on the tin.
    */
-  public static function applyLocalCustodianCode($geocoder_plugin, $ignore, $local_custodian_code = 0) {
+  public static function applyLocalCustodianCode($geocoder_provider, $ignore, $local_custodian_code = 0) {
 
-    $plugin_config = $geocoder_plugin->getPlugin()->getConfiguration();
+    $geocoder_plugin = $geocoder_provider->getPlugin();
+    if (!$geocoder_plugin instanceof ConfigurablePluginInterface) {
+      return;
+    }
+
+    $plugin_config = $geocoder_plugin->getConfiguration();
     $plugin_config['local_custodian_code'] = $local_custodian_code;
-    $geocoder_plugin->getPlugin()->setConfiguration($plugin_config);
+    $geocoder_plugin->setConfiguration($plugin_config);
   }
 
   /**
