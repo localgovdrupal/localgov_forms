@@ -51,6 +51,7 @@ class UKAddressLookup extends WebformCompositeBase {
       '#address_search_description' => $element['#address_search_description'] ?? NULL,
       '#address_select_title' => $element['#address_select_title'] ?? NULL,
       '#geocoder_plugins' => $element['#geocoder_plugins'] ?? [],
+      '#local_custodian_code' => $element['#local_custodian_code'] ?? 0,
       '#always_display_manual_address_entry_btn' => $element['#always_display_manual_address_entry_btn'] ?? 'yes',
     ];
 
