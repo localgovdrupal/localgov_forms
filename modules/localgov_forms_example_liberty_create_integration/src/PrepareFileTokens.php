@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\localgov_forms;
+namespace Drupal\localgov_forms_example_liberty_create_integration;
 
 use Drupal\webform\WebformSubmissionInterface;
 
