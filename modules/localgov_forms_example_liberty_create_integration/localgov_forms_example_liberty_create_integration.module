@@ -13,6 +13,28 @@ use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
+ * Implements hook_modules_installed().
+ *
+ * Whitelists the following environment variables:
+ * - DRUPAL_LIBERTY_CREATE_API_AUTH_KEY
+ * - DRUPAL_LIBERTY_CREATE_API_USERNAME
+ * - DRUPAL_LIBERTY_CREATE_API_USER_KEY.
+ */
+function localgov_forms_example_liberty_create_integration_modules_installed($modules, $is_syncing) {
+
+  if (!$is_syncing && in_array('token_environment', $modules)) {
+    $token_env_config   = Drupal::service('config.factory')->getEditable('token_environment.settings');
+    $allowed_env_vars   = $token_env_config->get('allowed_env_variables') ?? [];
+    $allowed_env_vars[] = 'DRUPAL_LIBERTY_CREATE_API_AUTH_KEY';
+    $allowed_env_vars[] = 'DRUPAL_LIBERTY_CREATE_API_USERNAME';
+    $allowed_env_vars[] = 'DRUPAL_LIBERTY_CREATE_API_USER_KEY';
+    $token_env_config
+      ->set('allowed_env_variables', $allowed_env_vars)
+      ->save();
+  }
+}
+
+/**
  * Implements hook_tokens_alter().
  *
  * Extracts the firstname and lastname from a Webform submission token value for
