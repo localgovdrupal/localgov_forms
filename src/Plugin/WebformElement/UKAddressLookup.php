@@ -28,19 +28,32 @@ use Drupal\webform\WebformSubmissionInterface;
 class UKAddressLookup extends WebformCompositeBase {
 
   /**
-   * Declares our properties.
+   * Declares and overrides properties.
    *
-   * Configurable properties:
+   * Declares these configurable properties:
    * - geocoder_plugins
    * - always_display_manual_address_entry_btn.
+   *
+   * Overrides the `title_display` property.  By default, composite elements
+   * keep their title invisible.  We want it to be very much visible.
+   *
+   * @see Drupal\webform\Plugin\WebformElementBase::form()
    *
    * {@inheritdoc}
    */
   protected function defineDefaultProperties() {
 
     $parent_properties = parent::defineDefaultProperties();
+
     $parent_properties['geocoder_plugins'] = [];
     $parent_properties['always_display_manual_address_entry_btn'] = 'yes';
+
+    // We are trying to select the "Default" title display setting which results
+    // in a visible title.  But the "Default" option uses an empty string as its
+    // key and providing an empty key here does nothing.  As a work-around, we
+    // are using "default" which, while not among the available option keys,
+    // does the job perfectly.
+    $parent_properties['title_display'] = 'default';
 
     return $parent_properties;
   }
