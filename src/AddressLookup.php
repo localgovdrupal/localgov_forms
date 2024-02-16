@@ -6,6 +6,7 @@ namespace Drupal\localgov_forms;
 
 use Drupal\geocoder\GeocoderInterface;
 use Geocoder\Location;
+use Geocoder\Query\GeocodeQuery;
 use LocalgovDrupal\OsPlacesGeocoder\Model\AddressUprnInterface;
 
 /**
@@ -20,12 +21,10 @@ class AddressLookup {
    */
   public function search(array $search_param, array $geocoder_plugin_ids, int $local_custodian_code = 0) :array {
 
-    $search_str = self::toSearchStr($search_param);
-    $geocoder_plugins = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
+    $search_query = self::toSearchQuery($search_param, $local_custodian_code);
+    $geocoder_providers = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
 
-    array_walk($geocoder_plugins, static::applyLocalCustodianCode(...), $local_custodian_code);
-
-    $addr_list = $this->geocoder->geocode($search_str, $geocoder_plugins);
+    $addr_list = $this->geocoder->geocode($search_query, $geocoder_providers);
     if (is_null($addr_list) || $addr_list === FALSE) {
       return [];
     }
@@ -36,26 +35,17 @@ class AddressLookup {
   }
 
   /**
-   * Turns search parameters into a search string.
-   *
-   * This search string is suitable for geocoding.
+   * Turns search parameters into a Geo search query.
    *
    * @see Drupal\geocoder_address\AddressService::addressArrayToGeoString()
    */
-  public static function toSearchStr(array $param) :string {
+  public static function toSearchQuery(array $text_param, int $local_custodian_code = 0) :GeocodeQuery {
 
-    $str = implode(' ', $param);
-    return $str;
-  }
+    $search_str = implode(' ', $text_param);
+    $geo_query = GeocodeQuery::create($search_str);
+    $geo_query = $geo_query->withData('local_custodian_code', $local_custodian_code);
 
-  /**
-   * As it says on the tin.
-   */
-  public static function applyLocalCustodianCode($geocoder_plugin, $ignore, $local_custodian_code = 0) {
-
-    $plugin_config = $geocoder_plugin->getPlugin()->getConfiguration();
-    $plugin_config['local_custodian_code'] = $local_custodian_code;
-    $geocoder_plugin->getPlugin()->setConfiguration($plugin_config);
+    return $geo_query;
   }
 
   /**
