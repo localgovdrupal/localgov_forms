@@ -5,7 +5,7 @@
  * Hook implementations.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\localgov_forms_example_liberty_create_integration\PrepareFileTokens;
