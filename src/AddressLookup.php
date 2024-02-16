@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Drupal\localgov_forms;
 
+use Drupal\Component\Plugin\ConfigurableInterface as ConfigurablePluginInterface;
 use Drupal\geocoder\GeocoderInterface;
 use Geocoder\Location;
 use Geocoder\Query\GeocodeQuery;
