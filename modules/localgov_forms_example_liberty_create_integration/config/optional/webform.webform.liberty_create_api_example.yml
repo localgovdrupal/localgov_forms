@@ -1,0 +1,367 @@
+langcode: en
+status: open
+dependencies: {  }
+weight: 0
+open: null
+close: null
+uid: 3
+template: false
+archive: false
+id: liberty_create_api_example
+title: 'Liberty Create API integration example'
+description: ''
+categories:
+  - Example
+elements: |-
+  name:
+    '#type': webform_name
+    '#title': Name
+    '#required': true
+    '#title__access': false
+    '#first__title': 'First name'
+    '#middle__access': false
+    '#last__title': 'Last name'
+    '#last__required': true
+    '#suffix__access': false
+    '#degree__access': false
+  email:
+    '#type': webform_email_confirm
+    '#title': Email
+  phone:
+    '#type': tel
+    '#title': 'Mobile phone number'
+    '#description': '<p>Used for text messaging. &nbsp;Avoid spaces or dashes.</p>'
+    '#placeholder': 07NNNNNNNNN
+    '#pattern': '^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$'
+    '#telephone_validation_format': '2'
+    '#telephone_validation_country': GB
+  details_of_enquiry:
+    '#type': textarea
+    '#title': 'Details of enquiry'
+    '#placeholder': 'Anything else you would like to add.'
+  case_address:
+    '#type': localgov_webform_uk_address
+    '#title': 'Case address'
+    '#geocoder_plugins':
+      localgov_os_places: localgov_os_places
+      geo_entity_demo_photon: 0
+      geo_entity_osm: 0
+      localgov_default_osm: 0
+      photon: photon
+    '#always_display_manual_address_entry_btn': 'no'
+    '#title_display': before
+  residential_address:
+    '#type': localgov_webform_uk_address
+    '#title': 'Residential address'
+    '#geocoder_plugins':
+      localgov_os_places: localgov_os_places
+      geo_entity_demo_photon: 0
+      geo_entity_osm: 0
+      localgov_default_osm: 0
+      photon: photon
+    '#always_display_manual_address_entry_btn': 'no'
+    '#title_display': before
+    '#required': true
+  api_response:
+    '#type': value
+    '#title': 'CRM response'
+    '#value': '[webform:handler:remote_post:completed:payload:result]; [webform:handler:remote_post:completed:payload:error_code]; [webform:handler:remote_post:completed:payload:error_desc]'
+  api_result:
+    '#type': value
+    '#title': 'CRM result'
+    '#value': '[webform:handler:remote_post:completed:payload:data:0:result]; [webform:handler:remote_post:completed:payload:data:0:error_code]; [webform:handler:remote_post:completed:payload:data:0:error_desc]'
+  case_ref:
+    '#type': value
+    '#title': 'CRM case reference'
+    '#value': '[webform:handler:remote_post:completed:payload:data:0:data:0:liberty_create_case_reference]'
+  files:
+    '#type': managed_file
+    '#title': Files
+    '#multiple': true
+    '#sanitize': true
+  more_files:
+    '#type': managed_file
+    '#title': "More files' :-)"
+    '#multiple': true
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: both
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: index
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: page
+  confirmation_url: ''
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_attributes: {  }
+  confirmation_back: false
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: true
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  remote_post:
+    id: remote_post
+    handler_id: remote_post
+    label: 'Remote post'
+    notes: 'Saves everything in a Queue.  HTTP POST requests are later made by a queue worker.'
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      method: POST
+      type: json
+      excluded_data:
+        serial: serial
+        sid: sid
+        uuid: uuid
+        token: token
+        uri: uri
+        created: created
+        completed: completed
+        changed: changed
+        in_draft: in_draft
+        current_page: current_page
+        remote_addr: remote_addr
+        uid: uid
+        langcode: langcode
+        webform_id: webform_id
+        entity_type: entity_type
+        entity_id: entity_id
+        locked: locked
+        sticky: sticky
+        notes: notes
+        name: name
+        email: email
+        phone: phone
+        details_of_enquiry: details_of_enquiry
+        residential_address: residential_address
+        case_address: case_address
+        api_response: api_response
+        api_result: api_result
+        case_ref: case_ref
+        files: files
+        more_files: more_files
+      custom_data: ''
+      custom_options: |-
+        headers:
+          API-Authentication: "[env:DRUPAL_LIBERTY_CREATE_API_AUTH_KEY]"
+          API-Username: "[env:DRUPAL_LIBERTY_CREATE_API_USERNAME]"
+          API-User-Token: "[env:DRUPAL_LIBERTY_CREATE_API_USER_KEY]"
+      file_data: true
+      cast: false
+      debug: true
+      completed_url: 'https://example-build.oncreate.app/api/REST/case_to_crm/0.1'
+      completed_custom_data: |-
+        payload:
+          # client_unique_identifier is a required field.
+          client_unique_identifier: "[webform:id]/[webform_submission:sid]"
+          # "function" is also a required field.
+          function: case_to_crm_create_update_case
+          # So is "data".
+          data:
+            -
+              # source_system is a required field.
+              source_system: "Drupal Webforms" 
+              # source_ref is a required field.
+              source_ref: "[webform:id]/[webform_submission:sid]"
+              # Everything else below is optional.
+              date_time_created: "[webform_submission:completed:custom:d/m/Y H:i]"
+              resident_uprn: "[webform_submission:values:residential_address:uprn]"
+              case_uprn: "[webform_submission:values:case_address:uprn]"
+              first_name: "[webform_submission:values:name:first]"
+              last_name: "[webform_submission:values:name:last]"
+              telephone_number_for_texts: "[webform_submission:values:phone]"
+              email_address:  "[webform_submission:values:email]"
+              case_url:  "[webform_submission:token-view-url]"
+              nature_of_enquiry: "[webform:title]"
+              disposal_date: "[webform_submission:purge_date:custom:d/m/Y:clear]"
+              #
+              # Any other Webform submission token should be placed within the "details" field below.
+              details: |-
+                Case address: "[webform_submission:values:case_address:clear]"
+                Residential address: "[webform_submission:values:residential_address:clear]"
+                Details: "[webform_submission:values:details_of_enquiry:clear]"
+              # For file fields, we use inline YAML syntax to avoid indentation issues.  This is because file_details_for_liberty_create_api, our custom file token, gets replaced with several *other* tokens before the token value insertion round starts.
+              documents: ["[webform_submission:values:files:file_details_for_liberty_create_api]", "[webform_submission:values:more_files:file_details_for_liberty_create_api]"]
+      updated_url: ''
+      updated_custom_data: ''
+      deleted_url: ''
+      deleted_custom_data: ''
+      draft_created_url: ''
+      draft_created_custom_data: ''
+      draft_updated_url: ''
+      draft_updated_custom_data: ''
+      converted_url: ''
+      converted_custom_data: ''
+      message: ''
+      messages: {  }
+      error_url: ''
+variants: {  }
