@@ -55,6 +55,7 @@ class AddressLookupElement extends FormElement {
       '#address_search_description' => '',
       '#address_select_title'       => '',
       '#geocoder_plugins'           => [],
+      '#local_custodian_code'       => 0,
       '#always_display_manual_address_entry_btn' => 'yes',
     ];
   }
@@ -299,8 +300,9 @@ class AddressLookupElement extends FormElement {
     // Else make a new request.
     // This is to avoid multiple api lookup calls.
     if ($address_search !== self::$searchString || $address_type !== self::$addressType) {
-      $selected_plugin_ids = $address_element['#geocoder_plugins'];
-      self::$addressResults = \Drupal::service('localgov_forms.address_lookup')->search([$address_search], $selected_plugin_ids);
+      $selected_plugin_ids  = $address_element['#geocoder_plugins'];
+      $local_custodian_code = $address_element['#local_custodian_code'];
+      self::$addressResults = \Drupal::service('localgov_forms.address_lookup')->search([$address_search], $selected_plugin_ids, $local_custodian_code);
     }
     $address_list = self::$addressResults;
 
