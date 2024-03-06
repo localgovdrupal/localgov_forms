@@ -5,6 +5,9 @@
  * LocalGov Forms install file.
  */
 
+use Drupal\Component\Serialization\Yaml;
+use Drupal\webform\Entity\WebformOptions;
+
 /**
  * Implements hook_install().
  */
@@ -14,4 +17,26 @@ function localgov_forms_install() {
   $config = \Drupal::configFactory()->getEditable('localgov_forms.webform.settings');
   $settings = \Drupal::configFactory()->getEditable('webform.settings');
   $settings->setData($config->get())->save();
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Creates a Webform option for Local custodian codes.
+ */
+function localgov_forms_update_8001() {
+
+  $has_local_custodian_codes_option = Drupal::service('entity_type.manager')->getStorage('webform_options')->load('local_custodian_codes_gb');
+  if ($has_local_custodian_codes_option) {
+    return t('Skipping creating the Local custodian codes (GB) Webform option.  It already exists.');
+  }
+
+  $has_staged_local_custodian_codes_option_config = Drupal::service('config.storage.sync')->read('webform.webform_options.local_custodian_codes_gb');
+  if ($has_staged_local_custodian_codes_option_config) {
+    return t('Skipping creating the Local custodian codes (GB) Webform option.  A staged config file is already present.  Expecting that this staged config file will be imported soon.');
+  }
+
+  $local_custodian_codes_option = Yaml::decode(file_get_contents(__DIR__ . '/config/install/webform.webform_options.local_custodian_codes_gb.yml'));
+  $new_local_custodian_codes_option = WebformOptions::create($local_custodian_codes_option);
+  $new_local_custodian_codes_option->save();
 }

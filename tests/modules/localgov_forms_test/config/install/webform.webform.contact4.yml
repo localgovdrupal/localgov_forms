@@ -43,6 +43,7 @@ elements: |-
       nominatim: 0
       random: 0
     '#always_display_manual_address_entry_btn': 'no'
+    '#local_custodian_code': 0
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'

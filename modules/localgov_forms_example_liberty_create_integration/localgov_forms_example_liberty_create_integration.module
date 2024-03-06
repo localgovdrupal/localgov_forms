@@ -1,0 +1,143 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\localgov_forms_example_liberty_create_integration\PrepareFileTokens;
+use Drupal\webform\Plugin\WebformHandlerInterface;
+use Drupal\webform\WebformSubmissionInterface;
+
+/**
+ * Implements hook_modules_installed().
+ *
+ * Whitelists the following environment variables:
+ * - DRUPAL_LIBERTY_CREATE_API_AUTH_KEY
+ * - DRUPAL_LIBERTY_CREATE_API_USERNAME
+ * - DRUPAL_LIBERTY_CREATE_API_USER_KEY.
+ */
+function localgov_forms_example_liberty_create_integration_modules_installed($modules, $is_syncing) {
+
+  if (!$is_syncing && in_array('token_environment', $modules)) {
+    $token_env_config   = Drupal::service('config.factory')->getEditable('token_environment.settings');
+    $allowed_env_vars   = $token_env_config->get('allowed_env_variables') ?? [];
+    $allowed_env_vars[] = 'DRUPAL_LIBERTY_CREATE_API_AUTH_KEY';
+    $allowed_env_vars[] = 'DRUPAL_LIBERTY_CREATE_API_USERNAME';
+    $allowed_env_vars[] = 'DRUPAL_LIBERTY_CREATE_API_USER_KEY';
+    $token_env_config
+      ->set('allowed_env_variables', $allowed_env_vars)
+      ->save();
+  }
+}
+
+/**
+ * Implements hook_tokens_alter().
+ *
+ * Extracts the firstname and lastname from a Webform submission token value for
+ * a fullname.  When the fullname comprises just one word, that's used for both
+ * firstname and lastname.
+ *
+ * Example:
+ * When the `[webform_submission:values:name:clear]` token has a value of
+ * "Foo Bar",  `[webform_submission:values:name:extracted_firstname:clear]` will
+ * resolve to "Foo" and
+ * `[webform_submission:values:name:extracted_lastname:clear]` will resolve to
+ * "Bar".
+ */
+function localgov_forms_example_liberty_create_integration_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
+
+  if ($context['type'] === 'webform_submission' && !empty($context['data']['webform_submission'])) {
+    $firstname_extraction_tokens = array_filter($context['tokens'], fn($token) => strpos($token, ':extracted_firstname'));
+    $lastname_extraction_tokens = array_filter($context['tokens'], fn($token) => strpos($token, ':extracted_lastname'));
+
+    foreach ($firstname_extraction_tokens as $firstname_token) {
+      $name_parts = explode(' ', $replacements[$firstname_token]);
+      $replacements[$firstname_token] = current($name_parts);
+    }
+
+    foreach ($lastname_extraction_tokens as $lastname_token) {
+      $name_parts_again = explode(' ', $replacements[$lastname_token]);
+      $replacements[$lastname_token] = end($name_parts_again);
+    }
+  }
+}
+
+/**
+ * Implements hook_token_info_alter().
+ *
+ * Declares the
+ * `[webform_submission:values:element_key:file_details_for_liberty_create_api]`
+ * pseudo-token.
+ *
+ * @see localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter()
+ * @see localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_load_alter()
+ */
+function localgov_forms_example_liberty_create_integration_token_info_alter(&$token_info) {
+
+  $token_info['tokens']['webform_submission']['values:?:file_details_for_liberty_create_api'] = [
+    'name'        => t('File detail for Liberty Create API'),
+    'description' => t('Expands based on the number of uploaded files.  Replace question mark in the token name with machine id of a file element e.g. `[webform_submission:values:foo:file_details_for_liberty_create_api]`.  Available within the "Remote post" and "Async remote post" handlers\' "Completed custom data" settings only.'),
+  ];
+}
+
+/**
+ * Implements hook_webform_handler_invoke_METHOD_NAME_alter() for hook_webform_handler_invoke_post_save_alter().
+ */
+function localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter(WebformHandlerInterface $handler, array &$args) {
+
+  $handler_id = $handler->getHandlerId();
+  if ($handler_id === 'remote_post' || $handler_id === 'async_remote_post') {
+    _localgov_forms_example_liberty_create_integration_manage_remote_post_custom_data($handler);
+  }
+}
+
+/**
+ * Implements hook_webform_handler_invoke_METHOD_NAME_alter() for hook_webform_handler_invoke_post_load_alter().
+ *
+ * Relevant during Queue processing.
+ */
+function localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_load_alter(WebformHandlerInterface $handler, array &$args) {
+
+  localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter($handler, $args);
+}
+
+/**
+ * Updates "completed" custom data for the Remote post handler.
+ *
+ * The "Custom data" settings is a piece of YAML that is converted to a PHP
+ * array and then POSTed to the Remote post handler's target URL.  It can
+ * contain tokens including file tokens.  But the number of files uploaded is
+ * not predetermined.  So it is not possible for us to insert file tokens to
+ * provide details of each file.  To address this, we have come up with a
+ * pseudo-token
+ * `[webform_submission:values:ELEMENT-ID:file_details_for_liberty_create_api]`.
+ * Here we replace this single pseudu-token with multiple file tokens.  The
+ * number of tokens is tied to the number of files uploaded as part of a Webform
+ * submission.
+ *
+ * @see Drupal\webform\Plugin\WebformHandler\RemotePostWebformHandler::getRequestData()
+ */
+function _localgov_forms_example_liberty_create_integration_manage_remote_post_custom_data(WebformHandlerInterface $handler) {
+
+  $webform_submission = $handler->getWebformSubmission();
+  if (empty($webform_submission)) {
+    return;
+  }
+
+  $state = $webform_submission->getState();
+  if ($state !== WebformSubmissionInterface::STATE_COMPLETED) {
+    return;
+  }
+
+  $handler_config = $handler->getConfiguration();
+  $custom_data_to_post = $handler_config['settings']['completed_custom_data'] ?? '';
+  $custom_data_to_post_w_file_tokens = PrepareFileTokens::expandAllPseudoTokens($custom_data_to_post, $webform_submission);
+
+  $updated_handler_config = $handler_config;
+  $updated_handler_config['settings']['completed_custom_data'] = $custom_data_to_post_w_file_tokens;
+  $handler->setConfiguration($updated_handler_config);
+}

@@ -1,0 +1,9 @@
+name: LocalGov Forms example Liberty Create integration
+type: module
+description: Liberty Create API integration example.
+core_version_requirement: ^10
+package: LocalGov Drupal
+
+dependencies:
+  - localgov_forms:localgov_forms
+  - token_environment:token_environment

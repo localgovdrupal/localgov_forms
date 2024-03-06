@@ -3,6 +3,7 @@
 namespace Drupal\localgov_forms\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -28,19 +29,33 @@ use Drupal\webform\WebformSubmissionInterface;
 class UKAddressLookup extends WebformCompositeBase {
 
   /**
-   * Declares our properties.
+   * Declares and overrides properties.
    *
-   * Configurable properties:
+   * Declares these configurable properties:
    * - geocoder_plugins
    * - always_display_manual_address_entry_btn.
+   *
+   * Overrides the `title_display` property.  By default, composite elements
+   * keep their title invisible.  We want it to be very much visible.
+   *
+   * @see Drupal\webform\Plugin\WebformElementBase::form()
    *
    * {@inheritdoc}
    */
   protected function defineDefaultProperties() {
 
     $parent_properties = parent::defineDefaultProperties();
+
     $parent_properties['geocoder_plugins'] = [];
     $parent_properties['always_display_manual_address_entry_btn'] = 'yes';
+    $parent_properties['local_custodian_code'] = 0;
+
+    // We are trying to select the "Default" title display setting which results
+    // in a visible title.  But the "Default" option uses an empty string as its
+    // key and providing an empty key here does nothing.  As a work-around, we
+    // are using "default" which, while not among the available option keys,
+    // does the job perfectly.
+    $parent_properties['title_display'] = 'default';
 
     return $parent_properties;
   }
@@ -95,6 +110,17 @@ class UKAddressLookup extends WebformCompositeBase {
       ],
     ];
 
+    // Restrict address lookup to a certain local authority.
+    if ($local_custodian_webform_options = WebformOptions::load(self::LOCAL_CUSTODIAN_WEBFORM_OPTION_ENTITY_ID)) {
+      $parent_form['element']['local_custodian_code'] = [
+        '#type'        => 'select',
+        '#title'       => $this->t('Local authority'),
+        '#options'     => $local_custodian_webform_options->getOptions() ?: [],
+        '#empty_value' => 0,
+        '#description' => $this->t('Restricts address lookup to a single local authority.  The default behaviour is to lookup throughout the country.  This will override site-wide local custodian code setting on any Geocoder plugin.  This setting is only relevant for Geocoder plugins that support the local custodian code feature such as the "LocalGov OS Places" geocoder plugin.'),
+      ];
+    }
+
     return $parent_form;
   }
 
@@ -118,5 +144,10 @@ class UKAddressLookup extends WebformCompositeBase {
     $lines = $full_address_line ? [$full_address_line] : [];
     return $lines;
   }
+
+  /**
+   * Webform Options entity for listing Local custodian code.
+   */
+  const LOCAL_CUSTODIAN_WEBFORM_OPTION_ENTITY_ID = 'local_custodian_codes_gb';
 
 }

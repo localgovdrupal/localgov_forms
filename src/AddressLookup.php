@@ -1,10 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Drupal\localgov_forms;
 
+use Drupal\geocoder\GeocoderInterface;
 use Geocoder\Location;
+use Geocoder\Query\GeocodeQuery;
 use LocalgovDrupal\OsPlacesGeocoder\Model\AddressUprnInterface;
 
 /**
@@ -17,32 +19,33 @@ class AddressLookup {
   /**
    * Searches addresses using the given Geocoding plugins.
    */
-  public function search(array $search_param, array $geocoder_plugin_ids) :array {
+  public function search(array $search_param, array $geocoder_plugin_ids, int $local_custodian_code = 0) :array {
 
-    $search_str = self::toSearchStr($search_param);
-    $geocoder_plugins = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
+    $search_query = self::toSearchQuery($search_param, $local_custodian_code);
+    $geocoder_providers = $this->geocoderSelector->getSelectedPlugins($geocoder_plugin_ids);
 
-    $addr_list = $this->geocoder->geocode($search_str, $geocoder_plugins);
+    $addr_list = $this->geocoder->geocode($search_query, $geocoder_providers);
     if (is_null($addr_list) || $addr_list === FALSE) {
       return [];
     }
 
-    $formatted_addr_list = array_map('self::reformat', iterator_to_array($addr_list));
+    $formatted_addr_list = array_map(static::reformat(...), iterator_to_array($addr_list));
 
     return $formatted_addr_list;
   }
 
   /**
-   * Turns search parameters into a search string.
-   *
-   * This search string is suitable for geocoding.
+   * Turns search parameters into a Geo search query.
    *
    * @see Drupal\geocoder_address\AddressService::addressArrayToGeoString()
    */
-  public static function toSearchStr(array $param) :string {
+  public static function toSearchQuery(array $text_param, int $local_custodian_code = 0) :GeocodeQuery {
 
-    $str = implode(' ', $param);
-    return $str;
+    $search_str = implode(' ', $text_param);
+    $geo_query = GeocodeQuery::create($search_str);
+    $geo_query = $geo_query->withData('local_custodian_code', $local_custodian_code);
+
+    return $geo_query;
   }
 
   /**
@@ -134,7 +137,7 @@ class AddressLookup {
   /**
    * Keeps track of Geocoding related services.
    */
-  public function __construct($geocoder, $geocoder_selector) {
+  public function __construct(GeocoderInterface $geocoder, Geocoders $geocoder_selector) {
 
     $this->geocoder = $geocoder;
     $this->geocoderSelector = $geocoder_selector;
