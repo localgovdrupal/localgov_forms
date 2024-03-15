@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * Install and update hook implementations.
+ */
+
+use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\ContentEntityTypeInterface;
+use Drupal\webform\WebformSubmissionStorageSchema;
+
+/**
+ * Implements hook_install().
+ *
+ * Creates all entity storage tables associated with the webform_submission
+ * entity type.
+ */
+function localgov_forms_lts_install($is_syncing): void {
+
+  if (!$localgov_forms_lts_db = _localgov_forms_lts_has_db()) {
+    return;
+  }
+
+  Drupal::service('state')->set(key: 'localgov_forms_lts_db', value: $localgov_forms_lts_db);
+
+  $webform_submission_schema = _localgov_forms_lts_get_webform_submission_storage_schema();
+
+  foreach ($webform_submission_schema as $table_name => $table_schema) {
+    _localgov_forms_lts_copy_table($table_name, $table_schema, db: $localgov_forms_lts_db);
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ *
+ * Checks for the presence of the localgov_forms_lts database.
+ */
+function localgov_forms_lts_requirements($phase) {
+
+  $requirements = [
+    'localgov_forms_lts' => [
+      'title'       => t('LocalGov Forms LTS'),
+      'value'       => t('Available'),
+      'description' => t('LocalGov Forms LTS database available.'),
+      'severity'    => REQUIREMENT_OK,
+    ],
+  ];
+
+  if (!$localgov_forms_lts_db = _localgov_forms_lts_has_db()) {
+    $requirements['localgov_forms_lts']['value'] = t('Unavailable');
+    $requirements['localgov_forms_lts']['description'] = t('The LocalGov Forms LTS database must exist for this module to function.');
+    $requirements['localgov_forms_lts']['severity'] = REQUIREMENT_ERROR;
+  }
+
+  return $requirements;
+}
+
+/**
+ * Tests presence of LTS database.
+ */
+function _localgov_forms_lts_has_db(): bool|string {
+
+  $localgov_forms_lts_db = Drupal::service('state')->get(key: 'localgov_forms_lts_db', default: 'localgov_forms_lts');
+
+  try {
+    Database::getConnection(key: $localgov_forms_lts_db);
+  }
+  catch (Exception $e) {
+    return FALSE;
+  }
+
+  return $localgov_forms_lts_db;
+}
+
+/**
+ * Extracts entity storage schema.
+ *
+ * Returns the entity storage schema for the webform_submission content entity.
+ */
+function _localgov_forms_lts_get_webform_submission_storage_schema(): array {
+
+  $entity_type_manager  = Drupal::service('entity_type.manager');
+  $entity_storage       = $entity_type_manager->getStorage('webform_submission');
+  $entity_type          = $entity_storage->getEntityType();
+  $entity_field_manager = Drupal::service('entity_field.manager');
+  $db_service           = Drupal::service('database');
+
+  $entity_schema = (new class($entity_type_manager, $entity_type, $entity_storage, $db_service, $entity_field_manager) extends WebformSubmissionStorageSchema {
+
+    /**
+     * Public wrapper over protected method.
+     */
+    public function getEntitySchemaWrapper(ContentEntityTypeInterface $entity_type) {
+
+      return parent::getEntitySchema($entity_type);
+    }
+
+  })->getEntitySchemaWrapper($entity_type);
+
+  return $entity_schema;
+}
+
+/**
+ * Creates database tables.
+ */
+function _localgov_forms_lts_copy_table(string $table_name, array $table_schema, string $db): void {
+
+  $db_connection = Database::getConnection(key: $db);
+  $tx = $db_connection->startTransaction();
+
+  try {
+    $db_connection->schema()->createTable($table_name, $table_schema);
+  }
+  catch (Exception $e) {
+    $tx->rollBack();
+  }
+}

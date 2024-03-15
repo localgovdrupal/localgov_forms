@@ -1,0 +1,9 @@
+name: LocalGov Forms long term storage
+type: module
+description: Long term storage for Webform submissions.
+core_version_requirement: ^10
+php: 8.0
+package: LocalGov Drupal
+
+dependencies:
+- webform:webform
