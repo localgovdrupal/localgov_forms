@@ -4,3 +4,21 @@
  * @file
  * Hook implementations.
  */
+
+use Drupal\Core\Database\Database;
+use Drupal\localgov_forms_lts\Constants;
+
+/**
+ * Tests presence of LTS database.
+ */
+function localgov_forms_lts_has_db(): bool {
+
+  try {
+    Database::getConnection(key: Constants::LTS_DB_KEY);
+  }
+  catch (Exception $e) {
+    return FALSE;
+  }
+
+  return TRUE;
+}

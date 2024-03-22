@@ -7,6 +7,7 @@
 
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
+use Drupal\localgov_forms_lts\Constants;
 use Drupal\webform\WebformSubmissionStorageSchema;
 
 /**
@@ -17,16 +18,14 @@ use Drupal\webform\WebformSubmissionStorageSchema;
  */
 function localgov_forms_lts_install($is_syncing): void {
 
-  if (!$localgov_forms_lts_db = _localgov_forms_lts_has_db()) {
+  if (!localgov_forms_lts_has_db()) {
     return;
   }
-
-  Drupal::service('state')->set(key: 'localgov_forms_lts_db', value: $localgov_forms_lts_db);
 
   $webform_submission_schema = _localgov_forms_lts_get_webform_submission_storage_schema();
 
   foreach ($webform_submission_schema as $table_name => $table_schema) {
-    _localgov_forms_lts_copy_table($table_name, $table_schema, db: $localgov_forms_lts_db);
+    _localgov_forms_lts_copy_table($table_name, $table_schema, db: Constants::LTS_DB_KEY);
   }
 }
 
@@ -46,30 +45,19 @@ function localgov_forms_lts_requirements($phase) {
     ],
   ];
 
-  if (!$localgov_forms_lts_db = _localgov_forms_lts_has_db()) {
+  if (!function_exists('localgov_forms_lts_has_db')) {
+    // Some necessary files have not been loaded yet during the "install" phase.
+    require_once __DIR__ . '/localgov_forms_lts.module';
+    require_once __DIR__ . '/src/Constants.php';
+  }
+
+  if (!localgov_forms_lts_has_db()) {
     $requirements['localgov_forms_lts']['value'] = t('Unavailable');
     $requirements['localgov_forms_lts']['description'] = t('The LocalGov Forms LTS database must exist for this module to function.');
     $requirements['localgov_forms_lts']['severity'] = REQUIREMENT_ERROR;
   }
 
   return $requirements;
-}
-
-/**
- * Tests presence of LTS database.
- */
-function _localgov_forms_lts_has_db(): bool|string {
-
-  $localgov_forms_lts_db = Drupal::service('state')->get(key: 'localgov_forms_lts_db', default: 'localgov_forms_lts');
-
-  try {
-    Database::getConnection(key: $localgov_forms_lts_db);
-  }
-  catch (Exception $e) {
-    return FALSE;
-  }
-
-  return $localgov_forms_lts_db;
 }
 
 /**
