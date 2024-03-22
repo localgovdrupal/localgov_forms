@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the LocalGov Forms Date module.
+ */
+
+use Drupal\Component\Serialization\Yaml;
+
+/**
+ * Adds a UK short date style e.g dd-mm-yyyy.
+ */
+function localgov_forms_date_update_8001() {
+  $config_id = 'core.date_format.uk_html_short_date';
+  $config_path = \Drupal::service('extension.list.module')->getPath('localgov_forms_date');
+  $uk_short_html_date_config = Yaml::decode(file_get_contents($config_path . '/config/install/' . $config_id . '.yml'));
+  \Drupal::configFactory()->getEditable($config_id)->setData($uk_short_html_date_config)->save();
+}
+
+/**
+ * Adds a UK short date style e.g dd-mm-yyyy HH:mm:ss.
+ */
+function localgov_forms_date_update_8002() {
+  $config_id = 'core.date_format.uk_html_datetime';
+  $config_path = \Drupal::service('extension.list.module')->getPath('localgov_forms_date');
+  $uk_html_datetime_config = Yaml::decode(file_get_contents($config_path . '/config/install/' . $config_id . '.yml'));
+  \Drupal::configFactory()->getEditable($config_id)->setData($uk_html_datetime_config)->save();
+}
