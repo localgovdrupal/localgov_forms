@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: uk_html_short_date
+label: 'UK HTML Short Date'
+locked: false
+pattern: d-m-Y
