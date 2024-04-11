@@ -139,5 +139,4 @@ class LocalgovFormsDate extends DateList {
     parent::validateDate($element, $form_state, $complete_form);
   }
 
-
 }
