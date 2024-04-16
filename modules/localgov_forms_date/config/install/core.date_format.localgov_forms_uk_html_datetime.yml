@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-id: uk_html_datetime
-label: 'UK HTML Short Datetime'
-locked: false
-pattern: 'd-m-Y\TH:i:sO'
