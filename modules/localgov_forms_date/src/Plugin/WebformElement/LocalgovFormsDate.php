@@ -130,11 +130,11 @@ class LocalgovFormsDate extends DateList {
   public static function validateDate(&$element, FormStateInterface $form_state, &$complete_form) {
 
     // Adds a  short date and short date time format.
-    $uk_short_date_format = DateFormat::load('uk_html_short_date')->getPattern();
-    $uk_datetime_format = DateFormat::load('uk_html_datetime')->getPattern();
+    $localgov_forms_uk_short_date_format = DateFormat::load('localgov_forms_uk_html_short_date')->getPattern();
+    $localgov_forms_uk_datetime_format = DateFormat::load('localgov_forms_uk_html_datetime')->getPattern();
 
-    $element['#date_date_format'] = $uk_short_date_format;
-    $element['#date_time_format'] = $uk_datetime_format;
+    $element['#date_date_format'] = $localgov_forms_uk_short_date_format;
+    $element['#date_time_format'] = $localgov_forms_uk_datetime_format;
 
     parent::validateDate($element, $form_state, $complete_form);
   }
