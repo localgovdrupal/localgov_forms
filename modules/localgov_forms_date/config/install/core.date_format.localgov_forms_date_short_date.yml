@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: localgov_forms_date_short_date
+label: 'LocalGOV Forms Short Date'
+locked: false
+pattern: d-m-Y
