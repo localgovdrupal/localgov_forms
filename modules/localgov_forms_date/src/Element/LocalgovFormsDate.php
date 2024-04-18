@@ -21,6 +21,7 @@ class LocalgovFormsDate extends Datelist {
     return [
       '#input' => TRUE,
       '#element_validate' => [
+        [static::class, 'useCustomErrorMessage'],
         [static::class, 'validateDatelist'],
         [static::class, 'areDatePartsNumeric'],
       ],
@@ -123,4 +124,25 @@ class LocalgovFormsDate extends Datelist {
     }
   }
 
+  /**
+   *
+   *
+   *
+   */
+
+   public static function useCustomErrorMessage(&$element, FormStateInterface $form_state, &$complete_form) {
+
+    $title = $element['#title'];
+
+    // If there's empty input and the field is required, set an error.
+    if (empty($input['year']) && empty($input['month']) && empty($input['day']) && $element['#required']) {
+      if (isset($element['#required_error'])) {
+        $form_state->setError($element, t($element['#required_error']));
+      } else {
+      $form_state->setError($element, t('The %field date is required.', ['%field' => $title]));
+      }
+    }
+  }
+
 }
+
