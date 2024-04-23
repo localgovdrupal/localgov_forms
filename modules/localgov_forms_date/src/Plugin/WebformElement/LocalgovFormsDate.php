@@ -2,6 +2,7 @@
 
 namespace Drupal\localgov_forms_date\Plugin\WebformElement;
 
+use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformElement\DateList;
 
@@ -117,6 +118,25 @@ class LocalgovFormsDate extends DateList {
     $element['#type'] = 'datelist';
     parent::setDefaultValue($element);
     $element['#type'] = $orig_type;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * Overrides the Datebase class so that
+   * date validation error messages display in
+   * a UK Style format e.g dd-mm-yyyy.
+   */
+  public static function validateDate(&$element, FormStateInterface $form_state, &$complete_form) {
+
+    // Adds a  short date and short date time format.
+    $localgov_forms_short_date_format = DateFormat::load('localgov_forms_date_short_date')->getPattern();
+    $localgov_forms_datetime_format = DateFormat::load('localgov_forms_date_datetime')->getPattern();
+
+    $element['#date_date_format'] = $localgov_forms_short_date_format;
+    $element['#date_time_format'] = $localgov_forms_datetime_format;
+
+    parent::validateDate($element, $form_state, $complete_form);
   }
 
 }

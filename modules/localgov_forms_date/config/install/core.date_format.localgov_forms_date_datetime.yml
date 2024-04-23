@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: localgov_forms_date_datetime
+label: 'LocalGOV Forms Datetime'
+locked: false
+pattern: 'd-m-Y\TH:i:sO'
