@@ -125,48 +125,23 @@ class LocalgovFormsDate extends Datelist {
   }
 
   /**
-   * Datelist validation callback - override.
+   * Validation callback - Has Required Message.
    *
-   * When validating datelist elements, if the date is
-   * a required field, a customised error message can
-   * be set in the UI. which should be used instead of
+   * When validating LocalGov Forms Date elements, if the date is
+   * a required field, a required message can
+   * be set in the UI which should be used instead of
    * the default error message.
    */
   public static function validateDatelist(&$element, FormStateInterface $form_state, &$complete_form) {
-
     $input_exists = FALSE;
     $input = NestedArray::getValue($form_state->getValues(), $element['#parents'], $input_exists);
-    $title = static::getElementTitle($element, $complete_form);
 
-    if ($input_exists) {
-      $all_empty = static::checkEmptyInputs($input, $element['#date_part_order']);
-
-      // If there's empty input and the field is not required, set it to empty.
-      if (empty($input['year']) && empty($input['month']) && empty($input['day']) && !$element['#required']) {
-        $form_state->setValueForElement($element, NULL);
-      }
-      // If there's empty input and the field is required, set an error.
-      elseif (empty($input['year']) && empty($input['month']) && empty($input['day']) && $element['#required']) {
-        // Check if the required field'scustomisised error message has been set
-        // in the UI. If so use that instead of the the default message.
-        if (isset($element['#required_error'])) {
-          $form_state->setError($element, t($element['#required_error']));
-        }
-        else {
-          $form_state->setError($element, t('The %field date is required.', ['%field' => $title]));
-        }
-      }
-      elseif (!empty($all_empty)) {
-        foreach ($all_empty as $value) {
-          $form_state->setError($element, t('The %field date is incomplete.', ['%field' => $title]));
-          $form_state->setError($element[$value], t('A value must be selected for %part.', ['%part' => $value]));
-        }
-      }
-
+    // Show the required message if it has been set in the UI.
+    if (empty($input['year']) && empty($input['month']) && empty($input['day']) && $element['#required'] && isset($element['#required_error'])) {
+      $form_state->setError($element, t('%field', ['%field' => $element['#required_error']]));
     }
 
     parent::validateDatelist($element, $form_state, $complete_form);
-
   }
 
 }
