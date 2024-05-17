@@ -26,3 +26,36 @@ function localgov_forms_date_update_8002() {
   $uk_html_datetime_config = Yaml::decode(file_get_contents($config_path . '/config/install/' . $config_id . '.yml'));
   \Drupal::configFactory()->getEditable($config_id)->setData($uk_html_datetime_config)->save();
 }
+
+/**
+ * Adds a UUID to LocalGov Forms Date formats.
+ */
+function localgov_forms_date_update_8003() {
+  $localgov_date_formats = [
+    'core.date_format.localgov_forms_date_short_date',
+    'core.date_format.localgov_forms_date_datetime',
+  ];
+
+  foreach ($localgov_date_formats as $date_format_uuid) {
+    // Generate a new uuid.
+    $uuid_service = Drupal::service('uuid');
+    $uuid = $uuid_service->generate();
+
+    $config_factory = \Drupal::configFactory();
+    $date_format_uuid = $config_factory->getEditable($date_format_uuid);
+
+    // Get the date formats uuid.
+    $has_date_format_uuid = $date_format_uuid->get('uuid');
+
+    // Add a uuid if the date format doesnt have one.
+    if (!$has_date_format_uuid) {
+      // Set the new UUID.
+      $date_format_uuid->set('uuid', $uuid);
+
+      // Save the updated configuration.
+      $date_format_uuid->save(TRUE);
+
+    }
+  }
+
+}
