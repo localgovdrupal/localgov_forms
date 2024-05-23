@@ -5,8 +5,12 @@
  * Hook implementations.
  */
 
+declare(strict_types=1);
+
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Database\Database;
 use Drupal\localgov_forms_lts\Constants;
+use Drupal\localgov_forms_lts\LtsCopy;
 
 /**
  * Tests presence of LTS database.
@@ -21,4 +25,55 @@ function localgov_forms_lts_has_db(): bool {
   }
 
   return TRUE;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function localgov_forms_lts_cron() {
+
+  localgov_forms_lts_copy_recently_added_n_updated_subs();
+}
+
+/**
+ * Copies Webform submissions.
+ *
+ * Copies Webform submissions added or updated since last run to the lts
+ * storage.  At most 50 Webform submissions are copied.
+ */
+function localgov_forms_lts_copy_recently_added_n_updated_subs() :void {
+
+  $lts_copy_obj = LtsCopy::create(Drupal::getContainer());
+  $copy_results = $lts_copy_obj->copy();
+
+  $feedback_msg = _localgov_forms_lts_prepare_feedback_msg($copy_results);
+  Drupal::service('logger.factory')
+    ->get('localgov_forms_lts')
+    ->info($feedback_msg);
+}
+
+/**
+ * Prepares feedback message for copying.
+ *
+ * The feedback message is prepared from the outcome of Webform submission copy
+ * operations.
+ */
+function _localgov_forms_lts_prepare_feedback_msg(array $copy_results): MarkupInterface {
+
+  $copy_successes = array_filter($copy_results);
+  $copy_failures  = array_diff_key($copy_results, $copy_successes);
+
+  $successfully_copied_sid_list   = array_keys($copy_successes);
+  $unsuccessfully_copied_sid_list = array_keys($copy_failures);
+
+  $successfully_copied_sid_list_msg   = $successfully_copied_sid_list ? implode(', ', $successfully_copied_sid_list) : 'None';
+  $unsuccessfully_copied_sid_list_msg = $unsuccessfully_copied_sid_list ? implode(', ', $unsuccessfully_copied_sid_list) : 'None';
+
+  $feedback_msg = t('Successfully copied Webform submission ids: %successes. :newline Failed copies: %failures.', [
+    '%successes' => $successfully_copied_sid_list_msg,
+    '%failures'  => $unsuccessfully_copied_sid_list_msg,
+    ':newline'   => PHP_EOL,
+  ]);
+
+  return $feedback_msg;
 }

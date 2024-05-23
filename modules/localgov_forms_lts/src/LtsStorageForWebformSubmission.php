@@ -43,6 +43,14 @@ class LtsStorageForWebformSubmission extends WebformSubmissionStorage {
   }
 
   /**
+   * Getter for database connection.
+   */
+  public function getDatabaseConnection(): DbConnection {
+
+    return $this->database;
+  }
+
+  /**
    * {@inheritdoc}
    *
    * Names our custom entity query service that speaks to the LTS database.
