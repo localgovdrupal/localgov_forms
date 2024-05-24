@@ -26,10 +26,10 @@ class LtsCopy implements ContainerInjectionInterface {
    *
    * By default, 50 Webform submissions are copied.
    */
-  public function copy(int $start_offset = 0, int $count = Constants::COPY_LIMIT) :array {
+  public function copy(int $count = Constants::COPY_LIMIT) :array {
 
     $last_copied_webform_sub_id = $this->findLastCopiedSubId();
-    $webform_subs_to_copy       = $this->findCopyTargets($start_offset, $count);
+    $webform_subs_to_copy       = $this->findCopyTargets($count);
 
     $copy_results = [];
     $has_copied   = FALSE;
@@ -59,10 +59,10 @@ class LtsCopy implements ContainerInjectionInterface {
 
     try {
       if ($is_new_webform_sub) {
-        $this->ltsStorage->save($webform_sub->enforceIsNew());
+        $this->ltsStorage->resave($webform_sub->enforceIsNew());
       }
       else {
-        $this->ltsStorage->save($webform_sub);
+        $this->ltsStorage->resave($webform_sub);
       }
     }
     catch (Exception $e) {
@@ -96,8 +96,11 @@ class LtsCopy implements ContainerInjectionInterface {
    *
    * These are the Webform submissions that have been added or edited since the
    * last copy operation.
+   *
+   * For offset to work, *both* parameters must be provided with nonnegative
+   * values.
    */
-  public function findCopyTargets(int $start_offset = 0, int $count = -1) :array {
+  public function findCopyTargets(int $count = -1) :array {
 
     $last_copied_webform_sub_changed_ts = $this->findLatestUpdateTimestamp();
 
@@ -106,20 +109,15 @@ class LtsCopy implements ContainerInjectionInterface {
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('changed', $last_copied_webform_sub_changed_ts, '>')
-      ->condition('in_draft', 0);
+      ->condition('in_draft', 0)
+      ->sort('changed');
 
-    if ($count < 0) {
-      $webform_subs_to_copy->range(start: $start_offset, length: $count);
-    }
-    else {
-      $webform_subs_to_copy->range(start: $start_offset);
+    if ($count > -1) {
+      $webform_subs_to_copy->range(start: 0, length: $count);
     }
 
-    $webform_subs_to_copy
-      ->sort('changed')
-      ->execute();
-
-    return $webform_subs_to_copy;
+    $copy_targets = $webform_subs_to_copy->execute();
+    return $copy_targets;
   }
 
   /**

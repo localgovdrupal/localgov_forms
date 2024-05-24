@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\localgov_forms_lts\Constants;
-use Drupal\localgov_forms_lts\LtsStorageForWebformSubmission;
+use Drupal\localgov_forms_lts\LtsCopy;
 
 /**
  * Implements hook_deploy_NAME().
@@ -23,19 +23,15 @@ function localgov_forms_lts_deploy_copy_webform_subs(array &$sandbox): MarkupInt
     return t('The LocalGov Forms LTS database must exist for this module to function.');
   }
 
-  $sandbox['webform_sub_id_offset'] = $sandbox['webform_sub_id_offset'] ?? 0;
-  $sandbox['#finished'] = 0;
-
   $lts_copy_obj = LtsCopy::create(Drupal::getContainer());
-  $copy_results = $lts_copy_obj->copy(start_offset: $sandbox['webform_sub_id_offset']);
+  $copy_results = $lts_copy_obj->copy();
 
-  if (count($copy_results) < Constants::COPY_LIMIT) {
-    $sandbox['#finished'] = 1;
-  }
-  else {
-    $sandbox['webform_sub_id_offset'] += Constants::COPY_LIMIT;
-  }
+  $sandbox['#finished'] = (count($copy_results) < Constants::COPY_LIMIT) ? 1 : 0;
 
   $feedback = _localgov_forms_lts_prepare_feedback_msg($copy_results);
+  Drupal::service('logger.factory')
+    ->get('localgov_forms_lts')
+    ->info($feedback);
+
   return $feedback;
 }
