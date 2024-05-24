@@ -92,9 +92,15 @@ class PIIRedactor {
    * Element types carrying PII for certain.
    */
   const PII_ELEMENT_TYPES = [
+    'address',
     'email',
-    'tel',
+    'localgov_webform_uk_address',
     'number',
+    'tel',
+    'webform_name',
+    'webform_address',
+    'webform_contact',
+    'webform_telephone',
   ];
 
   /**
@@ -112,6 +118,6 @@ class PIIRedactor {
    *
    * Element type naming pattern indicating possible link with PII.
    */
-  const GUESSED_PII_ELEM_PATTERN = '#name|mail|phone|date_of_birth|personal|title|gender|sex|ethnicity#i';
+  const GUESSED_PII_ELEM_PATTERN = '#name|mail|phone|contact_number|date_of_birth|dob_|nino|address|postcode|post_code|personal_|title|passport|serial_number|reg_number|pcn_|driver_#i';
 
 }

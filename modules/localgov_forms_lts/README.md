@@ -22,7 +22,7 @@
 
 ### Good to know
 - Each cron run copies 50 Webform submissions.  If your site is getting more than that many Webform submissions between subsequent cron runs, not all Webform submissions will get copied to Long term storage during a certain period.  If that happens, adjust cron run frequency.
-- Elements with Personally Identifiable Information (PII) are redacted.  At the moment, this includes all email, telephone, and number type elements.  Additionally, any text or radio or checkbox element whose machine name contains the following also gets redacted: name, mail, phone, date_of_birth, personal, title, gender, sex, ethnicity.
+- Elements with Personally Identifiable Information (PII) are redacted.  At the moment, this includes all name, email, telephone, number, and various address type elements.  Additionally, any text or radio or checkbox element whose machine name (AKA Key) contains the following also gets redacted: name, mail, phone, contact_number, date_of_birth, dob_, personal_, title, nino, passport, postcode, address, serial_number, reg_number, pcn_, and driver_.
 
 ### Todo
 - Machine names which are indicative of PII are hardcoded within the Drupal\localgov_forms_lts\PIIRedactor class at the moment.  This should have a configuration UI.
