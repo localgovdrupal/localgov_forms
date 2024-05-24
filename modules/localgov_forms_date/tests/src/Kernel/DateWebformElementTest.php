@@ -95,6 +95,8 @@ class DateWebformElementTest extends KernelTestBase {
     $this->installConfig('system');
     $this->installConfig('localgov_forms_date_test');
 
+    $this->installConfig('localgov_forms_date');
+
     $empty_submission = WebformSubmission::create(['webform_id' => 'date_test']);
     $this->testForm = WebformSubmissionForm::create($this->container);
     $this->testForm->setEntityTypeManager($this->container->get('entity_type.manager'));
