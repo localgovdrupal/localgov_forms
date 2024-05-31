@@ -94,6 +94,7 @@ class PIIRedactor {
   const PII_ELEMENT_TYPES = [
     'address',
     'email',
+    'localgov_forms_dob',
     'localgov_webform_uk_address',
     'number',
     'tel',
@@ -107,10 +108,11 @@ class PIIRedactor {
    * Element types that *may* carry PII.
    */
   const POTENTIAL_PII_ELEMENT_TYPES = [
-    'textfield',
-    'processed_text',
+    'localgov_forms_date',
     'checkboxes',
+    'processed_text',
     'radios',
+    'textfield',
   ];
 
   /**
