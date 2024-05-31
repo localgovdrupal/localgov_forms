@@ -41,4 +41,14 @@ class Constants {
    */
   const COPY_LIMIT = 50;
 
+  /**
+   * Cache Id prefix.
+   *
+   * For default storage, the prefix is "values".  We need to differentiate this
+   * for LTS.
+   *
+   * @see EntityStorageBase::buildCacheId()
+   */
+  const LTS_CACHE_ID_PREFIX = 'lts_values';
+
 }

@@ -56,7 +56,7 @@ class PIIRedactor {
     $potential_mapping = array_intersect($elem_type_mapping, static::POTENTIAL_PII_ELEMENT_TYPES);
     $guessed_pii_elems = preg_grep(static::GUESSED_PII_ELEM_PATTERN, array_keys($potential_mapping));
 
-    $elems_to_redact = $pii_elems + $guessed_pii_elems;
+    $elems_to_redact = [...$pii_elems, ...$guessed_pii_elems];
     return $elems_to_redact;
   }
 
