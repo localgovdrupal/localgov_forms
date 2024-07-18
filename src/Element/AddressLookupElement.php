@@ -4,14 +4,14 @@ namespace Drupal\localgov_forms\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\FormElement;
+use Drupal\Core\Render\Element\FormElementBase;
 
 /**
  * Provides a central hub address lookup element.
  *
  * @FormElement("localgov_forms_address_lookup")
  */
-class AddressLookupElement extends FormElement {
+class AddressLookupElement extends FormElementBase {
 
   /**
    * Static search string.
@@ -26,6 +26,22 @@ class AddressLookupElement extends FormElement {
    * @var string
    */
   public static $addressType;
+
+  /**
+   * Static local custodian code.
+   *
+   * @var int
+   */
+  public static $localCustodianCode;
+
+  /**
+   * Available Geocoder plugin ids.
+   *
+   * Maintained as a static variable for caching purposes.
+   *
+   * @var array
+   */
+  public static $selectedGeocoderPluginIds = [];
 
   /**
    * Static address results.
@@ -294,14 +310,14 @@ class AddressLookupElement extends FormElement {
 
     // Get the address type to lookup.
     $address_type = $address_element['address_select']['address_select_list']['#address_type'];
+    $local_custodian_code = $address_element['#local_custodian_code'];
+    $selected_plugin_ids  = $address_element['#geocoder_plugins'];
 
     // Do address lookup.
     // If its searching for the same address, return the static version.
     // Else make a new request.
     // This is to avoid multiple api lookup calls.
-    if ($address_search !== self::$searchString || $address_type !== self::$addressType) {
-      $selected_plugin_ids  = $address_element['#geocoder_plugins'];
-      $local_custodian_code = $address_element['#local_custodian_code'];
+    if ($address_search !== self::$searchString || $address_type !== self::$addressType || $local_custodian_code !== self::$localCustodianCode || $selected_plugin_ids !== self::$selectedGeocoderPluginIds) {
       self::$addressResults = \Drupal::service('localgov_forms.address_lookup')->search([$address_search], $selected_plugin_ids, $local_custodian_code);
     }
     $address_list = self::$addressResults;
@@ -341,8 +357,10 @@ class AddressLookupElement extends FormElement {
     unset($address_element['address_select']['address_select_list']['#suffix']);
     unset($address_element['address_select']['error']);
 
-    self::$searchString = $address_search;
-    self::$addressType  = $address_type;
+    self::$searchString              = $address_search;
+    self::$addressType               = $address_type;
+    self::$localCustodianCode        = $local_custodian_code;
+    self::$selectedGeocoderPluginIds = $selected_plugin_ids;
 
     return $address_element['address_select']['address_select_list'];
   }
