@@ -3,6 +3,7 @@
 namespace Drupal\localgov_forms_date\Element;
 
 use Drupal\Component\Datetime\DateTimePlus;
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Datetime\Element\Datelist;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -121,6 +122,26 @@ class LocalgovFormsDate extends Datelist {
     if (isset($element['#value']['day'])) {
       $element['day']['#value'] = $element['#value']['day'];
     }
+  }
+
+  /**
+   * Validation callback - Has Required Message.
+   *
+   * When validating LocalGov Forms Date elements,
+   * if the date is a required field, a required message can
+   * be set in the UI which should take precedence over
+   * the default error message.
+   */
+  public static function validateDatelist(&$element, FormStateInterface $form_state, &$complete_form) {
+    $input_exists = FALSE;
+    $input = NestedArray::getValue($form_state->getValues(), $element['#parents'], $input_exists);
+
+    // Show the required message if it has been set in the UI.
+    if (empty($input['year']) && empty($input['month']) && empty($input['day']) && $element['#required'] && isset($element['#required_error'])) {
+      $form_state->setError($element, t('%field', ['%field' => $element['#required_error']]));
+    }
+
+    parent::validateDatelist($element, $form_state, $complete_form);
   }
 
 }
