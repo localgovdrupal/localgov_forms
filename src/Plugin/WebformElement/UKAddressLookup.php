@@ -57,6 +57,10 @@ class UKAddressLookup extends WebformCompositeBase {
     // does the job perfectly.
     $parent_properties['title_display'] = 'default';
 
+    // Enable the custom error message field
+    // for the address lookup field.
+    $parent_properties['required_error'] = '';
+
     return $parent_properties;
   }
 
