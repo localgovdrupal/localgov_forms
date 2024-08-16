@@ -15,6 +15,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * - All Webform elements of type email, telephone, number.
  * - Any element with the following happening in its machine id: name, mail,
  *   phone, date_of_birth, personal, title, gender, sex, ethnicity.
+ * - All textareas are cleaned of email, postcode, and any number.
  */
 class PIIRedactor {
 
@@ -36,16 +37,35 @@ class PIIRedactor {
 
         return $elem;
       }
-    }, $elems_to_redact);
+    }, $elems_to_redact['full']);
+
+    $partial_redaction_result = array_map(function ($elem) use ($webform_sub) {
+      if ($text = $webform_sub->getElementData($elem)) {
+        [$redacted_text, $redaction_count] = PIIRedactorForText::redact($text);
+
+        if ($redaction_count) {
+          $webform_sub->setElementData($elem, $redacted_text);
+          return $elem;
+        }
+      }
+    }, $elems_to_redact['part']);
 
     $redacted_elems = array_filter($redaction_result);
+    $partly_redacted_elems = array_filter($partial_redaction_result);
     static::addRedactionNote($webform_sub, $redacted_elems);
+    static::addRedactionNote($webform_sub, $partly_redacted_elems, note_prefix: 'Partly redacted elements: ');
 
-    return $redacted_elems;
+    $all_redacted_elems = [...$redacted_elems, ...$partly_redacted_elems];
+    return $all_redacted_elems;
   }
 
   /**
    * Finds the Webform element names to redact.
+   *
+   * The result array contains two keys:
+   * - full: These elements are to be fully redacted.
+   * - part: The values of these elements contain PII among other text and are
+   *   to be partly redacted.
    */
   public static function findElemsToRedact(WebformSubmissionInterface $webform_sub) :array {
 
@@ -56,7 +76,12 @@ class PIIRedactor {
     $potential_mapping = array_intersect($elem_type_mapping, static::POTENTIAL_PII_ELEMENT_TYPES);
     $guessed_pii_elems = preg_grep(static::GUESSED_PII_ELEM_PATTERN, array_keys($potential_mapping));
 
-    $elems_to_redact = [...$pii_elems, ...$guessed_pii_elems];
+    $elems_w_some_pii = array_keys(array_intersect($elem_type_mapping, static::PII_ELEMENT_TYPES_TO_REDUCT_IN_PART));
+
+    $elems_to_redact = [
+      'full' => [...$pii_elems, ...$guessed_pii_elems],
+      'part' => $elems_w_some_pii,
+    ];
     return $elems_to_redact;
   }
 
@@ -74,18 +99,17 @@ class PIIRedactor {
    *
    * Adds a note to the Webform submission to highlight the redacted elements.
    */
-  public static function addRedactionNote(WebformSubmissionInterface $webform_sub, array $redacted_elems) :void {
+  public static function addRedactionNote(WebformSubmissionInterface $webform_sub, array $redacted_elems, string $note_prefix = 'Redacted elements: '): void {
 
     if (empty($redacted_elems)) {
       return;
     }
 
-    $redaction_note = 'Redacted elements: ' . implode(', ', $redacted_elems) . '.';
+    $redaction_note = $note_prefix . implode(', ', $redacted_elems) . '.';
+    $existing_note  = $webform_sub->getNotes();
 
-    $existing_note = $webform_sub->getNotes();
-    $updated_note  = $existing_note . PHP_EOL . $redaction_note;
-
-    $webform_sub->setNotes($updated_note);
+    $note_list = array_filter([$existing_note, $redaction_note]);
+    $webform_sub->setNotes(implode(PHP_EOL, $note_list));
   }
 
   /**
@@ -113,6 +137,13 @@ class PIIRedactor {
     'processed_text',
     'radios',
     'textfield',
+  ];
+
+  /**
+   * Element types with PII mixed with other text.
+   */
+  const PII_ELEMENT_TYPES_TO_REDUCT_IN_PART = [
+    'textarea',
   ];
 
   /**
