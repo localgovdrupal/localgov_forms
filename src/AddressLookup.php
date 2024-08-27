@@ -102,8 +102,8 @@ class AddressLookup {
     }
 
     $address = [
-      'name'         => $unique_id ?? '',
-      'uprn'         => $uprn ?? '',
+      'name'         => is_string($unique_id) ? $unique_id : '',
+      'uprn'         => is_string($uprn) ? $uprn : '',
       'display'      => $display_name ?? '',
       'street'       => implode(' ', array_filter([
         $street_number, $street_name,
@@ -112,8 +112,8 @@ class AddressLookup {
       'house'        => implode(', ', array_filter([$org, $house_name])),
       'town'         => $locality ?? '',
       'postcode'     => $postcode ?? '',
-      'lat'          => $latitude ?? '',
-      'lng'          => $longitude ?? '',
+      'lat'          => $latitude !== 0 ? $latitude : '',
+      'lng'          => $longitude !== 0 ? $longitude : '',
       'country'      => $country_name ?? '',
       'country_code' => $country_code ?? '',
       'line1'        => '',
