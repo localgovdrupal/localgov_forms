@@ -4,14 +4,14 @@ namespace Drupal\localgov_forms\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\FormElementBase;
+use Drupal\Core\Render\Element\FormElement;
 
 /**
  * Provides a central hub address lookup element.
  *
  * @FormElement("localgov_forms_address_lookup")
  */
-class AddressLookupElement extends FormElementBase {
+class AddressLookupElement extends FormElement {
 
   /**
    * Static search string.
