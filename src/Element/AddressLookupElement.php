@@ -267,7 +267,10 @@ class AddressLookupElement extends FormElement {
     if (empty($input['address_search']['address_searchstring'])) {
       return NULL;
     }
-    
+
+    // FIXME: Call to method valueCallback() of deprecated class Drupal\Core\Render\Element\FormElement:
+    // in drupal:10.3.0 and is removed from drupal:12.0.0. use \Drupal\Core\Render\Element\FormElementBase instead.
+    // @phpstan-ignore-next-line
     return parent::valueCallback($element, $input, $form_state);
   }
 
