@@ -267,8 +267,6 @@ class AddressLookupElement extends FormElement {
     if (empty($input['address_search']['address_searchstring'])) {
       return NULL;
     }
-
-    return;
   }
 
   /**
