@@ -1,0 +1,4 @@
+localgov_forms_feedback_form:
+  css:
+    theme:
+      css/localgov-forms-feedback-form.css: {}
