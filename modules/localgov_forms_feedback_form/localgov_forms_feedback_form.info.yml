@@ -1,0 +1,8 @@
+name: LocalGov Forms Feedback Form
+type: module
+description: A simple feedback form for LocalGov Drupal.
+package: LocalGov Drupal
+core_version_requirement: ^10 || ^11
+dependencies:
+  - 'webform:webform'
+  - 'webform:webform_ui'

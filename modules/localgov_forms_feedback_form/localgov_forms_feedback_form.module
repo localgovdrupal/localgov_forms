@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Module file for the Localgov Forms Feedback Form module.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function localgov_forms_feedback_form_form_webform_submission_localgov_forms_feedback_form_add_form_alter(&$form, $form_state, $form_id) {
+  $form['#attached']['library'][] = 'localgov_forms_feedback_form/localgov_forms_feedback_form';
+}
