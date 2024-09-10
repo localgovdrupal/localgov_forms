@@ -11,10 +11,3 @@
 function localgov_forms_feedback_form_form_webform_submission_localgov_forms_feedback_form_add_form_alter(&$form, $form_state, $form_id) {
   $form['#attached']['library'][] = 'localgov_forms_feedback_form/localgov_forms_feedback_form';
 }
-
-/**
- * Implements hook_form_alter().
- */
-function localgov_forms_feedback_form_form_alter(&$form, $form_state, $form_id) {
-  dump($form_id);
-}
