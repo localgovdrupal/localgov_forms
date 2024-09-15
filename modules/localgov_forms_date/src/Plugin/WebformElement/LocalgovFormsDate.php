@@ -81,19 +81,22 @@ class LocalgovFormsDate extends DateList {
     $element = parent::afterBuild($element, $form_state);
 
     // Set the property of the date of birth elements.
-    $element['day']['#attributes']['placeholder'] = t('DD');
+    $element['day']['#title'] = t('Day');
+    $element['day']['#title_display'] = 'before';
     $element['day']['#maxlength'] = 2;
     $element['day']['#attributes']['inputmode'] = 'numeric';
     $element['day']['#attributes']['pattern'] = '[0-9]*';
     $element['day']['#attributes']['class'][] = 'localgov_forms_date__day';
 
-    $element['month']['#attributes']['placeholder'] = t('MM');
+    $element['month']['#title'] = t('Month');
+    $element['month']['#title_display'] = 'before';
     $element['month']['#maxlength'] = 2;
     $element['month']['#attributes']['inputmode'] = 'numeric';
     $element['month']['#attributes']['pattern'] = '[0-9]*';
     $element['month']['#attributes']['class'][] = 'localgov_forms_date__month';
 
-    $element['year']['#attributes']['placeholder'] = t('YYYY');
+    $element['year']['#title'] = t('Year');
+    $element['year']['#title_display'] = 'before';
     $element['year']['#maxlength'] = 4;
     $element['year']['#attributes']['inputmode'] = 'numeric';
     $element['year']['#attributes']['pattern'] = '[0-9]*';
