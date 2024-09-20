@@ -6,8 +6,8 @@ use Drupal\Core\Database\Connection as DbConnection;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\Insert;
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\localgov_forms_lts\LtsStorageForWebformSubmission;
 use Drupal\localgov_forms_lts\Constants;
+use Drupal\localgov_forms_lts\LtsStorageForWebformSubmission;
 use Drupal\webform\Entity\WebformSubmission;
 
 /**
@@ -74,7 +74,7 @@ class LtsStorageForWebformSubmissionTest extends KernelTestBase {
       ->willReturnMap([
         ['webform_submission', $mock_insert_query],
         ['webform_submission', [
-          'return' => Database::RETURN_INSERT_ID,
+          'return' => self::DEPRECATED_D10_RETURN_INSERT_ID,
         ], $mock_insert_query,
         ],
         ['webform_submission_data', $mock_insert_query],
@@ -94,6 +94,11 @@ class LtsStorageForWebformSubmissionTest extends KernelTestBase {
    * A Webform from the localgov_forms_test module.
    */
   const TEST_WEBFORM_ID = 'contact';
+
+  /**
+   * Mirrors the deprecated Database::RETURN_INSERT_ID.
+   */
+  const DEPRECATED_D10_RETURN_INSERT_ID = 3;
 
   /**
    * Modules to enable.
