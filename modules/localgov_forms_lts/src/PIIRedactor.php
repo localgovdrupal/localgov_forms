@@ -79,7 +79,7 @@ class PIIRedactor {
     $elems_w_some_pii = array_keys(array_intersect($elem_type_mapping, static::PII_ELEMENT_TYPES_TO_REDUCT_IN_PART));
 
     $elems_to_redact = [
-      'full' => [...$pii_elems, ...$guessed_pii_elems],
+      'full' => array_unique([...$pii_elems, ...$guessed_pii_elems]),
       'part' => $elems_w_some_pii,
     ];
     return $elems_to_redact;
@@ -151,6 +151,6 @@ class PIIRedactor {
    *
    * Element type naming pattern indicating possible link with PII.
    */
-  const GUESSED_PII_ELEM_PATTERN = '#name|mail|phone|contact_number|date_of_birth|dob_|nino|address|postcode|post_code|personal_|title|passport|serial_number|reg_number|pcn_|driver_#i';
+  const GUESSED_PII_ELEM_PATTERN = '#name|mail|phone|contact_number|date_of_birth|dob_|nino|address|postcode|post_code|personal_|title|gender|sex|ethnicity|passport|serial_number|reg_number|pcn_|driver_#i';
 
 }

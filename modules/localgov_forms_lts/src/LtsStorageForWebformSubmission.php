@@ -53,7 +53,7 @@ class LtsStorageForWebformSubmission extends WebformSubmissionStorage {
   /**
    * Disables persistent cache.
    *
-   * Because we have not got any in LTS.
+   * Because we do not have any in LTS.
    */
   protected function getFromPersistentCache(array &$ids = NULL) {
 

@@ -51,7 +51,7 @@ class LtsCopy implements ContainerInjectionInterface {
    */
   public function copySub(int $webform_sub_id, bool $is_new_webform_sub) :bool {
 
-    $webform_sub = WebformSubmission::load($webform_sub_id);
+    $webform_sub = $this->webformSubStorage->load($webform_sub_id);
     PIIRedactor::redact($webform_sub);
 
     $db_connection = $this->ltsStorage->getDatabaseConnection();
@@ -104,8 +104,7 @@ class LtsCopy implements ContainerInjectionInterface {
 
     $last_copied_webform_sub_changed_ts = $this->findLatestUpdateTimestamp();
 
-    $webform_subs_to_copy = $this->entityTypeManager
-      ->getStorage('webform_submission')
+    $webform_subs_to_copy_query = $this->webformSubStorage
       ->getQuery()
       ->accessCheck(FALSE)
       ->condition('changed', $last_copied_webform_sub_changed_ts, '>')
@@ -113,10 +112,10 @@ class LtsCopy implements ContainerInjectionInterface {
       ->sort('changed');
 
     if ($count > -1) {
-      $webform_subs_to_copy->range(start: 0, length: $count);
+      $webform_subs_to_copy_query->range(start: 0, length: $count);
     }
 
-    $copy_targets = $webform_subs_to_copy->execute();
+    $copy_targets = $webform_subs_to_copy_query->execute();
     return $copy_targets;
   }
 
@@ -135,7 +134,7 @@ class LtsCopy implements ContainerInjectionInterface {
   public function setLatestUpdateTimestamp(array $copy_results) :void {
 
     $last_copied_webform_sub_id = array_key_last($copy_results);
-    $last_copied_webform_sub = WebformSubmission::load($last_copied_webform_sub_id);
+    $last_copied_webform_sub = $this->webformSubStorage->load($last_copied_webform_sub_id);
     $this->ltsKeyValueStore->set(Constants::LAST_CHANGE_TIMESTAMP, $last_copied_webform_sub->getChangedTime());
   }
 
@@ -146,7 +145,7 @@ class LtsCopy implements ContainerInjectionInterface {
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, KeyValueFactoryInterface $key_value_factory, LoggerChannelFactoryInterface $logger_factory, WebformSubmissionStorageInterface $lts_storage) {
 
-    $this->entityTypeManager = $entity_type_manager;
+    $this->webformSubStorage = $entity_type_manager->getStorage('webform_submission');
     $this->ltsStorage        = $lts_storage;
     $this->ltsKeyValueStore  = $key_value_factory->get(Constants::LTS_KEYVALUE_STORE_ID);
     $this->ltsLogger         = $logger_factory->get(Constants::LTS_LOGGER_CHANNEL_ID);
@@ -177,9 +176,9 @@ class LtsCopy implements ContainerInjectionInterface {
   /**
    * Entity type manager service.
    *
-   * @var Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var Drupal\webform\WebformSubmissionStorageInterface
    */
-  protected $entityTypeManager;
+  protected $webformSubStorage;
 
   /**
    * Database service for the Long term storage database.
