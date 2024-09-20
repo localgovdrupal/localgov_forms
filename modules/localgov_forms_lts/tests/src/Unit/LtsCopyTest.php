@@ -36,7 +36,7 @@ class LtsCopyTest extends UnitTestCase {
 
     $copy_results = $test_obj->copy();
 
-    $this->assertCount(expectedCount: self::WEBFORM_SUB_EXPECTED_COPY_COUNT, haystack: $copy_results);
+    $this->assertCount(self::WEBFORM_SUB_EXPECTED_COPY_COUNT, $copy_results);
   }
 
   /**
@@ -44,9 +44,9 @@ class LtsCopyTest extends UnitTestCase {
    *
    * Initializes all objects needed to create an LtsCopy object.
    */
-  public function setup(): void {
+  public function setUp(): void {
 
-    parent::setup();
+    parent::setUp();
 
     $mock_webform_sub_storage = static::setupMockWebformSubmissionStorage();
     $this->mockEntityTypeManager = $this->createConfiguredMock(EntityTypeManagerInterface::class, [
@@ -133,28 +133,28 @@ class LtsCopyTest extends UnitTestCase {
   /**
    * Mock KeyValue factory.
    *
-   * @var Drupal\Core\KeyValueStore\KeyValueFactoryInterface
+   * @var \Drupal\Core\KeyValueStore\KeyValueFactoryInterface
    */
   protected $mockLtsKeyValueFactory;
 
   /**
    * Mock EntityTypeManager.
    *
-   * @var Drupal\Core\Entity\EntityTypeManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $mockEntityTypeManager;
 
   /**
    * Mock Long term webform submission storage.
    *
-   * @var Drupal\webform\WebformSubmissionStorageInterface
+   * @var \Drupal\webform\WebformSubmissionStorageInterface
    */
   protected $mockLtsStorage;
 
   /**
    * Mock logger.
    *
-   * @var Drupal\Core\Logger\LoggerChannelFactoryInterface
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $mockLtsLoggerFactory;
 

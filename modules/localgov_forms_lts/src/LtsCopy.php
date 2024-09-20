@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\localgov_forms_lts;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
-use Drupal\webform\Entity\WebformSubmission;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -65,7 +64,7 @@ class LtsCopy implements ContainerInjectionInterface {
         $this->ltsStorage->resave($webform_sub);
       }
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       $tx->rollBack();
 
       $this->ltsLogger->error('Failed to add/edit Webform submission: %sub-id', [

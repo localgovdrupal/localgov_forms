@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Drupal\localgov_forms_lts;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Url;
 use Drupal\webform\WebformSubmissionListBuilder;
 use Drupal\webform\WebformSubmissionInterface;

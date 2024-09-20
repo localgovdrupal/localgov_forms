@@ -2,9 +2,9 @@
 
 namespace Drupal\localgov_forms_lts;
 
-use Drupal\webform\WebformSubmissionStorage;
 use Drupal\Core\Database\Connection as DbConnection;
 use Drupal\Core\Database\Database;
+use Drupal\webform\WebformSubmissionStorage;
 
 /**
  * Alternate storage class for Webform submission.

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\localgov_forms_lts\Kernel;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Connection as DbConnection;
+use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Query\Insert;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\localgov_forms_lts\LtsStorageForWebformSubmission;
