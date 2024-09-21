@@ -67,13 +67,13 @@ function localgov_forms_lts_requirements($phase) {
  */
 function _localgov_forms_lts_get_webform_submission_storage_schema(): array {
 
-  $entity_type_manager = Drupal::service('entity_type.manager');
-  $entity_storage      = $entity_type_manager->getStorage('webform_submission');
-  // @phpstan-ignore-next-line
+  $entity_type_manager  = Drupal::service('entity_type.manager');
+  $entity_storage       = $entity_type_manager->getStorage('webform_submission');
   $entity_type          = $entity_storage->getEntityType();
   $entity_field_manager = Drupal::service('entity_field.manager');
   $db_service           = Drupal::service('database');
 
+  // @phpstan-ignore-next-line Avoid incorrect type inference of $entity_type.
   $entity_schema = (new class($entity_type_manager, $entity_type, $entity_storage, $db_service, $entity_field_manager) extends WebformSubmissionStorageSchema {
 
     /**
