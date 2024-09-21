@@ -8,9 +8,12 @@ use Drupal\Tests\Core\Database\Stub\StubConnection;
 use Drupal\Tests\Core\Database\Stub\StubPDO;
 
 /**
- * A stub of the abstract Connection class for testing purposes.
+ * A mock Drupal database driver class.
  *
- * Includes minimal implementations of Connection's abstract methods.
+ * Useful during testing.
+ *
+ * Good enough to serve as a database connection object but cannot actually
+ * perform any query operation yet.
  */
 class Connection extends StubConnection {
 
