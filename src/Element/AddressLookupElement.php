@@ -198,7 +198,7 @@ class AddressLookupElement extends FormElement {
           $element['address_select']['address_select_list']['#disabled'] = FALSE;
           $options = array_keys($element['address_select']['address_select_list']['#options']);
           $selected = $parent_container_values['address_select']['address_select_list'] ?? 0;
-          if (!in_array($selected, $options)) {
+          if (!in_array($selected, $options, TRUE)) {
             $element['address_select']['address_select_list']['#value'] = NULL;
           }
         }
@@ -267,6 +267,13 @@ class AddressLookupElement extends FormElement {
     if (empty($input['address_search']['address_searchstring'])) {
       return NULL;
     }
+
+    // FIXME: Call to method valueCallback() of deprecated class
+    // Drupal\Core\Render\Element\FormElement: in drupal:10.3.0 and
+    // is removed from drupal:12.0.0.
+    // use \Drupal\Core\Render\Element\FormElementBase instead.
+    // @phpstan-ignore-next-line
+    return parent::valueCallback($element, $input, $form_state);
   }
 
   /**

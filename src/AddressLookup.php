@@ -102,18 +102,18 @@ class AddressLookup {
     }
 
     $address = [
-      'name'         => $unique_id ?? '',
-      'uprn'         => $uprn ?? '',
-      'display'      => $display_name ?? '',
+      'name'         => $unique_id,
+      'uprn'         => $uprn,
+      'display'      => $display_name,
       'street'       => implode(' ', array_filter([
         $street_number, $street_name,
       ])),
-      'flat'         => $flat ?? '',
+      'flat'         => $flat,
       'house'        => implode(', ', array_filter([$org, $house_name])),
       'town'         => $locality ?? '',
       'postcode'     => $postcode ?? '',
-      'lat'          => $latitude ?? '',
-      'lng'          => $longitude ?? '',
+      'lat'          => $latitude ?: '',
+      'lng'          => $longitude ?: '',
       'country'      => $country_name ?? '',
       'country_code' => $country_code ?? '',
       'line1'        => '',
