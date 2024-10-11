@@ -38,6 +38,11 @@ class LocalgovMockGeocoder implements ProviderInterface {
     $results       = [];
     $search_string = $query->getText();
     $is_bhcc_hq    = !strcasecmp($search_string, 'BN1 1JE');
+    $is_sandown_rd = !strcasecmp($search_string, 'sandown');
+
+    $local_custodian_code     = $query->getData('local_custodian_code');
+    $is_restricted_to_bhcc    = ($local_custodian_code === self::BHCC_LOCAL_CUSTODIAN_CODE);
+    $is_restricted_to_croydon = ($local_custodian_code === self::CROYDON_LOCAL_CUSTODIAN_CODE);
 
     if ($is_bhcc_hq) {
       $results[] = OsPlacesAddress::createFromArray([
@@ -52,11 +57,51 @@ class LocalgovMockGeocoder implements ProviderInterface {
         'country'          => 'United Kingdom',
         'countryCode'      => 'GB',
         'display'          => 'Brighton & Hove City Council, Bartholomew House, Bartholomew Square, Brighton, BN1 1JE',
-        'latitude'         => '-0.1409790',
-        'longitude'        => '50.8208609',
+        'latitude'         => '50.8208609',
+        'longitude'        => '-0.1409790',
         'easting'          => '531044',
         'northing'         => '104015',
         'uprn'             => '000022062038',
+      ]);
+    }
+    elseif ($is_sandown_rd && $is_restricted_to_bhcc) {
+      $results[] = OsPlacesAddress::createFromArray([
+        'providedBy'       => $this->getName(),
+        'org'              => '',
+        'houseName'        => '',
+        'streetNumber'     => '2',
+        'streetName'       => 'SANDOWN ROAD',
+        'flat'             => '',
+        'locality'         => 'BRIGHTON',
+        'postalCode'       => 'BN2 3EJ',
+        'country'          => 'United Kingdom',
+        'countryCode'      => 'GB',
+        'display'          => '2, SANDOWN ROAD, BRIGHTON, BN2 3EJ',
+        'latitude'         => '50.8317948',
+        'longitude'        => '-0.1177381',
+        'easting'          => '532648',
+        'northing'         => '105273',
+        'uprn'             => '22087484',
+      ]);
+    }
+    elseif ($is_sandown_rd && $is_restricted_to_croydon) {
+      $results[] = OsPlacesAddress::createFromArray([
+        'providedBy'       => $this->getName(),
+        'org'              => '',
+        'houseName'        => '',
+        'streetNumber'     => '4',
+        'streetName'       => 'SANDOWN ROAD',
+        'flat'             => '',
+        'locality'         => 'LONDON',
+        'postalCode'       => 'SE25 4XE',
+        'country'          => 'United Kingdom',
+        'countryCode'      => 'GB',
+        'display'          => '4, SANDOWN ROAD, LONDON, SE25 4XE',
+        'latitude'         => '51.3935247',
+        'longitude'        => '-0.0662865',
+        'easting'          => '534630',
+        'northing'         => '167828',
+        'uprn'             => '100020656118',
       ]);
     }
 
@@ -70,5 +115,8 @@ class LocalgovMockGeocoder implements ProviderInterface {
 
     throw new UnsupportedOperation('Reverse geocoding is unavailable in the LocalGov mock geocoder provider.');
   }
+
+  const BHCC_LOCAL_CUSTODIAN_CODE = 1445;
+  const CROYDON_LOCAL_CUSTODIAN_CODE = 5240;
 
 }
