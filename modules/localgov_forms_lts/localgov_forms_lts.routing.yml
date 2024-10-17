@@ -1,0 +1,29 @@
+# List of Webform submissions from Long term storage.
+entity.webform_submission.lts_collection:
+  path: '/admin/structure/webform/submissions/lts/{submission_view}'
+  defaults:
+    _controller: '\Drupal\localgov_forms_lts\WebformSubmissionLtsListBuilder::render'
+    _title: 'Webforms: Submissions'
+    submission_view: ''
+  requirements:
+    _custom_access: '\Drupal\webform\Access\WebformAccountAccess:checkSubmissionAccess'
+
+# Individual Webform submission view from Long term storage.
+entity.webform_submission.lts_view:
+  path: '/admin/structure/webform/manage/{webform}/submission/{webform_sid}/lts'
+  defaults:
+    _controller: '\Drupal\localgov_forms_lts\Controller\WebformSubmissionLtsViewController::viewFromLts'
+    _title_callback: '\Drupal\localgov_forms_lts\Controller\WebformSubmissionLtsViewController::titleFromLts'
+    view_mode: 'html'
+  requirements:
+    _custom_access: '\Drupal\webform\Access\WebformAccountAccess:checkSubmissionAccess'
+
+# Individual Webform submission notes from Long term storage.
+entity.webform_submission.lts_notes:
+  path: '/admin/structure/webform/manage/{webform}/submission/{webform_sid}/notes/lts'
+  defaults:
+    _controller: '\Drupal\localgov_forms_lts\Controller\WebformSubmissionLtsViewController::noteViewFromLts'
+    _title_callback: '\Drupal\localgov_forms_lts\Controller\WebformSubmissionLtsViewController::titleFromLts'
+    view_mode: 'html'
+  requirements:
+    _custom_access: '\Drupal\webform\Access\WebformAccountAccess:checkSubmissionAccess'
