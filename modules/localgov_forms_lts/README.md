@@ -33,3 +33,75 @@ To inspect Webform submissions kept in Long term storage, look for the "LTS" tab
 ### Todo
 - Removal of Webform submissions from Long term storage after a predefined period e.g. 5 years.
 - Machine names which are indicative of PII are hardcoded within the Drupal\localgov_forms_lts\PIIRedactor class at the moment.  This needs a configuration UI.
+
+### Testing in DDEV
+
+To set up testing in ddev, we'll need to set up a second database.
+
+There are a few ways to do this, but the following seems to work.
+
+#### 1. Add a post-start hook to your .ddev/config.yml
+
+Edit `.ddev/config.yml` and add the following to create a new database on start.
+
+```
+hooks:
+  post-start:
+  - exec: mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS localgov_forms_lts; GRANT ALL ON localgov_forms_lts.* to 'db'@'%';"
+    service: db
+```
+
+#### 2. Add the database connection string to settings.php:
+
+Edit sites/default/settings.php and add a new database connection string at the
+end of the file.
+
+```
+// Database connection for localgov_forms_lts.
+$databases['localgov_forms_lts']['default'] = [
+  'database'  => 'localgov_forms_lts',
+  'username'  => 'db',
+  'password'  => 'db',
+  'host'      => 'db',
+  'port'      => '3306',
+  'driver'    => 'mysql',
+  'prefix'    => '',
+];
+```
+
+#### 3. Install Adminer
+
+Adminer is useful if you want to inspect databases and tables.
+
+```
+ddev get ddev/ddev-adminer
+```
+
+#### 4. Restart ddev
+
+```
+ddev restart
+```
+
+#### 5. Require and install the module.
+
+```
+ddev composer require localgovdrupal/localgov_forms
+ddev drush si localgov_forms_lts -y
+```
+
+#### 5. Make some submissions.
+
+For example, in LocalGov Drupal we tend to have a contact form at /form/contact.
+
+Make a couple of submissions there.
+
+#### 6. Run cron.
+
+ddev drush cron
+
+#### 7. Inspect the LTS tab
+
+Go to /admin/structure/webform/submissions/lts
+
+Here you should see your submissions with redacted name and email address.
