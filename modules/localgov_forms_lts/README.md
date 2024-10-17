@@ -6,7 +6,7 @@
   ```
   $databases['localgov_forms_lts']['default'] = [
     'database'  => 'our_longer_term_storage_database',
-    'username'  => 'database_username_goes_here'
+    'username'  => 'database_username_goes_here',
     'password'  => 'database-password-goes-here',
     'host'      => 'database-hostname-goes-here',
     'port'      => '3306',
