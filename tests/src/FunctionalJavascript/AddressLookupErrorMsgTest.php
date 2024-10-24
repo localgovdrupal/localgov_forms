@@ -70,8 +70,8 @@ class AddressLookupErrorMsgTest extends WebDriverTestBase {
   /**
    * Address lookup element should raise error if a required subfield is empty.
    *
-   * - Submits an empty form.  Should bring up error messeges from both the
-   *   radio and address lookup elements.
+   * - Submits an empty form.  Should bring up an error messege from the radio
+   *   element.
    * - Selects a radio that does not bring up the address lookup element.  Then
    *   submits form.  Should not bring up any error messages because address
    *   lookup element is hidden.
