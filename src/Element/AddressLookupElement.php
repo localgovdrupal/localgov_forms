@@ -189,7 +189,7 @@ class AddressLookupElement extends FormElement {
         $parent_container = $parent_container[$keyval];
       }
 
-      // Extract the parent values form container.
+      // Extract the parent values from container.
       $parent_container_values = $form_values;
       foreach ($parents as $keyval) {
         $parent_container_values = $parent_container_values[$keyval];

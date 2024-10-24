@@ -44,7 +44,6 @@
   function hideManualAddress(centralHubElement, type, settings) {
     var manualAddressContainer = centralHubElement.find('.js-address-entry-container');
     var manualButton = centralHubElement.find('.js-manual-address');
-    var addressSelectContainer = centralHubElement.find('.js-address-select-container');
     manualAddressContainer.addClass('hidden');
 
     if (type == 'hard') {
@@ -63,6 +62,7 @@
 
   /**
    * Show the manual address form elements.
+   *
    * @param  {jQuery} centralHubElement
    *   Centralhub address element.
    */
@@ -70,17 +70,10 @@
     var manualAddressContainer = centralHubElement.find('.js-address-entry-container');
     var manualButton = centralHubElement.find('.js-manual-address');
     var addressSelectContainer = centralHubElement.find('.js-address-select-container');
-    var addressSelect = addressSelectContainer.find('select');
     var searchElement = centralHubElement.find('.js-address-searchstring');
     var addressError = addressSelectContainer.find('.js-address-error');
     manualAddressContainer.removeClass('hidden');
-    // manualAddressContainer.find('input').val('');
     manualButton.hide();
-    // addressSelectContainer.addClass('hidden');
-    // addressSelect.val('0');
-    // Clear the search element when entering a manual address.
-    // This is to pass validation.
-    // searchElement.val('');
     // Remove the error element when making a manual address.
     addressError.remove();
   }
@@ -174,7 +167,6 @@
         central_hub_webform_address_container.find('input.js-localgov-forms-webform-uk-address--' + value).val(addressSelected[value]);
       });
 
-      // hideManualAddress(centralHubElement, 'soft');
       showManualAddress(centralHubElement);
     } else if ($(this).val() == 0) {
       // If choosing the empty option, clear out the address fields.
@@ -211,9 +203,6 @@
           hideManualAddress(centralHubElement, 'soft', settings);
         }
 
-        // centralHubElement.find('.js-address-searchstring').change(function() {
-        //   hideManualAddress(centralHubElement, 'hard');
-        // });
         centralHubElement.find('.js-reset-address').click(function () {
           hideManualAddress(centralHubElement, 'hard', settings);
         });

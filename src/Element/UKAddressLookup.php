@@ -98,6 +98,14 @@ class UKAddressLookup extends WebformCompositeBase {
       return;
     }
 
+    // Temporarily reset the #limit_validation_errors property.  Otherwise we
+    // can't safely set and manipulate errors below.
+    //
+    // @see Drupal\Core\Form\FormState::setErrorByName()
+    // @see AddressLookupElement::processAddressLookupElement()
+    $orig_limit_validation_errors = $form_state->getLimitValidationErrors();
+    $form_state->setLimitValidationErrors(NULL);
+
     // If the element or any of its parent containers are hidden by conditions,
     // Bypass validation and clear any required element errors generated
     // for this element.
@@ -105,7 +113,7 @@ class UKAddressLookup extends WebformCompositeBase {
       $form_errors = $form_state->getErrors();
       $form_state->clearErrors();
       foreach ($form_errors as $error_key => $error_value) {
-        if (strpos($error_key, $element_key . ']') !== 0) {
+        if (strpos($error_key, $element_key . ']') === FALSE) {
           $form_state->setErrorByName($error_key, $error_value);
         }
       }
@@ -145,22 +153,44 @@ class UKAddressLookup extends WebformCompositeBase {
       !empty($element['#webform_composite_elements']['town_city']['#required']) ||
       !empty($element['#webform_composite_elements']['postcode']['#required']);
 
+    $is_address_lookup_op = $form_state->getTriggeringElement()['#name'] === $element_key . '[address_lookup][address_search][address_actions][address_searchbutton]';
+
     if ($has_access && $is_any_address_line_required) {
       // If there is an address search, but no elements to select
       // (its a markup error)
       // Then show an error to search for a local address or select can't find
       // the address.
       if (!empty($search_string) && $element['address_lookup']['address_select']['address_select_list']['#type'] == 'markup') {
-        $form_state->setError($element, t('Search for a local address, or select "Can\'t find the address" to enter an address.'));
+        $form_state->setError($element['address_lookup']['address_search']['address_searchstring'], t('Search for a local address, or select "Can\'t find the address" to enter an address.'));
+
+        // Inline form errors don't work well for this element in Ajax calls.
+        // This is because the Ajax callback attached to the `Find address`
+        // button updates only *part* of the address lookup element.  As a
+        // result, any error set on any other part of the address lookup element
+        // is lost.  To avoid this, we disable inline errors here.  There is an
+        // assumption here that the `Find address` button is using Ajax.  This
+        // assumption is good enough for most cases but degrades without Ajax.
+        if ($is_address_lookup_op) {
+          $complete_form['#disable_inline_form_errors'] = TRUE;
+        }
       }
       // Else if there is a search but no address selected,
       // set the select box as required.
-      elseif (!empty($search_string) && empty($selected)) {
+      elseif (!empty($search_string) && empty($selected) && !$is_address_lookup_op) {
         WebformElementHelper::setRequiredError($element['address_lookup']['address_select']['address_select_list'], $form_state);
+
+        // UI needs a hint that we are in the middle of a search.
+        $element['address_lookup']['address_search']['address_actions']['address_searchbutton']['#attributes']['class'][] = 'js-searching';
       }
       // Else mark the entire element as required.
       elseif (empty($search_string) && empty($selected)) {
-        WebformElementHelper::setRequiredError($element, $form_state);
+        WebformElementHelper::setRequiredError($element['address_lookup']['address_search']['address_searchstring'], $form_state);
+
+        // As explained above, inline form errors don't work well for this
+        // element in Ajax calls.
+        if ($is_address_lookup_op) {
+          $complete_form['#disable_inline_form_errors'] = TRUE;
+        }
       }
 
       // Fetch errors, to allow any generated errors for the child elements
@@ -168,9 +198,9 @@ class UKAddressLookup extends WebformCompositeBase {
       $form_errors = $form_state->getErrors();
 
       // Loop through errors and remove child elements, except the select
-      // element.
+      // and search query elements.
       foreach ($form_errors as $error_key => $error_value) {
-        if (strpos($error_key, $element_key . ']') === 0 && $error_key != $element_key . '][address_lookup][address_select][address_select_list') {
+        if (strpos($error_key, $element_key . ']') === 0 && ($error_key !== $element_key . '][address_lookup][address_select][address_select_list' && $error_key !== $element_key . '][address_lookup][address_search][address_searchstring')) {
           unset($form_errors[$error_key]);
         }
       }
@@ -181,12 +211,16 @@ class UKAddressLookup extends WebformCompositeBase {
         unset($form_errors[$element_key . '][address_lookup][address_select][address_select_list']);
       }
 
-      // Reset form errors and reset them with the cleaned ones.
+      // Reset form errors and replace them with cleaned ones.
       $form_state->clearErrors();
       foreach ($form_errors as $error_key => $error_value) {
         $form_state->setErrorByName($error_key, $error_value);
       }
     }
+
+    // Restore original value of the `limit_validation_errors` property now that
+    // we are done with manipulating errors.
+    $form_state->setLimitValidationErrors($orig_limit_validation_errors);
 
     // Clear empty composites value.
     if (empty(array_filter($value))) {
