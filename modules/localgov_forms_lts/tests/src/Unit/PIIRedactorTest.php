@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\localgov_forms_lts\Unit;
 
-use Drupal\localgov_forms_lts\PIIRedactor;
 use Drupal\Tests\UnitTestCase;
+use Drupal\localgov_forms_lts\PIIRedactor;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
