@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Render\Element;
+use Drupal\webform\Plugin\WebformHandlerInterface;
+
 
 /**
  * Implements hook_theme().
@@ -20,6 +22,11 @@ function localgov_forms_theme() {
     'localgov_forms_uk_address' => [
       'render element' => 'element',
     ],
+    // Webform Handler Email summary
+    'webform_handler_localgov_forms_email_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => NULL ],
+    ],
+
   ];
 }
 
@@ -54,4 +61,29 @@ function template_preprocess_localgov_forms_uk_address(array &$variables) {
  */
 function localgov_forms_preprocess_webform(array &$variables) {
   $variables['#attached']['library'][] = 'localgov_forms/localgov_forms.form_errors';
+}
+
+/**
+ *
+ */
+function localgov_forms_webform_handler_invoke_pre_save_alter( WebformHandlerInterface $handler, array &$args) {
+
+  $configuration = $handler->getConfiguration();
+
+  // Configuration id.
+  $configuration_id = $configuration["id"];
+
+
+  if ($configuration_id === 'localgov_forms_email' && ($configuration['settings']['attachments'] ?? FALSE)) {
+    $webform = $handler->getWebform();
+    $element_attachments = $handler->getWebform()->getElementsManagedFiles();
+
+    array_walk($element_attachments, function($element_id) use($webform) {
+      $element_properties = $webform->getElement($element_id);
+      $element_properties['#format'] = 'name'; // Fixed file format.
+      $webform->setElementProperties($element_id, $element_properties);
+    });
+  }
+
+
 }
