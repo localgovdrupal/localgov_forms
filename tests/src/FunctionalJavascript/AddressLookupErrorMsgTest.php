@@ -103,8 +103,9 @@ class AddressLookupErrorMsgTest extends WebDriverTestBase {
     $this->submitForm(edit: ['does_it_have_an_address' => 'Yes'], submit: 'Submit');
     $session_assert->waitForElementVisible('css', '.messages--error');
 
-    $session_assert->statusMessageContains('Postcode or Street field is required.', type: 'error');
-    $session_assert->statusMessageContains('Postcode field is required.', type: 'error');
+    $session_assert->statusMessageContains('2 errors have been found:', type: 'error');
+    $session_assert->statusMessageContains('Postcode or Street', type: 'error');
+    $session_assert->statusMessageContains('Postcode', type: 'error');
 
     // Now fill in the required postcode and submit again.
     $session_assert->buttonExists('Can\'t find the address?')->click();
