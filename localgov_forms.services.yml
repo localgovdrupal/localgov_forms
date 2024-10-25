@@ -6,3 +6,8 @@ services:
   localgov_forms.address_lookup:
     class: Drupal\localgov_forms\AddressLookup
     arguments: ['@geocoder', '@localgov_forms.geocoder_selection']
+
+  # Plugin manager service for PII redaction from Webform submissions.
+  localgov_forms.pii_redactor_manager:
+    class: Drupal\localgov_forms\Plugin\PIIRedactorManager
+    parent: default_plugin_manager
