@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\localgov_forms_lts;
+namespace Drupal\localgov_forms;
 
 /**
  * Redacts from given text.
@@ -17,7 +17,7 @@ namespace Drupal\localgov_forms_lts;
  * foo@example.net will be fully redacted, but foo\@bar@example will only be
  * partially redacted.
  */
-class PIIRedactorForText {
+class BestEffortPIIRedactorForText {
 
   /**
    * Redacts email, postcode, number.

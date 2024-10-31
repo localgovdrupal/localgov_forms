@@ -8,6 +8,6 @@ services:
     arguments: ['@geocoder', '@localgov_forms.geocoder_selection']
 
   # Plugin manager service for PII redaction from Webform submissions.
-  localgov_forms.pii_redactor_manager:
-    class: Drupal\localgov_forms\Plugin\PIIRedactorManager
+  plugin.manager.pii_redactor:
+    class: Drupal\localgov_forms\Plugin\PIIRedactorPluginManager
     parent: default_plugin_manager

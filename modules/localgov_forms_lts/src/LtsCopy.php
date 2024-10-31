@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\localgov_forms_lts;
 
+use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
@@ -51,7 +52,10 @@ class LtsCopy implements ContainerInjectionInterface {
   public function copySub(int $webform_sub_id, bool $is_new_webform_sub) :bool {
 
     $webform_sub = $this->webformSubStorage->load($webform_sub_id);
-    PIIRedactor::redact($webform_sub);
+
+    if ($this->optionalPIIRedactorPlugin) {
+      $this->optionalPIIRedactorPlugin->redact($webform_sub);
+    }
 
     $db_connection = $this->ltsStorage->getDatabaseConnection();
     $tx = $db_connection->startTransaction();
@@ -142,18 +146,19 @@ class LtsCopy implements ContainerInjectionInterface {
    *
    * Keeps track of dependencies.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, KeyValueFactoryInterface $key_value_factory, LoggerChannelFactoryInterface $logger_factory, WebformSubmissionStorageInterface $lts_storage) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, KeyValueFactoryInterface $key_value_factory, LoggerChannelFactoryInterface $logger_factory, WebformSubmissionStorageInterface $lts_storage, ?PluginInspectionInterface $pii_redactor_plugin = NULL) {
 
-    $this->webformSubStorage = $entity_type_manager->getStorage('webform_submission');
-    $this->ltsStorage        = $lts_storage;
-    $this->ltsKeyValueStore  = $key_value_factory->get(Constants::LTS_KEYVALUE_STORE_ID);
-    $this->ltsLogger         = $logger_factory->get(Constants::LTS_LOGGER_CHANNEL_ID);
+    $this->webformSubStorage         = $entity_type_manager->getStorage('webform_submission');
+    $this->ltsStorage                = $lts_storage;
+    $this->ltsKeyValueStore          = $key_value_factory->get(Constants::LTS_KEYVALUE_STORE_ID);
+    $this->ltsLogger                 = $logger_factory->get(Constants::LTS_LOGGER_CHANNEL_ID);
+    $this->optionalPIIRedactorPlugin = $pii_redactor_plugin;
   }
 
   /**
    * Factory.
    */
-  public static function create(ContainerInterface $container) :LtsCopy {
+  public static function create(ContainerInterface $container, ?PluginInspectionInterface $pii_redactor_plugin = NULL) :LtsCopy {
 
     $webform_sub_def = $container->get('entity_type.manager')->getDefinition('webform_submission');
 
@@ -161,7 +166,8 @@ class LtsCopy implements ContainerInjectionInterface {
       $container->get('entity_type.manager'),
       $container->get('keyvalue'),
       $container->get('logger.factory'),
-      LtsStorageForWebformSubmission::createInstance($container, $webform_sub_def)
+      LtsStorageForWebformSubmission::createInstance($container, $webform_sub_def),
+      $pii_redactor_plugin,
     );
   }
 
@@ -192,5 +198,12 @@ class LtsCopy implements ContainerInjectionInterface {
    * @var Drupal\Core\Logger\LoggerChannelInterface
    */
   protected $ltsLogger;
+
+  /**
+   * Optional PII redactor plugin manager.
+   *
+   * @var Drupal\Component\Plugin\PluginInspectionInterface
+   */
+  protected $optionalPIIRedactorPlugin = NULL;
 
 }

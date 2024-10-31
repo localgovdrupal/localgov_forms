@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\localgov_forms_lts\Unit;
+namespace Drupal\Tests\localgov_forms\Unit;
 
 use Drupal\Tests\UnitTestCase;
-use Drupal\localgov_forms_lts\PIIRedactor;
+use Drupal\localgov_forms\BestEffortPIIRedactor;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Unit tests for PIIRedactor.
  */
-class PIIRedactorTest extends UnitTestCase {
+class BestEffortPIIRedactorTest extends UnitTestCase {
 
   /**
    * Tests PIIRedactorTest::findElemsToRedact().
@@ -38,7 +38,7 @@ class PIIRedactorTest extends UnitTestCase {
       'getWebform' => $mock_webform,
     ]);
 
-    $elems_to_redact = PIIRedactor::findElemsToRedact($mock_webform_sub);
+    $elems_to_redact = BestEffortPIIRedactor::findElemsToRedact($mock_webform_sub);
 
     $this->assertSame([
       'email',

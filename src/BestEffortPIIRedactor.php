@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\localgov_forms_lts;
+namespace Drupal\localgov_forms;
 
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -17,7 +17,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   phone, date_of_birth, personal, title, gender, sex, ethnicity.
  * - All textareas are cleaned of email, postcode, and any number.
  */
-class PIIRedactor {
+class BestEffortPIIRedactor {
 
   /**
    * Redacts all PII from given Webform submission.
@@ -41,7 +41,7 @@ class PIIRedactor {
 
     $partial_redaction_result = array_map(function ($elem) use ($webform_sub) {
       if ($text = $webform_sub->getElementData($elem)) {
-        [$redacted_text, $redaction_count] = PIIRedactorForText::redact($text);
+        [$redacted_text, $redaction_count] = BestEffortPIIRedactorForText::redact($text);
 
         if ($redaction_count) {
           $webform_sub->setElementData($elem, $redacted_text);

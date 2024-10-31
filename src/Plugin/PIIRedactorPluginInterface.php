@@ -13,7 +13,10 @@ use Drupal\webform\WebformSubmissionInterface;
 interface PIIRedactorPluginInterface extends PluginInspectionInterface {
 
   /**
-   * Redacts PII from given Webform submission.
+   * Redacts PII from the given Webform submission.
+   *
+   * @return array
+   *   List of redacted fieldnames.
    */
   public function redact(WebformSubmissionInterface $webform_submission): array;
 
