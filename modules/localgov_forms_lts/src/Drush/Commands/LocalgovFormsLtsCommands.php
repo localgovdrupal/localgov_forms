@@ -37,7 +37,7 @@ final class LocalgovFormsLtsCommands extends DrushCommands {
       return;
     }
 
-    $is_proceed = $options['force'] ?: $this->configFactory->get('localgov_forms_lts.settings')?->get('is_copy_active');
+    $is_proceed = $options['force'] ?: $this->configFactory->get('localgov_forms_lts.settings')?->get('is_copying_enabled');
     if (!$is_proceed) {
       $this->logger->warning(dt('Copying is disabled in localgov_forms_lts module configuration.  Use --force to override.'));
       return;

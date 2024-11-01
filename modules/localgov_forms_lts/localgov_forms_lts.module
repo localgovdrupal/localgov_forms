@@ -44,8 +44,17 @@ function localgov_forms_lts_cron() {
 function localgov_forms_lts_copy_recently_added_n_updated_subs() :void {
 
   $service_container = Drupal::service('service_container');
-  $pii_redaction_plugin = $service_container->has('plugin.manager.pii_redactor') ? $service_container->get('plugin.manager.pii_redactor')->createInstance('best_effort_pii_redactor') : NULL;
-  $lts_copy_obj = LtsCopy::create(Drupal::getContainer(), $pii_redaction_plugin);
+  $lts_config        = $service_container->get('config.factory')->get('localgov_forms_lts.settings');
+
+  $is_copying_enabled = $lts_config->get('is_copying_enabled');
+  if (!$is_copying_enabled) {
+    return;
+  }
+
+  $pii_redactor_plugin_id = $lts_config->get('pii_redactor_plugin_id');
+  $pii_redactor_plugin    = ($pii_redactor_plugin_id && $service_container->has('plugin.manager.pii_redactor')) ? $service_container->get('plugin.manager.pii_redactor')->createInstance($pii_redactor_plugin_id) : NULL;
+
+  $lts_copy_obj = LtsCopy::create(Drupal::getContainer(), $pii_redactor_plugin);
   $copy_results = $lts_copy_obj->copy();
 
   $feedback_msg = _localgov_forms_lts_prepare_feedback_msg($copy_results);

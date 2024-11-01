@@ -18,3 +18,10 @@ entity.webform_submission.lts_notes:
   route_name: entity.webform_submission.lts_notes
   base_route: entity.webform_submission.lts_view
   weight: 3
+
+# Config tab
+localgov_forms_lts.lts_config:
+  title: 'LTS'
+  route_name: localgov_forms_lts.lts_config
+  parent_id: webform.config
+  weight: 43

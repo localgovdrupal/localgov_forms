@@ -27,3 +27,12 @@ entity.webform_submission.lts_notes:
     view_mode: 'html'
   requirements:
     _custom_access: '\Drupal\webform\Access\WebformAccountAccess:checkSubmissionAccess'
+
+# Config form.
+localgov_forms_lts.lts_config:
+  path: '/admin/structure/webform/config/submissions-lts'
+  defaults:
+    _form: '\Drupal\localgov_forms_lts\Form\LTSSettingsForm'
+    _title: 'Webform submissions LTS'
+  requirements:
+    _permission: 'administer site configuration'
