@@ -27,9 +27,9 @@ final class LocalgovFormsLtsCommands extends DrushCommands {
   /**
    * Drush command to copy all Webform submissions to LTS.
    */
-  #[CLI\Command(name: 'localgov_forms_lts:copy', aliases: ['forms-lts-copy'])]
+  #[CLI\Command(name: 'localgov-forms-lts:copy', aliases: ['forms-lts-copy'])]
   #[CLI\Option(name: 'force', description: 'Ignore copy disablement config and copy anyway.  Useful immediately after module installation.')]
-  #[CLI\Usage(name: 'localgov_forms_lts:copy', description: 'Copies all existing Webform submissions.')]
+  #[CLI\Usage(name: 'localgov-forms-lts:copy', description: 'Copies all existing Webform submissions.')]
   public function copy($options = ['force' => FALSE]) {
 
     if (!localgov_forms_lts_has_db()) {
@@ -37,21 +37,21 @@ final class LocalgovFormsLtsCommands extends DrushCommands {
       return;
     }
 
-    $is_proceed = $options['force'] ?: $this->configFactory->get('localgov_forms_lts.settings')?->get('is_copying_enabled');
+    $is_proceed = $options['force'] ?: $this->configFactory->get(Constants::LTS_CONFIG_ID)?->get(Constants::LTS_CONFIG_COPY_STATE);
     if (!$is_proceed) {
       $this->logger->warning(dt('Copying is disabled in localgov_forms_lts module configuration.  Use --force to override.'));
       return;
     }
 
-    $pii_redactor_plugin_id = $this->configFactory->get('localgov_forms_lts.settings')?->get('pii_redactor_plugin_id');
-    $pii_redactor_plugin    = ($pii_redactor_plugin_id && $this->serviceContainer->has('plugin.manager.pii_redactor')) ? $this->serviceContainer->get('plugin.manager.pii_redactor')->createInstance($pii_redactor_plugin_id) : NULL;
+    $pii_redactor_plugin_id = $this->configFactory->get(Constants::LTS_CONFIG_ID)?->get(Constants::LTS_CONFIG_PII_REDACTOR_PLUGIN_ID);
+    $pii_redactor_plugin    = ($pii_redactor_plugin_id && $this->serviceContainer->has(Constants::PII_REDACTOR_PLUGIN_MANAGER)) ? $this->serviceContainer->get(Constants::PII_REDACTOR_PLUGIN_MANAGER)->createInstance($pii_redactor_plugin_id) : NULL;
 
     $lts_copy_obj = LtsCopy::create(\Drupal::getContainer(), $pii_redactor_plugin);
     $webform_sub_ids_to_copy = $lts_copy_obj->findCopyTargets();
     $batch_count = ceil(count($webform_sub_ids_to_copy) / Constants::COPY_LIMIT);
 
     $batch_builder = new BatchBuilder();
-    $drupal_logger = $this->drupalLoggerFactory->get('localgov_forms_lts');
+    $drupal_logger = $this->drupalLoggerFactory->get(Constants::LTS_LOGGER_CHANNEL_ID);
     for ($i = 0; $i < $batch_count; $i++) {
       $batch_builder->addOperation([self::class, 'copyInBatch'], [
         $pii_redactor_plugin,

@@ -51,4 +51,20 @@ class Constants {
    */
   const LTS_CACHE_ID_PREFIX = 'lts_values';
 
+  /**
+   * Drupal config id for this module.
+   */
+  const LTS_CONFIG_ID = 'localgov_forms_lts.settings';
+
+  const LTS_CONFIG_COPY_STATE = 'is_copying_enabled';
+
+  const LTS_CONFIG_PII_REDACTOR_PLUGIN_ID = 'pii_redactor_plugin_id';
+
+  /**
+   * Service name for the PII redactor plugin manager.
+   *
+   * @see localgov_forms.services.yml
+   */
+  const PII_REDACTOR_PLUGIN_MANAGER = 'plugin.manager.pii_redactor';
+
 }

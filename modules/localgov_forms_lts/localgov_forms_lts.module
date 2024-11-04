@@ -44,22 +44,22 @@ function localgov_forms_lts_cron() {
 function localgov_forms_lts_copy_recently_added_n_updated_subs() :void {
 
   $service_container = Drupal::service('service_container');
-  $lts_config        = $service_container->get('config.factory')->get('localgov_forms_lts.settings');
+  $lts_config        = $service_container->get('config.factory')->get(Constants::LTS_CONFIG_ID);
 
-  $is_copying_enabled = $lts_config->get('is_copying_enabled');
+  $is_copying_enabled = $lts_config->get(Constants::LTS_CONFIG_COPY_STATE);
   if (!$is_copying_enabled) {
     return;
   }
 
-  $pii_redactor_plugin_id = $lts_config->get('pii_redactor_plugin_id');
-  $pii_redactor_plugin    = ($pii_redactor_plugin_id && $service_container->has('plugin.manager.pii_redactor')) ? $service_container->get('plugin.manager.pii_redactor')->createInstance($pii_redactor_plugin_id) : NULL;
+  $pii_redactor_plugin_id = $lts_config->get(Constants::LTS_CONFIG_PII_REDACTOR_PLUGIN_ID);
+  $pii_redactor_plugin    = ($pii_redactor_plugin_id && $service_container->has(Constants::PII_REDACTOR_PLUGIN_MANAGER)) ? $service_container->get(Constants::PII_REDACTOR_PLUGIN_MANAGER)->createInstance($pii_redactor_plugin_id) : NULL;
 
   $lts_copy_obj = LtsCopy::create(Drupal::getContainer(), $pii_redactor_plugin);
   $copy_results = $lts_copy_obj->copy();
 
   $feedback_msg = _localgov_forms_lts_prepare_feedback_msg($copy_results);
   Drupal::service('logger.factory')
-    ->get('localgov_forms_lts')
+    ->get(Constants::LTS_LOGGER_CHANNEL_ID)
     ->info($feedback_msg);
 }
 
