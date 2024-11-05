@@ -104,7 +104,7 @@ class AddressLookupErrorMsgTest extends WebDriverTestBase {
     $session_assert->waitForElementVisible('css', '.messages--error');
 
     $session_assert->statusMessageContains('2 errors have been found:', type: 'error');
-    $session_assert->statusMessageContains('Postcode or Street', type: 'error');
+    $session_assert->statusMessageContains('Postcode or street', type: 'error');
     $session_assert->statusMessageContains('Postcode', type: 'error');
 
     // Now fill in the required postcode and submit again.
