@@ -59,6 +59,9 @@ class UKAddressLookup extends WebformCompositeBase {
     $element_list['address_1']['#prefix'] = '<div class="js-address-entry-container">';
     $element_list['postcode']['#suffix'] = '</div>';
 
+    // Custom error message for address line 1.
+    $element_list['address_1']['#required_error'] = t('You must select an address.');
+
     // Extras to store information for webform builders to access in
     // computed twig.
     // @See DRUP-1287.
@@ -161,7 +164,7 @@ class UKAddressLookup extends WebformCompositeBase {
       // Then show an error to search for a local address or select can't find
       // the address.
       if (!empty($search_string) && $element['address_lookup']['address_select']['address_select_list']['#type'] == 'markup') {
-        $form_state->setError($element['address_lookup']['address_search']['address_searchstring'], t('Search for a local address, or select "Can\'t find the address" to enter an address.'));
+        $form_state->setError($element['address_lookup']['address_search']['address_searchstring'], t('Enter a local address, or select "Can\'t find the address".'));
 
         // Inline form errors don't work well for this element in Ajax calls.
         // This is because the Ajax callback attached to the `Find address`

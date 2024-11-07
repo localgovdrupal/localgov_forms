@@ -101,6 +101,7 @@ class AddressLookupElement extends FormElement {
       '#type' => 'textfield',
       '#title' => t('Postcode or street'),
       '#description' => $element['#address_search_description'] ?? t('Enter the postcode&hellip;'),
+      '#required_error' => t('You must enter a postcode or street.'),
       '#maxlength' => 64,
       '#size' => 64,
       '#weight' => '0',
