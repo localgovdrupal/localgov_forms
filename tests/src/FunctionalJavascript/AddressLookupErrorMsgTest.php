@@ -118,4 +118,47 @@ class AddressLookupErrorMsgTest extends WebDriverTestBase {
     $session_assert->pageTextContains('Thank you, your form has been successfully submitted.');
   }
 
+  /**
+   * A form with only an address element with a required postcode.
+   *
+   * Submitting the form with an empty postcode should produce error
+   * irrespective of whether the address has been selected following a lookup or
+   * manually added or altered.
+   */
+  public function testStandaloneAddress(): void {
+
+    $page           = $this->getSession()->getPage();
+    $session_assert = $this->assertSession();
+
+    $this->drupalGet('/webform/address_error_message_test_form4');
+
+    // Fill in the postcode and search for address.
+    $postcode_or_street_textfield = $page->find('css', '#edit-address-address-lookup-address-search-address-searchstring');
+    $this->assertNotEmpty($postcode_or_street_textfield);
+    $postcode_or_street_textfield->setValue('BN1 1JE');
+
+    $search_btn = $page->find('css', '#edit-address-address-lookup-address-search-address-actions-address-searchbutton');
+    $this->assertNotEmpty($search_btn);
+    $search_btn->click();
+    $session_assert->waitForElementVisible('css', '[data-drupal-selector=edit-address-address-lookup-address-select-address-select-list]');
+
+    // Select an address from the dropdown.
+    $address_dropdown = $page->find('css', '[data-drupal-selector=edit-address-address-lookup-address-select-address-select-list]');
+    $this->assertNotEmpty($address_dropdown);
+    $address_dropdown->selectOption('000022062038');
+    $session_assert->waitForElementVisible('css', '#edit-address-address-1');
+
+    // Empty postcode field.
+    $postcode_textfield = $page->find('css', '#edit-address-postcode');
+    $postcode_textfield->setValue('');
+
+    // Submitting the form with an empty postcode should produce error.
+    $submit_btn = $page->find('css', '#edit-submit');
+    $this->assertNotEmpty($submit_btn);
+    $submit_btn->click();
+    $session_assert->waitForElementVisible('css', '.messages--error');
+
+    $session_assert->statusMessageContains('Postcode', type: 'error');
+  }
+
 }

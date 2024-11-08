@@ -165,6 +165,7 @@ class AddressLookupElement extends FormElement {
     $element['address_select']['address_select_list'] = [
       '#type' => 'select',
       '#title' => $element['#address_select_title'] ?? t('Select the address'),
+      '#required_error' => t('You must select an address.'),
       '#options' => [],
       '#empty_option' => '-' . t('Please choose an address') . '-',
       '#empty_value' => 0,

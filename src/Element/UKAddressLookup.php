@@ -60,7 +60,7 @@ class UKAddressLookup extends WebformCompositeBase {
     $element_list['postcode']['#suffix'] = '</div>';
 
     // Custom error message for address line 1.
-    $element_list['address_1']['#required_error'] = t('You must select an address.');
+    $element_list['address_1']['#required_error'] = t('You must enter an address.');
 
     // Extras to store information for webform builders to access in
     // computed twig.
@@ -126,6 +126,7 @@ class UKAddressLookup extends WebformCompositeBase {
     // Get the search string and selected value.
     $search_string = $value['address_lookup']['address_search']['address_searchstring'];
     $selected = $value['address_lookup']['address_select']['address_select_list'] ?? [];
+    $is_address_lookup_op = $form_state->getTriggeringElement()['#name'] === $element_key . '[address_lookup][address_search][address_actions][address_searchbutton]';
 
     // Check to see if there are values in the address element form.
     $has_address_values = FALSE;
@@ -137,9 +138,8 @@ class UKAddressLookup extends WebformCompositeBase {
       }
     }
 
-    // If the select is empty, and the manual address elements are filled in,
-    // validate the parent element.
-    if (empty($selected) && $has_address_values) {
+    // If the manual address elements are filled in, validate the parent.
+    if (!$is_address_lookup_op && $has_address_values) {
       // Clear the address search string.
       // This is to avoid the select box maintaing a value
       // (it's cleared if search string is empty).
@@ -155,8 +155,6 @@ class UKAddressLookup extends WebformCompositeBase {
       !empty($element['#webform_composite_elements']['address_2']['#required']) ||
       !empty($element['#webform_composite_elements']['town_city']['#required']) ||
       !empty($element['#webform_composite_elements']['postcode']['#required']);
-
-    $is_address_lookup_op = $form_state->getTriggeringElement()['#name'] === $element_key . '[address_lookup][address_search][address_actions][address_searchbutton]';
 
     if ($has_access && $is_any_address_line_required) {
       // If there is an address search, but no elements to select
