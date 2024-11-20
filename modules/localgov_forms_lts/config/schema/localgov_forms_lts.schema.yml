@@ -1,0 +1,12 @@
+# Schema for the configuration files of the localgov_forms_lts submodule.
+
+localgov_forms_lts.settings:
+  type: config_object
+  label: 'Webform submissions LTS config'
+  mapping:
+    is_copying_enabled:
+      type: boolean
+      label: 'Is copying to LTS database enabled?'
+    pii_redactor_plugin_id:
+      type: machine_name
+      label: 'PII redactor plugin id'

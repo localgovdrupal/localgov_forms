@@ -1,0 +1,27 @@
+# Submissions > LTS
+entity.webform_submission.lts_collection:
+  title: 'LTS'
+  route_name: entity.webform_submission.lts_collection
+  parent_id: entity.webform_submission.collection
+  weight: 21
+
+# View
+entity.webform_submission.lts_view:
+  title: 'View'
+  route_name: entity.webform_submission.lts_view
+  base_route: entity.webform_submission.lts_view
+  weight: 1
+
+# Notes
+entity.webform_submission.lts_notes:
+  title: 'Notes'
+  route_name: entity.webform_submission.lts_notes
+  base_route: entity.webform_submission.lts_view
+  weight: 3
+
+# Config tab
+localgov_forms_lts.lts_config:
+  title: 'LTS'
+  route_name: localgov_forms_lts.lts_config
+  parent_id: webform.config
+  weight: 43
