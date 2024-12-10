@@ -7,6 +7,9 @@ Provides additional configuration, styling and components for the Drupal Webform
 * LocalGov Forms Date - A date input field based on the [GDS Date Input pattern](https://design-system.service.gov.uk/components/date-input/)
 * LocalGov address lookup - Webform element with a configurable address lookup backend.  Geocoder plugins act as backends.
 
+## Plugins
+- Personally Identifiable Information (PII) redactor from Webform submissions: At the moment, a plugin manager `plugin.manager.pii_redactor` and a sample plugin are provided.
+
 ## Dependencies
 The geocoder-php/nominatim-provider package is necessary to run automated tests:
 ```
@@ -23,4 +26,3 @@ To avoid the configuration being removed by deployments, install the [Config ign
 webform.webform.*
 webform.webform_options.*
 ```
-

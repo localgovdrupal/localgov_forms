@@ -65,6 +65,7 @@ class WebformUKAddress extends WebformCompositeBase {
     $elements['town_city'] = [
       '#type' => 'textfield',
       '#title' => t('Town/City'),
+      '#required_error' => t('You must enter the town/city.'),
       '#attributes' => [
         'data-webform-composite-id' => $html_id . '--town_city',
         // Add a namespaced class for setting the address fields
@@ -78,6 +79,7 @@ class WebformUKAddress extends WebformCompositeBase {
     $elements['postcode'] = [
       '#type' => 'textfield',
       '#title' => t('Postcode'),
+      '#required_error' => t('You must enter the postcode.'),
       '#attributes' => [
         'data-webform-composite-id' => $html_id . '--postcode',
         // Add a namespaced class for setting the address fields

@@ -58,6 +58,7 @@
    * Populate Central Hub Selected Address
    *
    * Adds the selected address to drupalSettings.centralhub.selectedAddress.
+   *
    * @param  {jQuery} selectList
    *   Address selectlist element.
    */
@@ -87,7 +88,7 @@
         var searchButton = addressLookupElement.find('.js-address-searchbutton');
         var selectListContainer = addressLookupElement.find('.js-address-select-container');
         var selectList = selectListContainer.find('.js-address-select');
-        var error = selectListContainer.find('.js-address-error');
+        var error = selectListContainer.find('.js-address-error, .error');
 
         // Change the search button to normal button.
         searchButton.attr('type', 'button');
@@ -154,7 +155,7 @@
         var searchButton = addressLookupElement.find('.js-address-searchbutton');
         var selectListContainer = addressLookupElement.find('.js-address-select-container');
         var selectList = selectListContainer.find('.js-address-select');
-        var error = selectListContainer.find('.js-address-error');
+        var error = selectListContainer.find('.js-address-error, .error');
         var resetButton = addressLookupElement.find('.js-reset-address');
         var manualButton = addressLookupElement.find('.js-manual-address');
         var manualAddressContainer = addressLookupElement.find('+ .js-address-entry-container');
