@@ -2,7 +2,6 @@
 
 namespace Drupal\localgov_forms\Plugin\WebformElement;
 
-
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformElement\WebformMarkup;
 use Drupal\webform\WebformSubmissionInterface;
@@ -19,24 +18,23 @@ use Drupal\webform\WebformSubmissionInterface;
  */
 class FormHeaderElement extends WebformMarkup {
 
-
   /**
    * Declares and overrides properties.
    *
-   * Overrides the Form elememnt's title.
+   * Overrides the Form element's title.
    * {@inheritdoc}
    */
   protected function defineDefaultProperties() {
     return parent::defineDefaultProperties() + [
-        'title' => 'Form Header',
+      'title' => 'Form Header',
 
-      ];
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+  public function prepare(array &$element, ?WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
     $webform = $webform_submission->getWebform();
@@ -51,19 +49,18 @@ class FormHeaderElement extends WebformMarkup {
     $page_indexes = array_flip($page_keys);
     $total_pages = count($page_keys);
 
-    // Detremine the Current Page.
+    // Determine the Current Page.
     if (!isset($current_page)) {
-        $current_page = reset($page_keys);
-    } else {
-        $current_page = $webform_submission->getCurrentPage();
+      $current_page = reset($page_keys);
+    }
+    else {
+      $current_page = $webform_submission->getCurrentPage();
     }
 
-    // The Page title.
+    // The Page Title.
     $current_page_title = $pages[$current_page]['#title'];
 
     $total_pages;
-
-    // The Form Header Element.
 
     // Form Title.
     $element['#markup'] = '<div class="webform-title"><h1>' . $webform->label() . '</h1></div>';
@@ -84,7 +81,7 @@ class FormHeaderElement extends WebformMarkup {
     unset($form['element_attributes']);
     unset($form['wrapper_attributes']);
     unset($form['markup']['markup']);
-    // Read only the headeer form element's title so that it
+    // Set the form header's element 'Title' to read only so that it
     // cannot be edited.
     $form["element"]["title"]['#disabled'] = TRUE;
 
