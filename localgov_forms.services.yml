@@ -11,3 +11,9 @@ services:
   plugin.manager.pii_redactor:
     class: Drupal\localgov_forms\Plugin\PIIRedactorPluginManager
     parent: default_plugin_manager
+
+  # Event subscriber listening for newly created webforms.
+  localgov_forms.form_header_event_subscriber:
+    class: Drupal\localgov_forms\EventSubscriber\FormHeaderEventSubscriber
+    tags:
+      - { name: event_subscriber }

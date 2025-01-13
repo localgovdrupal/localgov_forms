@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Render\Element;
+use Drupal\localgov_forms\Event\WebformEvents;
+
 
 /**
  * Implements hook_theme().
@@ -54,4 +56,16 @@ function template_preprocess_localgov_forms_uk_address(array &$variables) {
  */
 function localgov_forms_preprocess_webform(array &$variables) {
   $variables['#attached']['library'][] = 'localgov_forms/localgov_forms.form_errors';
+}
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Dispatches an event when a webform is created.
+ */
+function localgov_forms_entity_insert(\Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'webform') {
+    $event = new WebformEvents($entity);
+    \Drupal::service('event_dispatcher')->dispatch($event, WebformEvents::EVENT_NAME);
+  }
 }
