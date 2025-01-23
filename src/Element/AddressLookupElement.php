@@ -79,7 +79,7 @@ class AddressLookupElement extends FormElement {
   /**
    * {@inheritdoc}
    */
-  public static function processAddressLookupElement(&$element, FormStateInterface $form_state, &$form) {
+  public static function processAddressLookupElement(&$element, FormStateInterface $form_state, &$form): mixed {
     // Generate a unique ID that can be used by #states.
     $html_id = Html::getUniqueId('localgov_forms_address_lookup');
     $name = $element['#name'];

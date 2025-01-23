@@ -8,6 +8,6 @@
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function localgov_forms_feedback_form_form_webform_submission_localgov_forms_feedback_form_add_form_alter(&$form, $form_state, $form_id) {
+function localgov_forms_feedback_form_form_webform_submission_localgov_forms_feedback_form_add_form_alter(&$form, $form_state, $form_id): void {
   $form['#attached']['library'][] = 'localgov_forms_feedback_form/localgov_forms_feedback_form';
 }

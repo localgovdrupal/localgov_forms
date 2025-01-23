@@ -6,12 +6,13 @@
  */
 
 use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\webform\Entity\WebformOptions;
 
 /**
  * Implements hook_install().
  */
-function localgov_forms_install() {
+function localgov_forms_install(): void {
 
   // Override Webforms default configuration.
   $config = \Drupal::configFactory()->getEditable('localgov_forms.webform.settings');
@@ -24,7 +25,7 @@ function localgov_forms_install() {
  *
  * Creates a Webform option for Local custodian codes.
  */
-function localgov_forms_update_8001() {
+function localgov_forms_update_8001(): TranslatableMarkup|null {
 
   $has_local_custodian_codes_option = Drupal::service('entity_type.manager')->getStorage('webform_options')->load('local_custodian_codes_gb');
   if ($has_local_custodian_codes_option) {
@@ -39,4 +40,6 @@ function localgov_forms_update_8001() {
   $local_custodian_codes_option = Yaml::decode(file_get_contents(__DIR__ . '/config/install/webform.webform_options.local_custodian_codes_gb.yml'));
   $new_local_custodian_codes_option = WebformOptions::create($local_custodian_codes_option);
   $new_local_custodian_codes_option->save();
+
+  return null;
 }

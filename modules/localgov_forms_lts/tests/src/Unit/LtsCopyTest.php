@@ -30,7 +30,7 @@ class LtsCopyTest extends UnitTestCase {
   /**
    * Tests LtsCopy::copy().
    */
-  public function testCopySub() {
+  public function testCopySub(): void {
 
     $test_obj = new LtsCopy($this->mockEntityTypeManager, $this->mockLtsKeyValueFactory, $this->mockLtsLoggerFactory, $this->mockLtsStorage);
 

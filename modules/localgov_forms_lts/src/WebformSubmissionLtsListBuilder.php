@@ -73,7 +73,7 @@ class WebformSubmissionLtsListBuilder extends WebformSubmissionListBuilder imple
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): static {
 
     $webform_sub_def = $container->get('entity_type.manager')->getDefinition('webform_submission');
     return self::createInstance($container, $webform_sub_def);

@@ -132,7 +132,7 @@ class LocalgovFormsDate extends Datelist {
    * be set in the UI which should take precedence over
    * the default error message.
    */
-  public static function validateDatelist(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function validateDatelist(&$element, FormStateInterface $form_state, &$complete_form): void {
     $input_exists = FALSE;
     $input = NestedArray::getValue($form_state->getValues(), $element['#parents'], $input_exists);
 

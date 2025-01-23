@@ -64,7 +64,7 @@ class LTSSettingsForm extends ConfigFormBase {
    * If the PII redactor plugin manager is available, passes it to the
    * constructor.
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): static {
 
     $pii_redactor_plugin_manager = $container->has(Constants::PII_REDACTOR_PLUGIN_MANAGER) ? $container->get(Constants::PII_REDACTOR_PLUGIN_MANAGER) : NULL;
 

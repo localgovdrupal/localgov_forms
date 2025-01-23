@@ -30,7 +30,7 @@ function localgov_forms_lts_has_db(): bool {
 /**
  * Implements hook_cron().
  */
-function localgov_forms_lts_cron() {
+function localgov_forms_lts_cron(): void {
 
   localgov_forms_lts_copy_recently_added_n_updated_subs();
 }
