@@ -85,7 +85,7 @@ class UKAddressLookup extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public static function validateWebformComposite(&$element, FormStateInterface $form_state, &$complete_form): void {
+  public static function validateWebformComposite(&$element, FormStateInterface $form_state, &$complete_form) {
     // IMPORTANT: Must get values from the $form_states since sub-elements
     // may call $form_state->setValueForElement() via their validation hook.
     // @see \Drupal\webform\Element\WebformEmailConfirm::validateWebformEmailConfirm
