@@ -25,7 +25,7 @@ function localgov_forms_install(): void {
  *
  * Creates a Webform option for Local custodian codes.
  */
-function localgov_forms_update_8001(): TranslatableMarkup|NULL {
+function localgov_forms_update_8001(): ?TranslatableMarkup {
 
   $has_local_custodian_codes_option = Drupal::service('entity_type.manager')->getStorage('webform_options')->load('local_custodian_codes_gb');
   if ($has_local_custodian_codes_option) {
