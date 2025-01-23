@@ -85,7 +85,8 @@ class UKAddressLookup extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public static function validateWebformComposite(&$element, FormStateInterface $form_state, &$complete_form): void {
+  // @phpstan-ignore-next-line Ignore the next line for return type until webform give one.
+  public static function validateWebformComposite(&$element, FormStateInterface $form_state, &$complete_form) {
     // IMPORTANT: Must get values from the $form_states since sub-elements
     // may call $form_state->setValueForElement() via their validation hook.
     // @see \Drupal\webform\Element\WebformEmailConfirm::validateWebformEmailConfirm
@@ -145,7 +146,7 @@ class UKAddressLookup extends WebformCompositeBase {
       // (it's cleared if search string is empty).
       // @See DRUP-1185.
       $form_state->setValueForElement($element['address_lookup']['address_search']['address_searchstring'], NULL);
-      parent::validateWebformComposite($element, $form_state, $complete_form);
+      return parent::validateWebformComposite($element, $form_state, $complete_form);
     }
 
     // Only validate composite elements that are visible.
