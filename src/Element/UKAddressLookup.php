@@ -84,6 +84,8 @@ class UKAddressLookup extends WebformCompositeBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @phpstan-ignore-next-line Ignore the next line for return type until webform give one.
    */
   public static function validateWebformComposite(&$element, FormStateInterface $form_state, &$complete_form) {
     // IMPORTANT: Must get values from the $form_states since sub-elements

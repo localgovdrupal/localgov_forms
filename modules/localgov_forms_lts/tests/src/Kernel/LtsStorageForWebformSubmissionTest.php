@@ -25,7 +25,7 @@ class LtsStorageForWebformSubmissionTest extends KernelTestBase {
    * - Creates a fresh Webform submission entity.
    * - Tries to save it into the LTS database.
    */
-  public function testLtsDbUsage() {
+  public function testLtsDbUsage(): void {
 
     $contact2_webform = $this->container->get('entity_type.manager')->getStorage('webform')->load(self::TEST_WEBFORM_ID);
     $this->assertNotNull($contact2_webform);

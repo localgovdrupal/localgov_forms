@@ -65,7 +65,7 @@ class LocalgovFormsDate extends DateList {
   /**
    * {@inheritdoc}
    */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state): void {
     parent::validateConfigurationForm($form, $form_state);
     $values = $form_state->getValues();
     $values['date_part_order'] = ['day', 'month', 'year'];
@@ -77,7 +77,7 @@ class LocalgovFormsDate extends DateList {
   /**
    * After build handler for Datelist element.
    */
-  public static function afterBuild(array $element, FormStateInterface $form_state) {
+  public static function afterBuild(array $element, FormStateInterface $form_state): array {
     $element = parent::afterBuild($element, $form_state);
 
     // Set the property of the date of birth elements.
@@ -112,7 +112,7 @@ class LocalgovFormsDate extends DateList {
    *
    * @see Drupal\Webform\Plugin\WebformElement\DateBase::setDefaultValue()
    */
-  public function setDefaultValue(array &$element) {
+  public function setDefaultValue(array &$element): void {
 
     $orig_type = $element['#type'];
     $element['#type'] = 'datelist';
@@ -127,7 +127,7 @@ class LocalgovFormsDate extends DateList {
    * date validation error messages display in
    * a UK Style format e.g dd-mm-yyyy.
    */
-  public static function validateDate(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function validateDate(&$element, FormStateInterface $form_state, &$complete_form): void {
 
     // Adds a  short date and short date time format.
     $localgov_forms_short_date_format = DateFormat::load('localgov_forms_date_short_date')->getPattern();

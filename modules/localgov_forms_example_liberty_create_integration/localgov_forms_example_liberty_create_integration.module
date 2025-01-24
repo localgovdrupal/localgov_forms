@@ -20,7 +20,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * - DRUPAL_LIBERTY_CREATE_API_USERNAME
  * - DRUPAL_LIBERTY_CREATE_API_USER_KEY.
  */
-function localgov_forms_example_liberty_create_integration_modules_installed($modules, $is_syncing) {
+function localgov_forms_example_liberty_create_integration_modules_installed($modules, $is_syncing): void {
 
   if (!$is_syncing && in_array('token_environment', $modules, TRUE)) {
     $token_env_config   = Drupal::service('config.factory')->getEditable('token_environment.settings');
@@ -48,7 +48,7 @@ function localgov_forms_example_liberty_create_integration_modules_installed($mo
  * `[webform_submission:values:name:extracted_lastname:clear]` will resolve to
  * "Bar".
  */
-function localgov_forms_example_liberty_create_integration_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata) {
+function localgov_forms_example_liberty_create_integration_tokens_alter(array &$replacements, array $context, BubbleableMetadata $bubbleable_metadata): void {
 
   if ($context['type'] === 'webform_submission' && !empty($context['data']['webform_submission'])) {
     $firstname_extraction_tokens = array_filter($context['tokens'], fn($token) => strpos($token, ':extracted_firstname'));
@@ -76,7 +76,7 @@ function localgov_forms_example_liberty_create_integration_tokens_alter(array &$
  * @see localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter()
  * @see localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_load_alter()
  */
-function localgov_forms_example_liberty_create_integration_token_info_alter(&$token_info) {
+function localgov_forms_example_liberty_create_integration_token_info_alter(&$token_info): void {
 
   $token_info['tokens']['webform_submission']['values:?:file_details_for_liberty_create_api'] = [
     'name'        => t('File detail for Liberty Create API'),
@@ -87,7 +87,7 @@ function localgov_forms_example_liberty_create_integration_token_info_alter(&$to
 /**
  * Implements hook_webform_handler_invoke_METHOD_NAME_alter() for hook_webform_handler_invoke_post_save_alter().
  */
-function localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter(WebformHandlerInterface $handler, array &$args) {
+function localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter(WebformHandlerInterface $handler, array &$args): void {
 
   $handler_id = $handler->getHandlerId();
   if ($handler_id === 'remote_post' || $handler_id === 'async_remote_post') {
@@ -100,7 +100,7 @@ function localgov_forms_example_liberty_create_integration_webform_handler_invok
  *
  * Relevant during Queue processing.
  */
-function localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_load_alter(WebformHandlerInterface $handler, array &$args) {
+function localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_load_alter(WebformHandlerInterface $handler, array &$args): void {
 
   localgov_forms_example_liberty_create_integration_webform_handler_invoke_post_save_alter($handler, $args);
 }
@@ -121,7 +121,7 @@ function localgov_forms_example_liberty_create_integration_webform_handler_invok
  *
  * @see Drupal\webform\Plugin\WebformHandler\RemotePostWebformHandler::getRequestData()
  */
-function _localgov_forms_example_liberty_create_integration_manage_remote_post_custom_data(WebformHandlerInterface $handler) {
+function _localgov_forms_example_liberty_create_integration_manage_remote_post_custom_data(WebformHandlerInterface $handler): void {
 
   $webform_submission = $handler->getWebformSubmission();
   if (!$webform_submission instanceof WebformSubmissionInterface) {

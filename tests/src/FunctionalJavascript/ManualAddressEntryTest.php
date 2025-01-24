@@ -33,7 +33,7 @@ class ManualAddressEntryTest extends WebDriverTestBase {
    * - But in the "contact4" Webform, this button should only reveal itself
    *   after an address search.
    */
-  public function testManualAddressEntryBtnPresence() {
+  public function testManualAddressEntryBtnPresence(): void {
 
     $page           = $this->getSession()->getPage();
     $session_assert = $this->assertSession();

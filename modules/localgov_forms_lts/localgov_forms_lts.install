@@ -34,7 +34,7 @@ function localgov_forms_lts_install($is_syncing): void {
  *
  * Checks for the presence of the localgov_forms_lts database.
  */
-function localgov_forms_lts_requirements($phase) {
+function localgov_forms_lts_requirements($phase): array {
 
   $requirements = [
     'localgov_forms_lts' => [
@@ -79,7 +79,7 @@ function _localgov_forms_lts_get_webform_submission_storage_schema(): array {
     /**
      * Public wrapper over protected method.
      */
-    public function getEntitySchemaWrapper(ContentEntityTypeInterface $entity_type) {
+    public function getEntitySchemaWrapper(ContentEntityTypeInterface $entity_type): array {
 
       return parent::getEntitySchema($entity_type);
     }

@@ -28,7 +28,7 @@ class GeocoderAddressLookupTest extends WebDriverTestBase {
   /**
    * Test for postcode-based address lookup.
    */
-  public function testAddressLookup() {
+  public function testAddressLookup(): void {
 
     $page           = $this->getSession()->getPage();
     $session_assert = $this->assertSession();
@@ -87,7 +87,7 @@ class GeocoderAddressLookupTest extends WebDriverTestBase {
    * restricted to Croydon.  Searching for the same search string in these two
    * elements should bring up different results.
    */
-  public function testLocalCustodianCodeCaching() {
+  public function testLocalCustodianCodeCaching(): void {
 
     $page           = $this->getSession()->getPage();
     $session_assert = $this->assertSession();
