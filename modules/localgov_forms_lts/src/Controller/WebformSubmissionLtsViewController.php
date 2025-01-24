@@ -18,7 +18,7 @@ class WebformSubmissionLtsViewController extends WebformSubmissionViewController
    *
    * Loads the Webform submission from Long term storage.
    */
-  public function viewFromLts(int $webform_sid, $view_mode = 'default', $langcode = NULL) {
+  public function viewFromLts(int $webform_sid, $view_mode = 'default', $langcode = NULL): array {
 
     $webform_sub = $this->ltsStorage->load($webform_sid);
     return parent::view($webform_sub, $view_mode, $langcode);
@@ -29,7 +29,7 @@ class WebformSubmissionLtsViewController extends WebformSubmissionViewController
    *
    * Loads the Webform submission from Long term storage.
    */
-  public function noteViewFromLts(int $webform_sid, $view_mode = 'default', $langcode = NULL) {
+  public function noteViewFromLts(int $webform_sid, $view_mode = 'default', $langcode = NULL): array {
 
     $webform_sub = $this->ltsStorage->load($webform_sid);
     return [
@@ -42,7 +42,7 @@ class WebformSubmissionLtsViewController extends WebformSubmissionViewController
    *
    * Loads the Webform submission from Long term storage.
    */
-  public function titleFromLts(int $webform_sid, $duplicate = FALSE) {
+  public function titleFromLts(int $webform_sid, $duplicate = FALSE): string {
 
     $webform_sub = $this->ltsStorage->load($webform_sid);
     return parent::title($webform_sub, $duplicate);
@@ -51,7 +51,7 @@ class WebformSubmissionLtsViewController extends WebformSubmissionViewController
   /**
    * Factory.
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): static {
 
     $instance = parent::create($container);
 

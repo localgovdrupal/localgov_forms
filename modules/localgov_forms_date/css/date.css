@@ -4,17 +4,17 @@
 }
 
 .localgov-forms-date div[class*="-day"] {
-  margin-left: 0em;
   flex: 1;
   max-width: 100%;
   margin-top: 0.5em;
   margin-right: 0.5em;
+  margin-left: 0;
 }
 
 .localgov-forms-date div[class*="-month"] {
   flex: 2;
-  margin: 0.5em;
   max-width: 100%;
+  margin: 0.5em;
 }
 
 .localgov-forms-date div[class*="-year"] {

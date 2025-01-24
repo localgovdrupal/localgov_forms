@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for LGD Forms Feedback Form module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function localgov_forms_feedback_form_install(): void {
+  \Drupal::messenger()->addStatus(t('You have installed the LocalGov Forms Feedback Form. This form stores the form submissions in the database. Make sure you have checked this is okay with your data protection officer, or else change the form settings to store the data somewhere else.'));
+}

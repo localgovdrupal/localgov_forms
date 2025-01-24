@@ -17,7 +17,7 @@ class DateWebformElementTest extends KernelTestBase {
   /**
    * Tests a webform with our date field.
    */
-  public function testFormSubmission() {
+  public function testFormSubmission(): void {
 
     $this->passCase();
     $this->failCaseWithInvalidDay();
@@ -28,7 +28,7 @@ class DateWebformElementTest extends KernelTestBase {
   /**
    * Tests valid date.
    */
-  protected function passCase() {
+  protected function passCase(): void {
 
     $form_state = new FormState();
     $form_state->setValue('date',
@@ -42,7 +42,7 @@ class DateWebformElementTest extends KernelTestBase {
   /**
    * Tests date with invalid day.
    */
-  protected function failCaseWithInvalidDay() {
+  protected function failCaseWithInvalidDay(): void {
 
     $form_state = new FormState();
     $form_state->setValue('date', ['day' => '1D']);
@@ -55,7 +55,7 @@ class DateWebformElementTest extends KernelTestBase {
   /**
    * Tests date with nonnumeric day.
    */
-  protected function failCaseWithNonNumericDay() {
+  protected function failCaseWithNonNumericDay(): void {
 
     $form_state = new FormState();
     $form_state->setValue('date',
@@ -69,7 +69,7 @@ class DateWebformElementTest extends KernelTestBase {
   /**
    * Tests date with invalid year.
    */
-  protected function failCaseWithInvalidYear() {
+  protected function failCaseWithInvalidYear(): void {
 
     $form_state = new FormState();
     $form_state->setValue('date',
@@ -83,7 +83,7 @@ class DateWebformElementTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() :void {
+  protected function setUp(): void {
 
     parent::setUp();
 

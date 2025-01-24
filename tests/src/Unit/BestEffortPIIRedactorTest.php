@@ -17,7 +17,7 @@ class BestEffortPIIRedactorTest extends UnitTestCase {
   /**
    * Tests PIIRedactorTest::findElemsToRedact().
    */
-  public function testFindElemsToRedact() {
+  public function testFindElemsToRedact(): void {
 
     $mock_webform = $this->createConfiguredMock(WebformInterface::class, [
       'getElementsDecodedAndFlattened' => [

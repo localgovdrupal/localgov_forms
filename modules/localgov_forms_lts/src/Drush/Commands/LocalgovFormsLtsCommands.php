@@ -30,7 +30,7 @@ final class LocalgovFormsLtsCommands extends DrushCommands {
   #[CLI\Command(name: 'localgov-forms-lts:copy', aliases: ['forms-lts-copy'])]
   #[CLI\Option(name: 'force', description: 'Ignore copy disablement config and copy anyway.  Useful immediately after module installation.')]
   #[CLI\Usage(name: 'localgov-forms-lts:copy', description: 'Copies all existing Webform submissions.')]
-  public function copy($options = ['force' => FALSE]) {
+  public function copy($options = ['force' => FALSE]): void {
 
     if (!localgov_forms_lts_has_db()) {
       $this->logger->error(dt('The LocalGov Forms LTS database must exist for this Drush command to function.'));
@@ -71,7 +71,7 @@ final class LocalgovFormsLtsCommands extends DrushCommands {
    *
    * Copies a fixed number of Webform submissions to LTS.
    */
-  public static function copyInBatch(?PluginInspectionInterface $pii_redactor_plugin, LoggerInterface $drupal_logger, &$context) {
+  public static function copyInBatch(?PluginInspectionInterface $pii_redactor_plugin, LoggerInterface $drupal_logger, &$context): void {
 
     $lts_copy_obj = LtsCopy::create(\Drupal::getContainer(), $pii_redactor_plugin);
     $copy_results = $lts_copy_obj->copy();

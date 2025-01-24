@@ -10,7 +10,7 @@ use Drupal\Component\Serialization\Yaml;
 /**
  * Adds a UK short date style e.g dd-mm-yyyy.
  */
-function localgov_forms_date_update_8001() {
+function localgov_forms_date_update_8001(): void {
   $config_id = 'core.date_format.localgov_forms_date_short_date';
   $config_path = \Drupal::service('extension.list.module')->getPath('localgov_forms_date');
   $uk_short_html_date_config = Yaml::decode(file_get_contents($config_path . '/config/install/' . $config_id . '.yml'));
@@ -20,7 +20,7 @@ function localgov_forms_date_update_8001() {
 /**
  * Adds a UK short date style e.g dd-mm-yyyy HH:mm:ss.
  */
-function localgov_forms_date_update_8002() {
+function localgov_forms_date_update_8002(): void {
   $config_id = 'core.date_format.localgov_forms_date_datetime';
   $config_path = \Drupal::service('extension.list.module')->getPath('localgov_forms_date');
   $uk_html_datetime_config = Yaml::decode(file_get_contents($config_path . '/config/install/' . $config_id . '.yml'));
@@ -30,7 +30,7 @@ function localgov_forms_date_update_8002() {
 /**
  * Adds a UUID to LocalGov Forms Date formats.
  */
-function localgov_forms_date_update_8003() {
+function localgov_forms_date_update_8003(): void {
   $localgov_date_formats = [
     'core.date_format.localgov_forms_date_short_date',
     'core.date_format.localgov_forms_date_datetime',

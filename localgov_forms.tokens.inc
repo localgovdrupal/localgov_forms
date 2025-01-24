@@ -16,7 +16,7 @@ use Drupal\webform\Utility\WebformDateHelper;
  *
  * Token declarations.
  */
-function localgov_forms_token_info() {
+function localgov_forms_token_info(): array {
 
   return [
     'tokens' => [
@@ -42,7 +42,7 @@ function localgov_forms_token_info() {
  *
  * @see system_tokens()
  */
-function localgov_forms_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+function localgov_forms_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array {
 
   $replacements = [];
 

@@ -17,7 +17,7 @@ class BestEffortPIIRedactorForTextTest extends UnitTestCase {
    *
    * Tests redaction of emails, postcodes, and numbers from a given text.
    */
-  public function testRedaction() {
+  public function testRedaction(): void {
 
     $redactable_text = "My email address is foo+bar@example.net.\n  Also reachable at qux@example.net.  My address is 7 Example road, CR8 2XX.\n  I was born on 2001-01-01.\n  I have 5 cats.";
     [, $redaction_count] = BestEffortPIIRedactorForText::redact($redactable_text);

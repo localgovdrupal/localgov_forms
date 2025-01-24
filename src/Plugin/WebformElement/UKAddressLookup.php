@@ -63,7 +63,7 @@ class UKAddressLookup extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  public function preSave(array &$element, WebformSubmissionInterface $webform_submission) {
+  public function preSave(array &$element, WebformSubmissionInterface $webform_submission): void {
     $submission_data = $webform_submission->getData();
     $webform = $webform_submission->getWebform();
     foreach ($submission_data as $key => $value) {

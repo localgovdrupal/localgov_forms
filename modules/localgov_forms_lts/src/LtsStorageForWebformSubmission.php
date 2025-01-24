@@ -63,7 +63,7 @@ class LtsStorageForWebformSubmission extends WebformSubmissionStorage {
   /**
    * See above.
    */
-  protected function setPersistentCache($entities) {}
+  protected function setPersistentCache($entities): void {}
 
   /**
    * Customizes cache Ids for LTS.
