@@ -4,13 +4,16 @@ namespace Drupal\localgov_forms\Event;
 
 use Drupal\Component\EventDispatcher\Event;
 use Drupal\webform\WebformInterface;
+use Drupal\block\Entity\Block;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Defines events for webform creation in localgov_forms.
  */
-class WebformEvents extends Event {
+class WebformEvent extends Event {
+  use StringTranslationTrait;
 
-  const EVENT_NAME = 'localgov_forms.webform_created';
+  const EVENT_NAME = 'localgov_forms.createAndRenderHeaderBlock';
 
   /**
    * The newly created webform.
@@ -19,23 +22,12 @@ class WebformEvents extends Event {
    */
   protected $webform;
 
-  /**
-   * Constructs a WebformEvents object.
-   *
-   * @param \Drupal\webform\WebformInterface $webform
-   *   The newly created webform.
-   */
   public function __construct(WebformInterface $webform) {
     $this->webform = $webform;
   }
 
-  /**
-   * Gets the newly created webform.
-   *
-   * @return \Drupal\webform\WebformInterface
-   *   The newly created webform.
-   */
   public function getWebform(): WebformInterface {
     return $this->webform;
   }
+
 }

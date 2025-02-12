@@ -6,8 +6,9 @@
  */
 
 use Drupal\Core\Render\Element;
-use Drupal\localgov_forms\Event\WebformEvents;
-
+use Drupal\localgov_forms\Event\WebformEvent;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\webform\WebformInterface;
 
 /**
  * Implements hook_theme().
@@ -21,6 +22,14 @@ function localgov_forms_theme() {
     // Form element: webform_uk_address.
     'localgov_forms_uk_address' => [
       'render element' => 'element',
+    ],
+    'form_header_block' => [
+      'variables' => [
+        'title' => '',
+        'subtitle' => NULL,
+        'lede' => NULL,
+      ],
+      'render element' => 'block',
     ],
   ];
 }
@@ -63,9 +72,9 @@ function localgov_forms_preprocess_webform(array &$variables) {
  *
  * Dispatches an event when a webform is created.
  */
-function localgov_forms_entity_insert(\Drupal\Core\Entity\EntityInterface $entity) {
+function localgov_forms_entity_insert( EntityInterface $entity)  {
   if ($entity->getEntityTypeId() == 'webform') {
-    $event = new WebformEvents($entity);
-    \Drupal::service('event_dispatcher')->dispatch($event, WebformEvents::EVENT_NAME);
+    $event = new WebformEvent($entity);
+    \Drupal::service('event_dispatcher')->dispatch($event, WebformEvent::EVENT_NAME);
   }
 }
