@@ -1,0 +1,28 @@
+{#
+/**
+* @file
+* Default theme implementation of localgov_forms_form_header_block.
+*
+* @see template_preprocess_block()
+*
+* @ingroup themeable
+*/
+#}
+{% set classes = [
+    'clear-both',
+    'headers',
+    'key',
+] %}
+{% if formTitle %}
+<div{{ attributes.addClass(classes) }}>
+  <h1 class="header">
+    {{ formTitle }}
+    {% if wizardPageTitle %}
+      <div class="header__subtitle">{{ wizardPageTitle }}</div>
+    {% endif %}
+  </h1>
+  {% if formSummary %}
+    <div class="subheader">{{ formSummary }}</div>
+  {% endif %}
+</div>
+{% endif %}
