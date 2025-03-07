@@ -339,7 +339,7 @@ class ReviewElement extends WebformElementBase {
    * {@inheritdoc}
    */
   public function isContainer(array $element) {
-    return TRUE;
+    return FALSE;
   }
 
 }
