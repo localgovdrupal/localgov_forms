@@ -6,6 +6,14 @@ localgov_forms_uk_address:
   dependencies:
     - webform/webform.composite
 
+localgov_forms_review_element:
+  version: VERSION
+  css:
+    theme:
+      css/localgov_forms_review_element.css: {}
+  dependencies:
+    - webform/webform.composite
+
 localgov_forms.form_errors:
   version: VERSION
   js:

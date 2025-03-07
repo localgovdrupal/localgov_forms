@@ -1,0 +1,41 @@
+.webform-localgov-review-element {
+  display: flex;
+  margin-bottom: var(--spacing);
+  padding-bottom: var(--spacing);
+  border-bottom: solid var(--border-width) var(--border-color);
+}
+
+.webform-localgov-review-element__label {
+  flex-basis: 40%;
+  padding-right: var(--spacing);
+}
+
+.webform-localgov-review-element__title {
+  font-weight: bold;
+}
+
+.webform-localgov-review-element__value {
+  flex-basis: 40%;
+}
+
+.webform-localgov-review-element__change {
+  flex-basis: 20%;
+  text-align: right;
+}
+
+.webform-localgov-review-element__change input[type="submit"] {
+  margin: 0;
+  padding: 0 0 0 var(--spacing);
+  text-align: right;
+  text-decoration: underline;
+  color: var(--color-link);
+  border: none;
+  background-color: transparent;
+  font-size: var(--font-size-medium);
+}
+
+.webform-localgov-review-element__value ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the custom preview component.
+ *
+ * Available variables:
+ * - label: The display label.
+ * - value: The value to display.
+ */
+#}
+{{ attach_library('localgov_forms/localgov_forms_review_element') }}
+<div class="webform-localgov-review-element">
+  <div class="webform-localgov-review-element__label">
+    <div class="webform-localgov-review-element__title">{{ element['#label'] }}</div>
+    {% if element['#description'] %}
+      <div class="webform-localgov-review-element__description webform-element-description">{{ element['#description'] }}</div>
+    {% endif %}
+  </div>
+  <div class="webform-localgov-review-element__value">{{ element['#value'] }}</div>
+  {% if element.wizard_prev %}
+    <div class="webform-localgov-review-element__change">{{ element.wizard_prev }}</div>
+  {% endif %}
+</div>

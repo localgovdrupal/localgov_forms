@@ -20,6 +20,9 @@ function localgov_forms_theme(): array {
     'localgov_forms_uk_address' => [
       'render element' => 'element',
     ],
+    'localgov_forms_review_element' => [
+      'render element' => 'element',
+    ],
   ];
 }
 
