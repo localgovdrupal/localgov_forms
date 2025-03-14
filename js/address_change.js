@@ -200,7 +200,7 @@
           // Set newSearch latch to false.
           drupalSettings.centralHub.newSearch = false;
 
-        // Else make sure the select box is hidden.
+          // Else make sure the select box is hidden.
         } else {
           resetButton.addClass('hidden');
           selectListContainer.addClass('hidden');
@@ -209,42 +209,62 @@
       });
     }
   }
-//pop up dropdown with searched address every time a Drupal AJAX request completes
-  $(document).ajaxComplete(function () {
-    var selectElement = $('.js-address-select');
+//below code handles the logic for Address Lookup dropdown
+  $(document).ready(function () {
+    // Store references to the clicked fieldset and dropdown
+    var clickedFieldset = null;
+    var clickedDropdown = null;
 
-    // Clear previous options
-    selectElement.empty();
+    // Log details when a fieldset is clicked
+    $('fieldset').click(function () {
+      clickedFieldset = $(this);  // Store the clicked fieldset
+     });
 
-    // Add default option
-    var defaultOption = $('<option>', {
-      value: '0',
-      text: '-Please choose an address-'
-    });
-    selectElement.append(defaultOption);
+    // Log details when the search button is clicked
+    $('.js-address-searchbutton').click(function () {
+      // Store the dropdown related to the clicked button
+      clickedDropdown = $(this).closest('fieldset').find('.js-address-select');
+     });
 
-    // Check if address list exists
-    var addressList = drupalSettings.centralHub.addressList;
+    // Handle the dropdown update after AJAX request
+    $(document).ajaxComplete(function () {
+      if (clickedDropdown) {
+        var selectElement = clickedDropdown; // Get the specific dropdown that was clicked
 
-    if (addressList && addressList.length > 0) {
-      $.each(addressList, function (index, address) {
-        var option = $('<option>', {
-          value: address.name,
-          text: address.display
+        // Clear previous options
+        selectElement.empty();
+
+        // Add default option
+        var defaultOption = $('<option>', {
+          value: '0',
+          text: '-Please choose an address-'
         });
-        selectElement.append(option);
-      });
-    } else {
-      var noAddressOption = $('<option>', {
-        value: '',
-        text: 'No addresses found'
-      });
-      selectElement.append(noAddressOption);
-    }
+        selectElement.append(defaultOption);
 
-    // Show the dropdown after AJAX loads addresses
-    $('.js-address-select-container').removeClass('hidden');
+        // Check if address list exists in drupalSettings
+        var addressList = drupalSettings.centralHub.addressList;
+
+        if (addressList && addressList.length > 0) {
+          // Add addresses to the dropdown
+          $.each(addressList, function (index, address) {
+            var option = $('<option>', {
+              value: address.name,
+              text: address.display
+            });
+            selectElement.append(option);
+          });
+        } else {
+          // If no addresses are found, show a "No addresses found" option
+          var noAddressOption = $('<option>', {
+            value: '',
+            text: 'No addresses found'
+          });
+          selectElement.append(noAddressOption);
+        }
+
+        // Show the dropdown after AJAX loads addresses
+        selectElement.closest('.js-address-select-container').removeClass('hidden');
+      }
+    });
   });
-
-
 })(jQuery, Drupal);
