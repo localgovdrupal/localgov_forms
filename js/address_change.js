@@ -200,7 +200,7 @@
           // Set newSearch latch to false.
           drupalSettings.centralHub.newSearch = false;
 
-          // Else make sure the select box is hidden.
+        // Else make sure the select box is hidden.
         } else {
           resetButton.addClass('hidden');
           selectListContainer.addClass('hidden');
