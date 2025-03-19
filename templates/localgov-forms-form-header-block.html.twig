@@ -18,11 +18,18 @@
   <h1 class="header">
     {{ formTitle }}
     {% if wizardPageTitle %}
-      <div class="header__subtitle">{{ wizardPageTitle }}</div>
+      <div class="header__wizard_page_title">{{ wizardPageTitle }}</div>
     {% endif %}
+
+    {% if hasFormErrors %}
+        <div class="header__form_errors">
+          {{ 'There are errors on this page.'|t }}
+        </div>
+    {% endif %}
+
   </h1>
   {% if formSummary %}
-    <div class="subheader">{{ formSummary }}</div>
+    <div class="header__form_title">{{ formSummary }}</div>
   {% endif %}
 </div>
 {% endif %}
