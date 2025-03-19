@@ -71,7 +71,17 @@ function localgov_forms_preprocess_webform(array &$variables) {
  * Implements hook_form_alter().
  */
 function localgov_forms_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  // Assuming you have an instance of FormHeaderBlock.
-  $form_header_block = \Drupal::service('plugin.manager.block')->createInstance('localgov_forms_form_header_block', []);
-  $form['form_header_block'] = $form_header_block->build($form_state);
+  // Check if this is a webform submission form.
+  if (strpos($form_id, 'webform_submission_') === 0) {
+    // Assuming you have an instance of FormHeaderBlock.
+    $form_header_block = \Drupal::service('plugin.manager.block')->createInstance('localgov_forms_form_header_block', []);
+    // Build the block.
+    $block_build = $form_header_block->build($form_state);
+
+    // Check if the block has content to render.
+    if (!empty($block_build)) {
+      // Add the block as a prefix to the form.
+      $form['#prefix'] = \Drupal::service('renderer')->render($block_build);
+    }
+  }
 }

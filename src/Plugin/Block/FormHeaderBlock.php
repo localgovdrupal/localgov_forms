@@ -102,7 +102,6 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $container->get('title_resolver')
     );
   }
-
   public function build(FormStateInterface $form_state = NULL) {;
 
     $build = [];
@@ -120,21 +119,22 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $page_title = $wizard_pages[$currentPage]["#title"];
       $this->wizardPageTitle = $page_title;
 
+      $build = [
+        '#theme' => 'localgov_forms_form_header_block',
+        '#formTitle' => $this->formTitle,
+        '#wizardPageTitle' => $this->wizardPageTitle,
+        '#currentPage' => $this->currentPage,
+        '#formSummary' => $this->formSummary,
+        '#cache' => [
+          'max-age' => 0,
+        ],
+      ];
     }
-
-    $build[] = [
-      '#theme' => 'localgov_forms_form_header_block',
-      '#formTitle' => $this->formTitle,
-      '#wizardPageTitle' => $this->wizardPageTitle,
-      '#currentPage' => $this->currentPage,
-      '#formSummary' => $this->formSummary,
-      '#cache' => [
-        'max-age' => 0,
-      ],
-    ];
 
     return $build;
   }
+
+
 
   protected function getFormTitle() {
     $request = $this->requestStack->getCurrentRequest();
