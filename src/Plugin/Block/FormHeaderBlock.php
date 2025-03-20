@@ -128,12 +128,16 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
         '#cache' => [
           'max-age' => 0,
         ],
+        '#attached' => [
+          'library' => [
+            'localgov_forms/localgov_forms.form_header_block',
+          ],
+        ],
       ];
     }
 
     return $build;
   }
-
 
 
   protected function getFormTitle() {
@@ -146,8 +150,6 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   }
 
   protected function getCurrentPage() {
-
-
     if ($this->entity instanceof WebformInterface && $this->entity->hasWizardPages()) {
 
       $wizard_pages = $this->entity->getPages();

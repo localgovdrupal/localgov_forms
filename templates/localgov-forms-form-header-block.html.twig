@@ -11,25 +11,29 @@
 {% set classes = [
     'clear-both',
     'headers',
-    'key',
 ] %}
 {% if formTitle %}
-<div{{ attributes.addClass(classes) }}>
-  <h1 class="header">
-    {{ formTitle }}
-    {% if wizardPageTitle %}
-      <div class="header__wizard_page_title">{{ wizardPageTitle }}</div>
-    {% endif %}
+<div{{attributes.addClass(classes)}}>
 
-    {% if hasFormErrors %}
-        <div class="header__form_errors">
-          {{ 'There are errors on this page.'|t }}
-        </div>
-    {% endif %}
+	<h1 class="header__form_title">
+		{{ formTitle }}
+	</h1>
 
-  </h1>
-  {% if formSummary %}
-    <div class="header__form_title">{{ formSummary }}</div>
-  {% endif %}
+	{% if formSummary %}
+    <div class="header__form_summary">
+      <h2>
+      {{ formSummary|raw }}
+      </h2>
+    </div>
+	{% endif %}
+
+	{% if wizardPageTitle %}
+  <hr>
+		<div class="header__wizard_page_title">
+      {{ wizardPageTitle }}
+    </div>
+	{% endif %}
+
 </div>
 {% endif %}
+

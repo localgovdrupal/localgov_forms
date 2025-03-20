@@ -32,3 +32,9 @@ localgov_forms.address_change:
     - core/drupal
     - core/once
     - core/jquery
+
+localgov_forms.form_header_block:
+  version: VERSION
+  css:
+    theme:
+      css/localgov_forms_header_block.css: {}

@@ -1,0 +1,16 @@
+.header__form_title h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.header__form_summary {
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.header__wizard_page_title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1.5em;
+}
