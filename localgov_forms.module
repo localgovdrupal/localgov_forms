@@ -7,7 +7,7 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\WebformSubmissionInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -90,6 +90,7 @@ function localgov_forms_webform_submission_form_alter(array &$form, FormStateInt
     }
   }
 }
+
 /**
  * Implements hook_form_alter().
  */
@@ -111,7 +112,8 @@ function localgov_forms_form_alter(array &$form, FormStateInterface $form_state,
       '#title' => t('User Description'),
       '#default_value' => $webform->getThirdPartySetting('localgov_forms', 'user_description', ''),
       '#description' => t('A usasge description for this form that is shown to users.'),
-      '#weight' => 10, // Adjust weight as needed.
+    // Adjust weight as needed.
+      '#weight' => 10,
     ];
 
     $form['form_settings']['form_header_block_settings']['display_header_block'] = [
@@ -119,24 +121,24 @@ function localgov_forms_form_alter(array &$form, FormStateInterface $form_state,
       '#title' => t('Display Form Header Block'),
       '#default_value' => $webform->getThirdPartySetting('localgov_forms', 'display_header_block', TRUE),
       '#description' => t('Enable the form header block to be displayed on this webform.'),
-      '#weight' => 1, // Adjust weight as needed.
+    // Adjust weight as needed.
+      '#weight' => 1,
     ];
 
     // Add a submit handler to save the setting.
     $form['actions']['submit']['#submit'][] = 'localgov_forms_webform_settings_form_submit';
   }
-    // Check if this is a webform submission form.
-    elseif (strpos($form_id, 'webform_submission_') === 0) {
-      // Get the webform.
-      $webform = $form_state->getFormObject()->getWebform();
-      // Check if the form header block is enabled.
-      if ($webform->getThirdPartySetting('localgov_forms', 'display_header_block', FALSE)) {
-        // Store the form state in the form.
-        $form['#form_state'] = $form_state;
-      }
+  // Check if this is a webform submission form.
+  elseif (strpos($form_id, 'webform_submission_') === 0) {
+    // Get the webform.
+    $webform = $form_state->getFormObject()->getWebform();
+    // Check if the form header block is enabled.
+    if ($webform->getThirdPartySetting('localgov_forms', 'display_header_block', FALSE)) {
+      // Store the form state in the form.
+      $form['#form_state'] = $form_state;
     }
+  }
 }
-
 
 /**
  * Submit handler for webform edit form.

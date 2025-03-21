@@ -15,7 +15,6 @@ use Drupal\localgov_forms\Event\FormHeaderDisplayEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\webform\WebformInterface;
-use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -81,16 +80,19 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $this->eventDispatcher->dispatch($event, FormHeaderDisplayEvent::EVENT_NAME);
 
     // Set the Form title, current page, form summary, visibility and cache tags.
-    $this->formTitle = $event->getFormTitle() === NULL ? $this->getFormTitle() : $event->getFormTitle();
-    $this->currentPage = $event->getCurrentPage() === NULL ? $this->getCurrentPage() : $event->getCurrentPage();//
-    $this->wizardPageTitle = $event->getWizardPageTitle() === NULL ? $this->getWizardPageTitle() : $event->getWizardPageTitle();
-    $this->formSummary = $event->getFormSummary() === NULL ? $this->getFormSummary() : $event->getFormSummary();
+    $this->formTitle = $event->getFormTitle() ?? $this->getFormTitle();
+    $this->currentPage = $event->getCurrentPage() ?? $this->getCurrentPage();
+    $this->wizardPageTitle = $event->getWizardPageTitle() ?? $this->getWizardPageTitle();
+    $this->formSummary = $event->getFormSummary() ?? $this->getFormSummary();
     $this->visible = $event->getVisibility();
 
     $entityCacheTags = $this->entity === NULL ? [] : $this->entity->getCacheTags();
-    $this->cacheTags = $event->getCacheTags() === NULL ? $entityCacheTags : $event->getCacheTags();
+    $this->cacheTags = $event->getCacheTags() ?? $entityCacheTags;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -102,7 +104,12 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $container->get('title_resolver')
     );
   }
-  public function build(FormStateInterface $form_state = NULL) {;
+
+  /**
+   *
+   */
+  public function build(?FormStateInterface $form_state = NULL) {
+    ;
 
     $build = [];
 
@@ -113,7 +120,7 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $page_keys = array_keys($wizard_pages);
 
       // Add the form title to the beginning of the array.
-      // so that page indexes start from 1
+      // so that page indexes start from 1.
       array_unshift($page_keys, $this->formTitle);
 
       $page_title = $wizard_pages[$currentPage]["#title"];
@@ -139,7 +146,9 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return $build;
   }
 
-
+  /**
+   *
+   */
   protected function getFormTitle() {
     $request = $this->requestStack->getCurrentRequest();
     $route = $this->currentRouteMatch->getRouteObject();
@@ -149,6 +158,9 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return NULL;
   }
 
+  /**
+   *
+   */
   protected function getCurrentPage() {
     if ($this->entity instanceof WebformInterface && $this->entity->hasWizardPages()) {
 
@@ -170,6 +182,10 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     }
     return NULL;
   }
+
+  /**
+   *
+   */
   protected function getWizardPageTitle() {
     if ($this->entity instanceof WebformInterface && $this->entity->hasWizardPages()) {
       $currentPage = $this->currentPage;
@@ -177,7 +193,7 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $page_keys = array_keys($wizard_pages);
 
       // Add the form title to the beginning of the array.
-      // so that page indexes start from 1
+      // so that page indexes start from 1.
       array_unshift($page_keys, $this->formTitle);
 
       $page_title = isset($page_keys[$currentPage]) ? $wizard_pages[$page_keys[$currentPage]]["#title"] : NULL;
@@ -187,14 +203,20 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return NULL;
   }
 
+  /**
+   *
+   */
   protected function getFormSummary() {
     if ($this->entity instanceof WebformInterface && $this->entity->hasWizardPages()) {
-      // return $this->entity->getDescription();
+      // Return $this->entity->getDescription();
       return $this->entity->getThirdPartySetting('localgov_forms', 'user_description');
     }
     return NULL;
   }
 
+  /**
+   *
+   */
   protected function blockAccess(AccountInterface $account) {
     if ($this->visible) {
       return AccessResult::allowed();
@@ -204,10 +226,16 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     }
   }
 
+  /**
+   *
+   */
   public function defaultConfiguration() {
     return ['label_display' => FALSE];
   }
 
+  /**
+   *
+   */
   public function getCacheTags() {
     if (!empty($this->cacheTags)) {
       return Cache::mergeTags(parent::getCacheTags(), $this->cacheTags);
@@ -215,7 +243,11 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return parent::getCacheTags();
   }
 
+  /**
+   *
+   */
   public function getCacheContexts() {
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
+
 }
