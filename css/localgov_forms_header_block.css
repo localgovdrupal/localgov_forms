@@ -1,18 +1,28 @@
 .header__form_title h1 {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5rem;
 }
 
 .header__form_summary {
-    font-size: 1.875rem !important;
+    font-size: 1.375rem!important;
     font-weight: 400 !important;
     margin-bottom: 1em;
 }
 
 .header__wizard_page_title  {
-    font-size: 2.125em;
+    font-size: 2.125rem;
     font-weight: bold;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.5rem;
 }
+
+.header__form_title_hr {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+.
 
