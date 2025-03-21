@@ -27,7 +27,7 @@ function localgov_forms_theme() {
         'formTitle' => '',
         'wizardPageTitle' => '',
         'currentPage' => '',
-        'formSummary' => '',
+        'userDescription' => '',
       ],
       'render element' => 'block',
     ],

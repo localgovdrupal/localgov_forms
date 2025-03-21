@@ -48,11 +48,11 @@ class FormHeaderDisplayEvent extends Event {
   protected $page_index = NULL;
 
   /**
-   * The Form Summary override.
+   * The Form user Description override.
    *
    * @var array|string|null
    */
-  protected $formSummary = NULL;
+  protected $userDescription = NULL;
 
 
   /**
@@ -148,14 +148,14 @@ class FormHeaderDisplayEvent extends Event {
     $this->currentPage = $current_page;
   }
 
-    /**
-   * Form Summary getter.
+  /**
+   * Form User Description getter.
    *
    * @return array|string|null
-   *   The form title
+   *   The User description title
    */
-  public function getFormSummary() {
-    return $this->formSummary;
+  public function getFormUserDescription() {
+    return $this->userDescription;
   }
 
   /**
@@ -165,7 +165,7 @@ class FormHeaderDisplayEvent extends Event {
    *   The form title
    */
   public function setFormSummary($form_summary) {
-    $this->formSummary = $form_summary;
+    $this->userDescription = $form_summary;
   }
 
   /**
