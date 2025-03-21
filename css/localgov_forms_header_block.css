@@ -4,15 +4,15 @@
     margin-bottom: 0.5em;
 }
 
-.header__wizard_page_title  {
-    font-size: 2.125em;
-    font-weight: bold;
-    margin-bottom: 1.5em;
-}
-
 .header__form_summary p {
     font-size: 1.875rem !important;
     font-weight: 400 !important;
     margin-bottom: 1em;
+}
+
+.header__wizard_page_title  {
+    font-size: 2.125em;
+    font-weight: bold;
+    margin-bottom: 1.5em;
 }
 

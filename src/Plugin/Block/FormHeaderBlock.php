@@ -189,7 +189,8 @@ class FormHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
   protected function getFormSummary() {
     if ($this->entity instanceof WebformInterface && $this->entity->hasWizardPages()) {
-      return $this->entity->getDescription();
+      // return $this->entity->getDescription();
+      return $this->entity->getThirdPartySetting('localgov_forms', 'user_description');
     }
     return NULL;
   }

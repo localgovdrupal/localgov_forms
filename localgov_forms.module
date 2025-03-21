@@ -7,7 +7,7 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
-
+use Drupal\webform\WebformSubmissionInterface;
 /**
  * Implements hook_theme().
  */
@@ -73,15 +73,83 @@ function localgov_forms_preprocess_webform(array &$variables) {
 function localgov_forms_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   // Check if this is a webform submission form.
   if (strpos($form_id, 'webform_submission_') === 0) {
-    // Assuming you have an instance of FormHeaderBlock.
-    $form_header_block = \Drupal::service('plugin.manager.block')->createInstance('localgov_forms_form_header_block', []);
-    // Build the block.
-    $block_build = $form_header_block->build($form_state);
+    // Get the webform.
+    $webform = $form_state->getFormObject()->getWebform();
+    // Check if the form header block is enabled.
+    if ($webform->getThirdPartySetting('localgov_forms', 'display_header_block', FALSE)) {
+      // Assuming you have an instance of FormHeaderBlock.
+      $form_header_block = \Drupal::service('plugin.manager.block')->createInstance('localgov_forms_form_header_block', []);
+      // Build the block.
+      $block_build = $form_header_block->build($form_state);
 
-    // Check if the block has content to render.
-    if (!empty($block_build)) {
-      // Add the block as a prefix to the form.
-      $form['#prefix'] = \Drupal::service('renderer')->render($block_build);
+      // Check if the block has content to render.
+      if (!empty($block_build)) {
+        // Add the block as a prefix to the form.
+        $form['#prefix'] = \Drupal::service('renderer')->render($block_build);
+      }
     }
   }
+}
+/**
+ * Implements hook_form_alter().
+ */
+function localgov_forms_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  // Check if this is a webform edit form.
+  if (strpos($form_id, 'webform_settings_form') === 0) {
+    // Get the webform.
+    $webform = $form_state->getFormObject()->getEntity();
+
+    // Add the "User Description" field.
+    $form['settings']['user_description'] = [
+      '#type' => 'textarea',
+      '#title' => t('User Description'),
+      '#default_value' => $webform->getThirdPartySetting('localgov_forms', 'user_description', ''),
+      '#description' => t('A description of this webform for users.'),
+      '#weight' => 10, // Adjust weight as needed.
+    ];
+
+    $form['settings']['display_header_block'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Display Form Header Block'),
+      '#default_value' => $webform->getThirdPartySetting('localgov_forms', 'display_header_block', TRUE),
+      '#description' => t('Enable to display the header block on this webform.'),
+      '#weight' => 10, // Adjust weight as needed.
+    ];
+
+    // Add a submit handler to save the setting.
+    $form['actions']['submit']['#submit'][] = 'localgov_forms_webform_settings_form_submit';
+  }
+    // Check if this is a webform submission form.
+    elseif (strpos($form_id, 'webform_submission_') === 0) {
+      // Get the webform.
+      $webform = $form_state->getFormObject()->getWebform();
+      // Check if the form header block is enabled.
+      if ($webform->getThirdPartySetting('localgov_forms', 'display_header_block', FALSE)) {
+        // Store the form state in the form.
+        $form['#form_state'] = $form_state;
+      }
+    }
+  }
+
+
+/**
+ * Submit handler for webform edit form.
+ */
+function localgov_forms_webform_settings_form_submit(array &$form, FormStateInterface $form_state) {
+  // Get the webform.
+  $webform = $form_state->getFormObject()->getEntity();
+
+  // Get the checkbox value.
+  $enable_form_header_block = $form_state->getValue('display_header_block');
+
+  // Save the setting to the webform.
+  $webform->setThirdPartySetting('localgov_forms', 'display_header_block', $enable_form_header_block);
+  $webform->save();
+
+  // Get the user description value.
+  $user_description = $form_state->getValue('user_description');
+
+  // Save the setting to the webform.
+  $webform->setThirdPartySetting('localgov_forms', 'user_description', $user_description);
+  $webform->save();
 }
