@@ -209,42 +209,5 @@
       });
     }
   }
-//pop up dropdown with searched address every time a Drupal AJAX request completes
-  $(document).ajaxComplete(function () {
-    var selectElement = $('.js-address-select');
-
-    // Clear previous options
-    selectElement.empty();
-
-    // Add default option
-    var defaultOption = $('<option>', {
-      value: '0',
-      text: '-Please choose an address-'
-    });
-    selectElement.append(defaultOption);
-
-    // Check if address list exists
-    var addressList = drupalSettings.centralHub.addressList;
-
-    if (addressList && addressList.length > 0) {
-      $.each(addressList, function (index, address) {
-        var option = $('<option>', {
-          value: address.name,
-          text: address.display
-        });
-        selectElement.append(option);
-      });
-    } else {
-      var noAddressOption = $('<option>', {
-        value: '',
-        text: 'No addresses found'
-      });
-      selectElement.append(noAddressOption);
-    }
-
-    // Show the dropdown after AJAX loads addresses
-    $('.js-address-select-container').removeClass('hidden');
-  });
-
 
 })(jQuery, Drupal);
