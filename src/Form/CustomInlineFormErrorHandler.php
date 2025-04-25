@@ -62,7 +62,7 @@ class CustomInlineFormErrorHandler extends BaseInlineFormErrorHandler {
       $render_array = [
         [
           // Use the static string, wrapped in t() for potential translation.
-          '#markup' => $this->t('There is a problem'),
+          '#markup' => '<h3 class="error-summary__title">' . $this->t('There is a problem') .'</h3>',
         ],
         [
           // Keep the list of links (identical to parent).
