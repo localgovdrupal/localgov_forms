@@ -11,3 +11,9 @@ services:
   plugin.manager.pii_redactor:
     class: Drupal\localgov_forms\Plugin\PIIRedactorPluginManager
     parent: default_plugin_manager
+
+  localgov_forms.service_provider:
+      class: Drupal\localgov_forms\LocalGovFormsServiceProvider
+      tags:
+        # Priority > 0 ensures it runs after providers with default priority.
+        - { name: service_provider, priority: 10 }
