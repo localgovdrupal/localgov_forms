@@ -14,10 +14,6 @@ services:
 
   localgov_forms.service_provider:
       class: Drupal\localgov_forms\LocalGovFormsServiceProvider
-      decorates: 'form_error_handler'
-      arguments: ['@localgov_forms.service_provider.inner', '@config.factory']
-      aliases:
-        - 'form_error_handler'
       tags:
         # Priority > 0 ensures it runs after providers with default priority.
-        - { name: service_provider, priority: 0 }
+        - { name: service_provider, priority: 10 }
