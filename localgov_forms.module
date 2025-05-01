@@ -68,7 +68,7 @@ function localgov_forms_preprocess_webform(array &$variables) {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function localgov_forms_webform_submission_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
   // Check if this is a webform submission form.
