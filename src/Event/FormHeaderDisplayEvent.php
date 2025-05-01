@@ -4,7 +4,6 @@ namespace Drupal\localgov_forms\Event;
 
 use Drupal\Component\EventDispatcher\Event;
 
-
 /**
  * Event that is fired when displaying the page header.
  */
@@ -45,7 +44,7 @@ class FormHeaderDisplayEvent extends Event {
    *
    * @var array|string|null
    */
-  protected $page_index = NULL;
+  protected $pageIndex = NULL;
 
   /**
    * The Form user Description override.
@@ -100,13 +99,11 @@ class FormHeaderDisplayEvent extends Event {
    * Form Title setter.
    *
    * @param array|string|null $formTitle
-   *   The form title
+   *   The form title.
    */
-  public function setFormTitle($form_title) {
-    $this->formTitle = $form_title;
+  public function setFormTitle($formTitle) {
+    $this->formTitle = $formTitle;
   }
-
-
 
   /**
    * Wizard Page Title getter.
@@ -161,8 +158,8 @@ class FormHeaderDisplayEvent extends Event {
   /**
    * Form Summary setter.
    *
-   * @param array|string|null $formSummary
-   *   The form title
+   * @param array|string|null $form_summary
+   *   The form summary.
    */
   public function setFormSummary($form_summary) {
     $this->userDescription = $form_summary;
