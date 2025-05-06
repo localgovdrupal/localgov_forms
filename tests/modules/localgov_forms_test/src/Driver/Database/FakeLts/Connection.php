@@ -43,6 +43,6 @@ class Connection extends StubConnection {
    *
    * Work-around for avoiding TransactionManager usage.
    */
-  public function commitAll() {}
+  public function commitAll(): void {}
 
 }
