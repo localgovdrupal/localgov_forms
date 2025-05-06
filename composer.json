@@ -6,7 +6,7 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
-    "drupal/webform": "^6.0",
+    "drupal/webform": "^6.2 || ^6.3@beta",
     "drupal/geocoder": "^3.44 || ^4.21",
     "localgovdrupal/localgov_os_places_geocoder_provider": "1.x-dev"
   },
