@@ -34,8 +34,10 @@ class DateWebformElementTest extends KernelTestBase {
     $form_state->setValue('date',
       ['day' => '1', 'month' => '1', 'year' => '1']);
     $form_state->setValue('op', 'Submission');
+    $form_state->setValue('submit', 'Submit');
 
-    $this->container->get('form_builder')->submitForm(clone($this->testForm), $form_state);
+    $test_form = clone($this->testForm);
+    $this->container->get('form_builder')->submitForm($test_form, $form_state);
     $this->assertEmpty($form_state->getErrors());
   }
 
@@ -89,12 +91,10 @@ class DateWebformElementTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('path_alias');
-
     $this->installSchema('webform', ['webform']);
-
     $this->installConfig('system');
+    $this->installConfig('webform');
     $this->installConfig('localgov_forms_date_test');
-
     $this->installConfig('localgov_forms_date');
 
     $empty_submission = WebformSubmission::create(['webform_id' => 'date_test']);

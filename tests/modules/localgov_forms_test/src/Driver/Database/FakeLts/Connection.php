@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\localgov_forms_test\Driver\Database\FakeLts;
 
+use Drupal\Core\Database\Transaction\TransactionManagerInterface;
+use Drupal\mysql\Driver\Database\mysql\TransactionManager;
 use Drupal\Tests\Core\Database\Stub\StubConnection;
 use Drupal\Tests\Core\Database\Stub\StubPDO;
 
@@ -28,5 +30,19 @@ class Connection extends StubConnection {
   public static function open(array &$connection_options = []) {
     return new StubPDO();
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function driverTransactionManager(): TransactionManagerInterface {
+    return new TransactionManager($this);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Work-around for avoiding TransactionManager usage.
+   */
+  public function commitAll(): void {}
 
 }
