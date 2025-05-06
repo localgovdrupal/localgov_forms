@@ -38,4 +38,11 @@ class Connection extends StubConnection {
     return new TransactionManager($this);
   }
 
+  /**
+   * {@inheritdoc}
+   *
+   * Work-around for avoiding TransactionManager usage.
+   */
+  public function commitAll() {}
+
 }
