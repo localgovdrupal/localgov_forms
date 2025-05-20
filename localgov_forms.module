@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Render\Element;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_theme().
@@ -54,4 +55,75 @@ function template_preprocess_localgov_forms_uk_address(array &$variables): void 
  */
 function localgov_forms_preprocess_webform(array &$variables): void {
   $variables['#attached']['library'][] = 'localgov_forms/localgov_forms.form_errors';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function localgov_forms_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  // Check if this is a webform edit form.
+  if (strpos($form_id, 'webform_settings_form') === 0) {
+    // Get the webform.
+    $webform = $form_state->getFormObject()->getEntity();
+
+    $form['form_settings']['form_header_block_settings'] = [
+      '#type' => 'details',
+      '#title' => t('Form header settings'),
+      '#open' => TRUE,
+      '#weight' => -9999,
+    ];
+    // Add the "User Description" field.
+    $form['form_settings']['form_header_block_settings']['user_description'] = [
+      '#type' => 'textarea',
+      '#title' => t('User Description'),
+      '#default_value' => $webform->getThirdPartySetting('localgov_forms', 'user_description', ''),
+      '#description' => t('A usasge description for this form that is shown to users.'),
+    // Adjust weight as needed.
+      '#weight' => 10,
+    ];
+
+    $form['form_settings']['form_header_block_settings']['display_header_block'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Display Form Header Block'),
+      '#default_value' => $webform->getThirdPartySetting('localgov_forms', 'display_header_block', TRUE),
+      '#description' => t('Enable the form header block to be displayed on this webform.'),
+    // Adjust weight as needed.
+      '#weight' => 1,
+    ];
+
+    // Add a submit handler to save the setting.
+    $form['actions']['submit']['#submit'][] = 'localgov_forms_webform_settings_form_submit';
+  }
+  // Check if this is a webform submission form.
+  elseif (strpos($form_id, 'webform_submission_') === 0) {
+    // Get the webform.
+    $webform = $form_state->getFormObject()->getWebform();
+    // Check if the form header block is enabled.
+    if ($webform->getThirdPartySetting('localgov_forms', 'display_header_block', FALSE)) {
+      // Store the form state in the form.
+      $form['#form_state'] = $form_state;
+    }
+  }
+}
+
+/**
+ * Submit handler for webform edit form.
+ */
+function localgov_forms_webform_settings_form_submit(array &$form, FormStateInterface $form_state) {
+  // Get the webform.
+  $webform = $form_state->getFormObject()->getEntity();
+
+  // Get the checkbox value.
+  $enable_form_header_block = $form_state->getValue('display_header_block');
+
+  // Save the setting to the webform.
+  $webform->setThirdPartySetting('localgov_forms', 'display_header_block', $enable_form_header_block);
+  $webform->save();
+
+  // Get the user description value.
+  $user_description = $form_state->getValue('user_description');
+
+  // Save the user description setting to the webform.
+  $webform->setThirdPartySetting('localgov_forms', 'user_description', $user_description);
+  $webform->save();
 }
