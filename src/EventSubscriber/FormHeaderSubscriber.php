@@ -5,6 +5,8 @@ namespace Drupal\localgov_forms\EventSubscriber;
 use Drupal\localgov_core\Event\PageHeaderDisplayEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\webform\WebformInterface;
+use Drupal\webform\WebformSubmissionInterface;
+
 
 /**
  * Display web form header.
@@ -47,13 +49,15 @@ class FormHeaderSubscriber implements EventSubscriberInterface {
 
       // Wizard Page Title.
       if ($formCurrentPageTitle) {
-        $event->setSubTitle($formCurrentPageTitle);
+        $event->setSubTitle(['#markup' => $formCurrentPageTitle,'#cache' =>  ['contexts' => [ 'url']]]);
       }
 
       // Set the form title, lede, and subtitle.
       if ($formTitle) {
         $event->setTitle($formTitle);
-      }
+    }
+
+
 
       // Set the user description as the lede.
       if ($formUserDescription) {
