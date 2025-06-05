@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Overrides the form_error_handler service to use our custom handler.
  */
-class LocalGovFormsServiceProvider extends ServiceProviderBase {
+class LocalgovFormsServiceProvider extends ServiceProviderBase {
 
   /**
    * {@inheritdoc}
@@ -20,7 +20,7 @@ class LocalGovFormsServiceProvider extends ServiceProviderBase {
       $definition = $container->getDefinition('form_error_handler');
 
       // Set the class to *your* custom handler.
-      $definition->setClass(\Drupal\localgov_forms\Form\CustomInlineFormErrorHandler::class);
+      $definition->setClass('Drupal\localgov_forms\Form\CustomInlineFormErrorHandler');
 
       // Ensure the arguments match the constructor of the class being replaced
       // (Drupal\inline_form_errors\FormErrorHandler in this case).
