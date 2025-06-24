@@ -4,12 +4,12 @@ dependencies: {  }
 weight: 0
 open: null
 close: null
-uid: 3
+uid: 1
 template: false
 archive: false
-id: liberty_create_api_example
-title: 'Liberty Create API integration example'
-description: ''
+id: caselink_api_integration_example
+title: 'Liberty Create Caselink 360 API integration example'
+description: '<p>Example Webform that passes form submission date to the Liberty Create "Caselink 360 - create / update case" API method.</p>'
 categories:
   - Example
 elements: |-
@@ -24,6 +24,9 @@ elements: |-
     '#last__required': true
     '#suffix__access': false
     '#degree__access': false
+  date_of_birth:
+    '#type': date
+    '#title': 'Date of birth'
   email:
     '#type': webform_email_confirm
     '#title': Email
@@ -73,7 +76,7 @@ elements: |-
   case_ref:
     '#type': value
     '#title': 'CRM case reference'
-    '#value': '[webform:handler:remote_post:completed:payload:data:0:data:0:liberty_create_case_reference]'
+    '#value': '[webform:handler:remote_post:completed:payload:data:0:data:0:ch_case_ref]'
   files:
     '#type': managed_file
     '#title': Files
@@ -271,7 +274,7 @@ handlers:
     id: remote_post
     handler_id: remote_post
     label: 'Remote post'
-    notes: 'Saves everything in a Queue.  HTTP POST requests are later made by a queue worker.'
+    notes: 'Makes HTTP POST requests to the given API endpoint.'
     status: true
     conditions: {  }
     weight: 0
@@ -299,32 +302,32 @@ handlers:
         sticky: sticky
         notes: notes
         name: name
+        date_of_birth: date_of_birth
         email: email
         phone: phone
         details_of_enquiry: details_of_enquiry
-        residential_address: residential_address
         case_address: case_address
+        residential_address: residential_address
         api_response: api_response
         api_result: api_result
         case_ref: case_ref
         files: files
         more_files: more_files
+        date_of_birth_2: date_of_birth_2
       custom_data: ''
       custom_options: |-
         headers:
           API-Authentication: "[env:DRUPAL_LIBERTY_CREATE_API_AUTH_KEY]"
-          API-Username: "[env:DRUPAL_LIBERTY_CREATE_API_USERNAME]"
-          API-User-Token: "[env:DRUPAL_LIBERTY_CREATE_API_USER_KEY]"
       file_data: true
       cast: false
       debug: true
-      completed_url: 'https://example-build.oncreate.app/api/REST/case_to_crm/0.1'
+      completed_url: 'https://example-build.oncreate.app/api/REST/caselink360/1.0'
       completed_custom_data: |-
         payload:
           # client_unique_identifier is a required field.
           client_unique_identifier: "[webform:id]/[webform_submission:sid]"
           # "function" is also a required field.
-          function: case_to_crm_create_update_case
+          function: caselink_360_create_update_case
           # So is "data".
           data:
             -
@@ -333,13 +336,14 @@ handlers:
               # source_ref is a required field.
               source_ref: "[webform:id]/[webform_submission:sid]"
               # Everything else below is optional.
-              date_time_created: "[webform_submission:completed:custom:d/m/Y H:i]"
+              case_datetime_created: "[webform_submission:completed:custom:d/m/Y H:i]"
               resident_uprn: "[webform_submission:values:residential_address:uprn]"
               case_uprn: "[webform_submission:values:case_address:uprn]"
               first_name: "[webform_submission:values:name:first]"
               last_name: "[webform_submission:values:name:last]"
-              telephone_number_for_texts: "[webform_submission:values:phone]"
-              email_address:  "[webform_submission:values:email]"
+              phone_number: "[webform_submission:values:phone]"
+              email_address: "[webform_submission:values:email]"
+              date_of_birth: "[webform_submission:values:date_of_birth:d/m/Y]"
               case_url:  "[webform_submission:token-view-url]"
               nature_of_enquiry: "[webform:title]"
               disposal_date: "[webform_submission:purge_date:custom:d/m/Y:clear]"
