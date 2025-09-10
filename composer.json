@@ -1,14 +1,14 @@
 {
-  "name": "localgovdrupal/localgov_forms",
+  "name": "drupal/localgov_forms",
   "description": "LocalGov Drupal distribution: Webform additions.",
   "type": "drupal-module",
-  "homepage": "https://github.com/localgovdrupal/localgov_forms",
+  "homepage": "https://www.drupal.org/project/localgov_forms",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
     "drupal/webform": "^6.2 || ^6.3@beta",
     "drupal/geocoder": "^3.44 || ^4.21",
-    "localgovdrupal/localgov_os_places_geocoder_provider": "1.x-dev"
+    "drupal/localgov_os_places_geocoder_provider": "1.x-dev"
   },
   "require-dev": {
     "geocoder-php/nominatim-provider": "^5.2"
