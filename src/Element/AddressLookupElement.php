@@ -112,6 +112,7 @@ class AddressLookupElement extends FormElement {
     // Display title, description and help on the active element.
     $properties = [
       '#title' => '#title',
+      '#title_display' => '#title_display',
       // phpcs:ignore DrupalPractice.General.DescriptionT.DescriptionT
       '#description' => '#description',
       '#help' => '#help',
