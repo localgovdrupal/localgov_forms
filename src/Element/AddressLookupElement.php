@@ -109,6 +109,17 @@ class AddressLookupElement extends FormElement {
         'class' => ['js-address-searchstring'],
       ],
     ];
+    // Display title, description and help on the active element.
+    $properties = [
+      '#title' => '#title',
+      // phpcs:ignore DrupalPractice.General.DescriptionT.DescriptionT
+      '#description' => '#description',
+      '#help' => '#help',
+    ];
+    $element['address_search']['address_searchstring'] = array_merge(
+      $element['address_search']['address_searchstring'],
+      array_intersect_key($element, $properties)
+    );
 
     $element['address_search']['address_actions'] = [
       '#type' => 'container',
