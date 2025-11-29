@@ -147,7 +147,7 @@ class LocalgovFormsDate extends DateList {
    * Ensure the datetime object gets added to the user input.
    * https://github.com/localgovdrupal/localgov_forms/issues/124
    */
-  public static function preValidateDate(&$element, FormStateInterface $form_state, &$complete_form) {
+  public static function preValidateDate(&$element, FormStateInterface $form_state, &$complete_form): void {
     parent::preValidateDate($element, $form_state, $complete_form);
 
     // Repeating parent workaround to place datetime object on form_state
