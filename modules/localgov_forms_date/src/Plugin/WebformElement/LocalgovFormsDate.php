@@ -2,6 +2,8 @@
 
 namespace Drupal\localgov_forms_date\Plugin\WebformElement;
 
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Datetime\Element\Datelist as CoreDatelist;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformElement\DateList;
@@ -137,6 +139,29 @@ class LocalgovFormsDate extends DateList {
     $element['#date_time_format'] = $localgov_forms_datetime_format;
 
     parent::validateDate($element, $form_state, $complete_form);
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Ensure the datetime object gets added to the user input.
+   * https://github.com/localgovdrupal/localgov_forms/issues/124
+   */
+  public static function preValidateDate(&$element, FormStateInterface $form_state, &$complete_form) {
+    parent::preValidateDate($element, $form_state, $complete_form);
+
+    // Repeating parent workaround to place datetime object on form_state
+    // input.
+    $input_exists = FALSE;
+    $input = NestedArray::getValue($form_state->getValues(), $element['#parents'], $input_exists);
+    if (!isset($input['object'])) {
+      if (isset($element['#date_time_element']) && $element['#date_time_element'] === 'timepicker') {
+        $element['#date_time_format'] = 'H:i:s';
+      }
+      $input = CoreDatelist::valueCallback($element, $input, $form_state);
+      $form_state->setValueForElement($element, $input);
+      $element['#value'] = $input;
+    }
   }
 
 }
