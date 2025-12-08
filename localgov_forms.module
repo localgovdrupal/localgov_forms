@@ -5,6 +5,7 @@
  * Hook implementations.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\LegacyHook;
 use Drupal\Core\Render\Element;
 use Drupal\localgov_forms\Hook\ThemeHooks;
@@ -62,4 +63,10 @@ function localgov_forms_preprocess_webform(array &$variables): void {
 #[LegacyHook]
 function localgov_forms_element_info_alter(array &$types): void {
   \Drupal::service(ThemeHooks::class)->elementInfoAlter($types);
+}
+
+// @phpstan-ignore-next-line
+#[LegacyHook]
+function localgov_forms_webform_admin_third_party_settings_form_alter(&$form, FormStateInterface $form_state) {
+  \Drupal::service(ThemeHooks::class)->webformAdminForm($form, $form_state);
 }

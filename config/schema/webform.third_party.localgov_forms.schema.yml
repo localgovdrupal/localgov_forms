@@ -1,0 +1,7 @@
+webform.admin_settings.third_party.localgov_forms:
+  type: mapping
+  label: 'LocalGov Forms settings'
+  mapping:
+    mark_optional:
+      type: boolean
+      label: 'Add optional to non-required element labels'

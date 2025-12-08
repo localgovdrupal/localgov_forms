@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\webform\WebformSubmissionForm;
+use Drupal\webform\WebformThirdPartySettingsManager;
 
 /**
  * Theme related hooks.
@@ -18,7 +19,7 @@ class ThemeHooks {
    * @var array
    *   Element types to add (optional) to.
    */
-  static array $optionalTypes = [
+  public static array $optionalTypes = [
     'checkboxes',
     'checkbox',
     'radios',
@@ -26,11 +27,36 @@ class ThemeHooks {
     'select',
   ];
 
+  /**
+   * Construct a new class.
+   *
+   * @param \Drupal\webform\WebformThirdPartySettingsManager $webformThirdPartySettings
+   *   Webform third party settings manager.
+   */
+  public function __construct(protected WebformThirdPartySettingsManager $webformThirdPartySettings) {
+  }
+
+  #[Hook('webform_admin_third_party_settings_form_alter')]
+  public function webformAdminForm(&$form, FormStateInterface $form_state) {
+    $form['third_party_settings']['localgov_forms'] = [
+      '#type' => 'details',
+      '#title' => new TranslatableMarkup('LocalGov Forms'),
+    ];
+    $form['third_party_settings']['localgov_forms']['mark_optional'] = [
+      '#type' => 'checkbox',
+      '#title' => new TranslatableMarkup("Add '(optional)' to non-required elements"),
+      '#description' => new TranslatableMarkup('If checked GDS forms style addition to the label title.'),
+      '#default_value' => $this->webformThirdPartySettings->getThirdPartySetting('localgov_forms', 'mark_optional') ?: FALSE,
+    ];
+  }
+
   #[Hook('element_info_alter')]
   public function elementInfoAlter(array &$types): void {
-    foreach (static::$optionalTypes as $type) {
-      if (isset($types[$type])) {
-        $types[$type]['#after_build'][] = [static::class, 'optionalElement'];
+    if ($this->webformThirdPartySettings->getThirdPartySetting('localgov_forms', 'mark_optional') ?: FALSE) {
+      foreach (static::$optionalTypes as $type) {
+        if (isset($types[$type])) {
+          $types[$type]['#after_build'][] = [static::class, 'optionalElement'];
+        }
       }
     }
   }
@@ -57,6 +83,8 @@ class ThemeHooks {
         return $element;
       }
 
+      // Seems conditionally required will trigger this,
+      // if default required, it's then disable with JS.
       if (
         $element['#required'] === FALSE &&
         isset($element['#title'])
@@ -64,6 +92,7 @@ class ThemeHooks {
         $element['#title'] .= ' <span class="localgov-form-optional">'
           . new TranslatableMarkup('(optional)')
           . '</span>';
+        $element['#attached']['library'][] = 'localgov_forms/localgov_forms.state';
       }
     }
 
