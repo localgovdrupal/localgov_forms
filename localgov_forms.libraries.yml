@@ -28,3 +28,10 @@ localgov_forms.address_change:
     - core/drupal
     - core/once
     - core/jquery
+
+localgov_forms.state:
+  js:
+    js/localgov_forms.state.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery

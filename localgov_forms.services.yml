@@ -11,3 +11,13 @@ services:
   plugin.manager.pii_redactor:
     class: Drupal\localgov_forms\Plugin\PIIRedactorPluginManager
     parent: default_plugin_manager
+
+  Drupal\localgov_forms\Hook\ThemeHooks:
+    class: Drupal\localgov_forms\Hook\ThemeHooks
+    arguments: ['@webform.third_party_settings_manager']
+
+  localgov_forms.event_subscriber:
+    class: Drupal\localgov_forms\EventSubscriber\ConfigEventSubscriber
+    arguments: ['@plugin.manager.element_info']
+    tags:
+      - { name: event_subscriber }
