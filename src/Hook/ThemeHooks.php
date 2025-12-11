@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\localgov_forms\Hook;
 
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -17,15 +19,9 @@ class ThemeHooks {
 
   /**
    * @var array
-   *   Element types to add (optional) to.
+   *   Input element types not to attach to.
    */
-  public static array $optionalTypes = [
-    'checkboxes',
-    'checkbox',
-    'radios',
-    'textfield',
-    'select',
-  ];
+  public static array $skipTypes = [];
 
   /**
    * Construct a new class.
@@ -53,8 +49,8 @@ class ThemeHooks {
   #[Hook('element_info_alter')]
   public function elementInfoAlter(array &$types): void {
     if ($this->webformThirdPartySettings->getThirdPartySetting('localgov_forms', 'mark_optional') ?: FALSE) {
-      foreach (static::$optionalTypes as $type) {
-        if (isset($types[$type])) {
+      foreach ($types as $type => $info) {
+        if (($info['#input'] ?? FALSE) && !in_array($type, static::$skipTypes, TRUE)) {
           $types[$type]['#after_build'][] = [static::class, 'optionalElement'];
         }
       }
@@ -76,11 +72,33 @@ class ThemeHooks {
    */
   static function optionalElement(array $element, FormStateInterface $form_state): array {
     if ($form_state->getFormObject() instanceof WebformSubmissionForm) {
-      if ($element['#type'] === 'checkbox') {
+      $type = $element['#type'];
+      if ($type === 'checkbox' || $type === 'radio') {
         // If it is desired to add optional to single checkboxes there will be
         // a single parent with the same name as the checkbox in #parents.
         // A checkbox in a checkboxes list will have at least two parents.
         return $element;
+      }
+
+      $form = $form_state->getCompleteForm();
+      $parents = $element['#array_parents'];
+      array_pop($parents);
+      $parent = NestedArray::getValue($form, $parents);
+      $parent_type = $parent['#type'];
+
+      // Don't show optional on every field if whole address optional.
+      if ($parent_type === 'localgov_webform_uk_address') {
+        $all_optional = TRUE;
+        foreach (Element::children($parent) as $sibling_name) {
+          $sibling = $parent[$sibling_name];
+          if ($sibling['#access'] && isset($sibling['#required']) && $sibling['#required']) {
+            $all_optional = FALSE;
+            break;
+          }
+        }
+        if ($all_optional) {
+          return $element;
+        }
       }
 
       // Seems conditionally required will trigger this,

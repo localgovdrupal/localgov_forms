@@ -47,6 +47,7 @@ class UKAddressLookup extends WebformCompositeBase {
     $element_list = [];
     $element_list['address_lookup'] = [
       '#type' => 'localgov_forms_address_lookup',
+      '#title' => $element['#title'] ?? NULL,
       '#address_type' => $element['#address_type'] ?? 'residential',
       '#address_search_description' => $element['#address_search_description'] ?? NULL,
       '#address_select_title' => $element['#address_select_title'] ?? NULL,
@@ -69,6 +70,7 @@ class UKAddressLookup extends WebformCompositeBase {
     foreach ($extra_elements as $extra_element) {
       $element_list[$extra_element] = [
         '#type' => 'hidden',
+        '#title' => $extra_element,
         '#default_value' => '',
         '#attributes' => [
           'class' => ['js-localgov-forms-webform-uk-address--' . $extra_element],
@@ -76,8 +78,8 @@ class UKAddressLookup extends WebformCompositeBase {
       ];
     }
 
-    $element_list['#attached']['library'][] = 'localgov_forms/localgov_forms.address_select';
-    $element_list['#attached']['drupalSettings']['centralHub']['isManualAddressEntryBtnAlwaysVisible'] = isset($element['#always_display_manual_address_entry_btn']) ? ($element['#always_display_manual_address_entry_btn'] === 'yes') : TRUE;
+    $element_list['address_lookup']['#attached']['library'][] = 'localgov_forms/localgov_forms.address_select';
+    $element_list['address_lookup']['#attached']['drupalSettings']['centralHub']['isManualAddressEntryBtnAlwaysVisible'] = isset($element['#always_display_manual_address_entry_btn']) ? ($element['#always_display_manual_address_entry_btn'] === 'yes') : TRUE;
 
     return $element_list;
   }

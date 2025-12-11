@@ -108,6 +108,9 @@ class AddressLookupElement extends FormElement {
       '#attributes' => [
         'class' => ['js-address-searchstring'],
       ],
+      // Required validation is done on the element, based on required
+      // address parts. Display of required status is done on the collection.
+      '#required' => NULL,
     ];
     // Display title, description and help on the active element.
     $properties = [
@@ -185,6 +188,7 @@ class AddressLookupElement extends FormElement {
         'class' => ['js-address-select'],
       ],
       '#address_type' => $element['#address_type'] ?? 'residential',
+      '#required' => NULL,
     ];
 
     if ($form_state->isProcessingInput()) {
