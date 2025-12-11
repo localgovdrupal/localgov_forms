@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Drupal\localgov_forms\Hook;
 
+<<<<<<< HEAD
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Render\Element;
+=======
+>>>>>>> dac55f4a0514d2c6187482a1012b5964795bef9e
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -19,9 +22,21 @@ class ThemeHooks {
 
   /**
    * @var array
+<<<<<<< HEAD
    *   Input element types not to attach to.
    */
   public static array $skipTypes = [];
+=======
+   *   Element types to add (optional) to.
+   */
+  public static array $optionalTypes = [
+    'checkboxes',
+    'checkbox',
+    'radios',
+    'textfield',
+    'select',
+  ];
+>>>>>>> dac55f4a0514d2c6187482a1012b5964795bef9e
 
   /**
    * Construct a new class.
@@ -49,8 +64,13 @@ class ThemeHooks {
   #[Hook('element_info_alter')]
   public function elementInfoAlter(array &$types): void {
     if ($this->webformThirdPartySettings->getThirdPartySetting('localgov_forms', 'mark_optional') ?: FALSE) {
+<<<<<<< HEAD
       foreach ($types as $type => $info) {
         if (($info['#input'] ?? FALSE) && !in_array($type, static::$skipTypes, TRUE)) {
+=======
+      foreach (static::$optionalTypes as $type) {
+        if (isset($types[$type])) {
+>>>>>>> dac55f4a0514d2c6187482a1012b5964795bef9e
           $types[$type]['#after_build'][] = [static::class, 'optionalElement'];
         }
       }
